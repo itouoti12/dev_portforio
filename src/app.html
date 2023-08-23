@@ -3,6 +3,7 @@
 	<head>
 		<meta charset="utf-8" />
 		<link rel="icon" href="%sveltekit.assets%/favicon.png" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
 		<meta name="viewport" content="width=device-width" />
 		<script>
 			var global = global || window;
@@ -18,7 +19,7 @@
 		<div style="display: contents">%sveltekit.body%</div>
 	</body>
 	<script>
-		const storageDarkFlg = sessionStorage.getItem('isDarkmode');
+		const storageDarkFlg = localStorage.getItem('isDarkmode');
 		const isDark = !!storageDarkFlg ? (storageDarkFlg === '1' ? true : false) : false;
 		if (isDark) {
 		  document.body.classList.add('dark');
