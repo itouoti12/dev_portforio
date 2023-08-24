@@ -3,15 +3,18 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import type { mapbox } from './mapbox';
 import mapboxgl from 'mapbox-gl';
 import { CharacterControlsOnMap } from '../three/characterControlsOnMap';
+import { calcDirection } from '../three/function';
+import { DIRECTIONS, W } from '../three/utils';
 
 interface ConstructorProps {
   url: string;
+  movingOffset:number;
   origin: mapbox.LngLatLike;
   altitude: number;
   id: string;
   scale: number;
-  bearing:number;
-  isTrackingModel?:boolean;
+  bearing: number;
+  isTrackingModel?: boolean;
   onLoad?: () => void;
 }
 export interface ModelTransformProps {
@@ -26,6 +29,8 @@ export interface ModelTransformProps {
 
 interface CustomLayer {
   updateLngLat?: ({ lngLat, altitude, deg }: { lngLat?: mapboxgl.LngLatLike; altitude?: number; deg?: number }) => void;
+  autoWakingChange?: (isAutoWalk:boolean) => void;
+  trackingChange?: (isTracking:boolean) => void;
 }
 const modelRotate = [Math.PI / 2, 0, 0];
 
@@ -38,8 +43,11 @@ export function gltfModelLayer(props: ConstructorProps): mapbox.AnyLayer & Custo
   let modelOrigin: mapboxgl.LngLatLike;
   let modelAttitude: number;
   let characterControls: CharacterControlsOnMap;
+  let isAutoWalk = false;
   const bearing = props.bearing;
 
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   return {
     id: props.id,
     renderingMode: '3d',
@@ -59,8 +67,6 @@ export function gltfModelLayer(props: ConstructorProps): mapbox.AnyLayer & Custo
         scale: modelAsMercatorCoordinate.meterInMercatorCoordinateUnits()
       };
 
-      layermap = map;
-
       // NOTE: 以下Three.js実装
       // SCENE
       scene = new THREE.Scene();
@@ -73,6 +79,7 @@ export function gltfModelLayer(props: ConstructorProps): mapbox.AnyLayer & Custo
 
       // MODEL WITH ANIMATIONS
       const gltfLoader = new GLTFLoader();
+
       gltfLoader.load(props.url, function (gltf) {
         const model = gltf.scene;
         model.traverse(function (object: any) {
@@ -80,7 +87,7 @@ export function gltfModelLayer(props: ConstructorProps): mapbox.AnyLayer & Custo
           if (object.isMesh) object.material.needsUpdate = true;
         });
 
-        model.scale.set(props.scale,props.scale,props.scale);
+        model.scale.set(props.scale, props.scale, props.scale);
         scene.add(model);
 
         const gltfAnimations: THREE.AnimationClip[] = gltf.animations;
@@ -91,24 +98,62 @@ export function gltfModelLayer(props: ConstructorProps): mapbox.AnyLayer & Custo
           .forEach((animation) => {
             animationsMap.set(animation.name, mixer.clipAction(animation));
           });
-        characterControls = new CharacterControlsOnMap(model, mixer, animationsMap, camera, 'Idle', modelTransform,bearing,layermap,props.isTrackingModel);
-        characterControls.updateCameraRotation(bearing);
+
+        // NOTE: 初期描画時のviewから rotate model
+        const addBearingDirectionOffset = calcDirection(0, bearing);
+        const rotateQuarternion = new THREE.Quaternion().setFromAxisAngle(
+          new THREE.Vector3(0, 1, 0), // NOTE: y軸をベースに回転
+          addBearingDirectionOffset // 回転角
+        );
+        model.quaternion.rotateTowards(rotateQuarternion, 1);
+
+        characterControls = new CharacterControlsOnMap(
+          model,
+          mixer,
+          animationsMap,
+          camera,
+          'Idle',
+          modelTransform,
+          bearing,
+          layermap,
+          props.movingOffset,
+          props.isTrackingModel
+        );
       });
 
       // CONTROL KEYS
-      const keysPressed: {[key:string]:any} = {};
-      document.addEventListener('keydown', (event)=>{
-          if(event.shiftKey && characterControls){
-              characterControls.switchRunToggle();
-          } else{
-              keysPressed[event.key.toLowerCase()] = true;
+      const keysPressed: { [key: string]: any } = {};
+      let manualControlling = false;
+      document.addEventListener(
+        'keydown',
+        (event) => {
+          if(isAutoWalk && !manualControlling){
+            Object.keys(keysPressed).forEach(key=>keysPressed[key] = false);
           }
-      },false);
-      
-      document.addEventListener('keyup', (event)=>{
-              keysPressed[event.key.toLowerCase()] = false;
-      },false);
 
+          if (event.shiftKey && characterControls) {
+            characterControls.switchRunToggle();
+          } else {
+            manualControlling = true;
+            keysPressed[event.key.toLowerCase()] = true;
+          }
+        },
+        false
+      );
+
+      document.addEventListener(
+        'keyup',
+        (event) => {
+          keysPressed[event.key.toLowerCase()] = false;
+          if(manualControlling&&DIRECTIONS.every(key=>keysPressed[key] === false)){
+            manualControlling = false;
+          }
+        },
+        false
+      );
+
+
+      layermap = map;
 
       // RENDERER
       // threeJsで描画したオブジェクトをmapboxにマッピングする
@@ -117,29 +162,33 @@ export function gltfModelLayer(props: ConstructorProps): mapbox.AnyLayer & Custo
         context: gl,
         antialias: true
       });
-      renderer.shadowMap.enabled = true;
+      //NOTE: これ入れるとmapboxのりサイズに追従できない renderer.shadowMap.enabled = true;
       renderer.autoClear = false;
 
       // MAP rotate
-      map.on('rotate',function(){
+      map.on('rotate', function () {
         const bearing = map.getBearing();
-        if(characterControls){
-            characterControls.updateCameraRotation(bearing);
+        if (characterControls) {
+          characterControls.updateCameraRotation(bearing);
         }
-      })
+      });
 
       // ANIMATE
       const clock = new THREE.Clock();
-      function animate()  {
+      function animate() {
+
+        if(isAutoWalk && !manualControlling && (keysPressed[W]  === undefined || keysPressed[W] === false)){
+          keysPressed[W] = true;
+        }
+
         const mixerUpdateDelta = clock.getDelta();
         if (characterControls) {
           characterControls.update(mixerUpdateDelta, keysPressed);
         }
         requestAnimationFrame(animate);
-      };
+      }
 
       animate();
-
     },
     // レンダー フレーム中に呼び出され、レイヤが GL コンテキストに描画できるようにします
     render: function (_gl, matrix) {
@@ -157,12 +206,20 @@ export function gltfModelLayer(props: ConstructorProps): mapbox.AnyLayer & Custo
 
       camera.projectionMatrix.elements = matrix;
       camera.projectionMatrix = m.multiply(l);
-
-
       renderer.resetState();
       renderer.render(scene, camera);
       layermap.triggerRepaint();
-    }
+    },
+    autoWakingChange: function (autoWalk:boolean) {
+      isAutoWalk = autoWalk;
+    },
+    trackingChange:function(isTracking:boolean){
+      if(characterControls){
+        characterControls.changeTracking(isTracking);
+      }
+    },
+    
+
   };
 }
 

@@ -18,6 +18,7 @@
   // let lng = 139.776627;
   let lat = 35.716932;
   // let lat = 35.716939;
+  const movingOffset = 0.00000005;
 
   function changeZoom(event: CustomEvent<{ zoom: number }>) {
     zoom = event.detail.zoom;
@@ -49,6 +50,13 @@
     on:changeCenter={changeCenter}>
     <!-- <TerrainLayer /> -->
     <BuildingLayer />
-    <GltfModel layerId="soldier" modelOrigin={[lng, lat]} modelPath={soldierModel} scale={2} bearing={bearing} />
+    <GltfModel
+      layerId="soldier"
+      modelOrigin={[lng, lat]}
+      modelPath={soldierModel}
+      scale={2}
+      {bearing}
+      {movingOffset}
+      isTrackingModel />
   </Map>
 </div>

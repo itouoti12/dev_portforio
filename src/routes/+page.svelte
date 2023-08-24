@@ -13,7 +13,7 @@
   import DarkButton from './DarkButton.svelte';
   import { isElementAppear } from './functions';
   import BuildingLayer from './common/map/BuildingLayer.svelte';
-  import soldierModel from '$lib/assets/three/models/Soldier.glb'
+  import soldierModel from '$lib/assets/three/models/Soldier.glb';
   import GltfModel from './common/map/GltfModel.svelte';
 
   let totalPageHeight: number;
@@ -26,15 +26,17 @@
   let isDispTitle = false;
   let isDispMain = false;
 
-  interface CustomPageElementProps{
-    isDisplay?:boolean
-    isTrrigerd?:boolean
-  } 
-  let pageElements:{[key:string]:Element & CustomPageElementProps} ={};
+  interface CustomPageElementProps {
+    isDisplay?: boolean;
+    isTrrigerd?: boolean;
+  }
+  let pageElements: { [key: string]: Element & CustomPageElementProps } = {};
   let isDrawLandscape = false;
   let isDrawModel = false;
-  const MODEL_LAYER_ID='soldier';
-
+  const MODEL_LAYER_ID = 'soldier';
+  const movingOffset = 0.00000005;
+  let isWalking= true;
+  let isTracking= true;
 
   onMount(() => {
     totalPageHeight = document.documentElement.scrollHeight;
@@ -53,11 +55,11 @@
     currentScrollPercentage = Math.round((scrollY / (totalPageHeight - viewHeight)) * 100);
     totalPageHeight = document.documentElement.scrollHeight;
 
-    if(!isDispMain)return;
+    if (!isDispMain) return;
 
     // 要素が画面内に表示されているかの更新
-    Object.keys(pageElements).forEach((key)=>{
-      pageElements[key].isDisplay = isElementAppear(pageElements[key],viewHeight);
+    Object.keys(pageElements).forEach((key) => {
+      pageElements[key].isDisplay = isElementAppear(pageElements[key], viewHeight);
     });
 
     const map = get(storemap);
@@ -70,44 +72,49 @@
         bearing: 20,
         pitch: 80
       });
-      pageElements['title'].isTrrigerd =false 
-      pageElements['about_detail'].isTrrigerd = true
+      pageElements['title'].isTrrigerd = false;
+      pageElements['about_detail'].isTrrigerd = true;
       isDrawLandscape = true;
     }
 
     // NOTE: aboutから上に戻る
-    if (pageElements['title'].isDisplay && !pageElements['about_detail'].isDisplay && !pageElements['title'].isTrrigerd && map?.loaded()) {
+    if (
+      pageElements['title'].isDisplay &&
+      !pageElements['about_detail'].isDisplay &&
+      !pageElements['title'].isTrrigerd &&
+      map?.loaded()
+    ) {
       map?.flyTo({
         center: [0, 0],
         zoom: 2,
         bearing: 0,
         pitch: 0
       });
-      pageElements['title'].isTrrigerd =true 
-      pageElements['about_detail'].isTrrigerd =false 
+      pageElements['title'].isTrrigerd = true;
+      pageElements['about_detail'].isTrrigerd = false;
       isDrawLandscape = false;
     }
 
     // NOTE: historyに遷移
     if (pageElements['history_detail'].isDisplay && !pageElements['history_detail'].isTrrigerd && map?.loaded()) {
-      map?.panTo(
-        [139.777116, 35.723513],{
-          duration: 60000
-        }
-      );
-      pageElements['history_detail'].isTrrigerd = true
+      map?.panTo([139.777116, 35.723513], {
+        duration: 60000
+      });
+      pageElements['history_detail'].isTrrigerd = true;
     }
 
     // NOTE: historyから上に戻る
-    if (pageElements['about_detail'].isDisplay && !pageElements['history_detail'].isDisplay && pageElements['history_detail'].isTrrigerd && map?.loaded()) {
-      map?.panTo(
-        [139.744237, 35.656897],{
-          duration: 1500
-        }
-      );
-      pageElements['history_detail'].isTrrigerd =false 
+    if (
+      pageElements['about_detail'].isDisplay &&
+      !pageElements['history_detail'].isDisplay &&
+      pageElements['history_detail'].isTrrigerd &&
+      map?.loaded()
+    ) {
+      map?.panTo([139.744237, 35.656897], {
+        duration: 1500
+      });
+      pageElements['history_detail'].isTrrigerd = false;
     }
-
 
     // NOTE: projectsに遷移
     if (pageElements['project_detail'].isDisplay && !pageElements['project_detail'].isTrrigerd && map?.loaded()) {
@@ -117,23 +124,36 @@
         bearing: -58,
         pitch: 80
       });
-      pageElements['project_detail'].isTrrigerd = true
+      pageElements['project_detail'].isTrrigerd = true;
       isDrawModel = true;
+      if(!isWalking){
+        isTracking = true;
+        isWalking = true;
+      }
     }
 
     // NOTE: projectsから上に戻る
-    if (pageElements['skills_detail'].isDisplay && !pageElements['project_detail'].isDisplay && pageElements['project_detail'].isTrrigerd && map?.loaded()) {
+    if (
+      pageElements['skills_detail'].isDisplay &&
+      !pageElements['project_detail'].isDisplay &&
+      pageElements['project_detail'].isTrrigerd 
+      // &&
+      // map?.loaded()
+    ) {
+      if(isWalking){
+        isTracking = false;
+        isWalking = false;
+      }
       map?.flyTo({
         center: [139.777116, 35.723513],
         zoom: 18,
         bearing: 20,
         pitch: 80
       });
-      pageElements['project_detail'].isTrrigerd = false
+      pageElements['project_detail'].isTrrigerd = false;
       isDrawModel = false;
     }
   });
-
 
   function onChangeLanguage() {
     isJp = !isJp;
@@ -154,13 +174,22 @@
 <svelte:window bind:scrollY bind:innerHeight={viewHeight} />
 
 <div class="fixed top-0 left-0 h-full w-full -z-50">
-  <Map zoom={2} >
+  <Map zoom={2}>
     {#if isDrawLandscape}
       <BuildingLayer />
     {/if}
     {#if isDrawModel}
-    <GltfModel layerId={MODEL_LAYER_ID} modelOrigin={[ 139.776627,35.716939]} modelPath={soldierModel} scale={2} bearing={-58} isTrackingModel={true} />
+      <GltfModel
+        layerId={MODEL_LAYER_ID}
+        modelOrigin={[139.776627, 35.716939]}
+        modelPath={soldierModel}
+        scale={2}
+        bearing={-58}
+        {movingOffset}
+        />
     {/if}
+        <!-- isTrackingModel={isTracking}
+        isAutowalk={isWalking} -->
   </Map>
 </div>
 
@@ -194,7 +223,7 @@
 
 {#if !isDispMain}
   <section
-    class="fixed h-screen w-screen flex justify-center items-center z-30 bg-slate-50 dark:bg-slate-800 "
+    class="fixed h-screen w-screen flex justify-center items-center z-30 bg-slate-50 dark:bg-slate-800"
     out:fade={{ duration: 1000 }}>
     {#if isDispTitle}
       <h1 class="text-6xl font-bold" in:fade={{ duration: 3000 }}>KANSUKE ITO</h1>
@@ -206,7 +235,7 @@
   class="fixed h-[calc(100vh-_2rem)] w-screen flex justify-center items-center -z-30 bg-slate-50/50 dark:bg-slate-700/50 backdrop-blur-sm" />
 
 <main>
-  <section class="h-screen w-screen flex justify-center items-center"bind:this={pageElements['title']}>
+  <section class="h-screen w-screen flex justify-center items-center" bind:this={pageElements['title']}>
     <h1 class="text-6xl font-bold">KANSUKE ITO</h1>
   </section>
 
@@ -228,7 +257,7 @@
   <section class="h-screen w-screen flex justify-center items-center">
     <h1 class="text-6xl font-bold">HISTORY</h1>
   </section>
-  <section class="h-screen w-6/12 my-auto mx-auto py-40"  bind:this={pageElements['history_detail']}>
+  <section class="h-screen w-6/12 my-auto mx-auto py-40" bind:this={pageElements['history_detail']}>
     <div class="grid grid-rows-4 grid-cols-2 grid-flow-col gap-1">
       <div class="row-span-4">1992.12.16</div>
       <div class="col-span-1" bind:this={portforioTexts['history_0'].el}>

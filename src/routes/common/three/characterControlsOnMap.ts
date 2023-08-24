@@ -3,6 +3,7 @@ import type { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { A, D, DIRECTIONS, S, W } from './utils';
 import type { ModelTransformProps } from '../map/GltfModelLayer';
 import { calcDirection } from './function';
+import mapboxgl from 'mapbox-gl';
 export class CharacterControlsOnMap {
   model: THREE.Group;
   mixer: THREE.AnimationMixer;
@@ -28,7 +29,8 @@ export class CharacterControlsOnMap {
   modelTransform: ModelTransformProps;
   bearing: number;
   map: mapboxgl.Map;
-  isTrackingModel:boolean;
+  isTrackingModel: boolean;
+  movingOffset : number;
 
   constructor(
     model: THREE.Group,
@@ -39,7 +41,8 @@ export class CharacterControlsOnMap {
     modelTransform: ModelTransformProps,
     bearing: number,
     map: mapboxgl.Map,
-    isTrackingModel?:boolean
+    movingOffset:number,
+    isTrackingModel?: boolean
   ) {
     this.model = model;
     this.mixer = mixer;
@@ -55,6 +58,7 @@ export class CharacterControlsOnMap {
     this.bearing = bearing;
     this.map = map;
     this.isTrackingModel = isTrackingModel ?? false;
+    this.movingOffset = movingOffset;
   }
 
   public switchRunToggle() {
@@ -87,14 +91,14 @@ export class CharacterControlsOnMap {
 
     if (this.currentAction === 'Run' || this.currentAction === 'Walk') {
       const directionOffset = this.directionOffset(keysPressed);
-      const addBearingDirectionOffset = calcDirection(directionOffset,this.bearing);
+      const addBearingDirectionOffset = calcDirection(directionOffset, this.bearing);
       // rotate model
       this.rotateQuarternion.setFromAxisAngle(
         this.rotateAngle, // NOTE: y軸をベースに回転
         addBearingDirectionOffset // 回転角
       );
 
-      this.model.quaternion.rotateTowards(this.rotateQuarternion, 0.2);
+      this.model.quaternion.rotateTowards(this.rotateQuarternion, 1);
       // calculate direction
       this.camera.getWorldDirection(this.walkDirection);
       this.walkDirection.y = 0;
@@ -105,7 +109,7 @@ export class CharacterControlsOnMap {
       // run/walk velocity
       const velocity = this.currentAction === 'Run' ? this.runVelocity : this.walkVelocity;
       // move model & camera
-      const distance = velocity * delta
+      const distance = velocity * delta;
 
       const moveX = this.walkDirection.x * distance;
       const moveZ = this.walkDirection.z * distance;
@@ -113,9 +117,8 @@ export class CharacterControlsOnMap {
       this.model.position.x += moveX;
       this.model.position.z += moveZ;
 
-      this.modelTransform.translateX += moveX * 0.00000005;
-      this.modelTransform.translateY += moveZ * 0.00000005;
-
+      this.modelTransform.translateX += moveX * this.movingOffset;
+      this.modelTransform.translateY += moveZ * this.movingOffset;
 
       this.updateCameraTarget(moveX, moveZ, keysPressed);
     }
@@ -123,8 +126,9 @@ export class CharacterControlsOnMap {
 
   public updateCameraRotation(bearing: number) {
     this.bearing = bearing;
-    // const cameraBearing = bearing;
-    // this.camera.rotation.y = THREE.MathUtils.degToRad(cameraBearing);
+  }
+  public changeTracking(isTrack:boolean){
+    this.isTrackingModel = isTrack;
   }
 
   private updateCameraTarget(moveX: number, moveZ: number, keysPressed: any) {
@@ -136,27 +140,22 @@ export class CharacterControlsOnMap {
     this.cameraTarget.y = this.model.position.y + 1;
     this.cameraTarget.z = this.model.position.z;
 
-    const originPosition = this.map.getCenter();
+    // const originPosition = this.map.getCenter();
 
-    if(this.isTrackingModel){
-      const updatePosition = [originPosition.lng + moveX * 0.0005, originPosition.lat - moveZ * 0.0005];
-  
-      if (keysPressed[W] || keysPressed[S]) {
-        if (keysPressed[A] || keysPressed[D]) {
-          //斜め移動
-          this.map.panTo(updatePosition as mapboxgl.LngLatLike, { easing: () => 0.0335 });
-        } else {
-          // 前移動
-          this.map.panTo(updatePosition as mapboxgl.LngLatLike, { easing: () => 0.03 });
-        }
-      } else if (keysPressed[A] || keysPressed[D]) {
-        //横移動
-        this.map.panTo(updatePosition as mapboxgl.LngLatLike, { easing: () => 0.0358 });
+    if (this.isTrackingModel) {
+      const mercatorCoordinate = new mapboxgl.MercatorCoordinate(
+        this.modelTransform.translateX,
+        this.modelTransform.translateY,
+        this.map.getZoom()
+      );
+      const lngLat = mercatorCoordinate.toLngLat();
+
+      if (-180 <= lngLat.lng && lngLat.lng <= 180 && -90 <= lngLat.lat && lngLat.lat <= 90) {
+        // NOTE:移動後の 経度と緯度の座標
+        console.log(lngLat.toArray())
+        this.map.panTo(lngLat.toArray() as mapboxgl.LngLatLike,{duration:100});
       }
-      //横移動
-      this.map.panTo(updatePosition as mapboxgl.LngLatLike, { easing: () => 0.0358 });
     }
-
   }
 
   private directionOffset(keysPressed: any) {
@@ -185,5 +184,3 @@ export class CharacterControlsOnMap {
     return directionOffset;
   }
 }
-
-
