@@ -31,11 +31,22 @@
     lng = event.detail.center.lng;
     lat = event.detail.center.lat;
   }
+  let isAutowalk = false;
+  function changeWalk(isAuto:boolean){
+    isAutowalk = isAuto;
+  }
+  let isTracking = true;
+  function toggleTracking(){
+    isTracking = !isTracking;
+  }
 </script>
 
 <div class="fixed top-0 left-0 h-20 w-56 z-10 text-zinc-50">
   <h1>zoom:{zoom} pitch:{pitch} bearing:{bearing}</h1>
   <h1>[{lng} {lat}]</h1>
+  <button class="bg-sky-500/75" on:click={()=>changeWalk(true)}>AutoWalk</button>
+  <button class="bg-sky-500/75" on:click={()=>changeWalk(false)}>ManualWalk</button>
+  <button class="bg-lime-500/75" on:click={()=>toggleTracking()}>Tracking</button>
 </div>
 <div class="h-screen w-screen">
   <Map
@@ -48,7 +59,7 @@
     on:changeRotate={changePitch}
     on:changeZoom={changeZoom}
     on:changeCenter={changeCenter}>
-    <!-- <TerrainLayer /> -->
+    <TerrainLayer />
     <BuildingLayer />
     <GltfModel
       layerId="soldier"
@@ -57,6 +68,7 @@
       scale={2}
       {bearing}
       {movingOffset}
-      isTrackingModel />
+      isAutowalk={isAutowalk}
+      isTrackingModel={isTracking} />
   </Map>
 </div>

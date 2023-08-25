@@ -2,13 +2,13 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import type { mapbox } from './mapbox';
 import mapboxgl from 'mapbox-gl';
-import { CharacterControlsOnMap } from '../three/characterControlsOnMap';
+import { CharacterControlsOnMapbox } from '../three/characterControlsOnMapbox';
 import { calcDirection } from '../three/function';
 import { DIRECTIONS, W } from '../three/utils';
 
 interface ConstructorProps {
   url: string;
-  movingOffset:number;
+  movingOffset: number;
   origin: mapbox.LngLatLike;
   altitude: number;
   id: string;
@@ -27,10 +27,14 @@ export interface ModelTransformProps {
   scale: number;
 }
 
-interface CustomLayer {
+export interface CustomLayer {
   updateLngLat?: ({ lngLat, altitude, deg }: { lngLat?: mapboxgl.LngLatLike; altitude?: number; deg?: number }) => void;
-  autoWakingChange?: (isAutoWalk:boolean) => void;
-  trackingChange?: (isTracking:boolean) => void;
+  autoWakingChange?: (isAutoWalk: boolean) => void;
+  trackingChange?: (isTracking: boolean) => void;
+  getModelLocation?: () => {
+    origin: mapbox.LngLatLike;
+    attidude: number;
+  };
 }
 const modelRotate = [Math.PI / 2, 0, 0];
 
@@ -40,9 +44,11 @@ export function gltfModelLayer(props: ConstructorProps): mapbox.AnyLayer & Custo
   let layermap: mapboxgl.Map;
   let renderer: THREE.WebGLRenderer;
   let modelTransform: ModelTransformProps;
-  let modelOrigin: mapboxgl.LngLatLike;
-  let modelAttitude: number;
-  let characterControls: CharacterControlsOnMap;
+  const modelLocation = {
+    origin: props.origin,
+    attidude: props.altitude
+  };
+  let characterControls: CharacterControlsOnMapbox;
   let isAutoWalk = false;
   const bearing = props.bearing;
 
@@ -107,7 +113,7 @@ export function gltfModelLayer(props: ConstructorProps): mapbox.AnyLayer & Custo
         );
         model.quaternion.rotateTowards(rotateQuarternion, 1);
 
-        characterControls = new CharacterControlsOnMap(
+        characterControls = new CharacterControlsOnMapbox(
           model,
           mixer,
           animationsMap,
@@ -116,6 +122,7 @@ export function gltfModelLayer(props: ConstructorProps): mapbox.AnyLayer & Custo
           modelTransform,
           bearing,
           layermap,
+          modelLocation,
           props.movingOffset,
           props.isTrackingModel
         );
@@ -127,8 +134,8 @@ export function gltfModelLayer(props: ConstructorProps): mapbox.AnyLayer & Custo
       document.addEventListener(
         'keydown',
         (event) => {
-          if(isAutoWalk && !manualControlling){
-            Object.keys(keysPressed).forEach(key=>keysPressed[key] = false);
+          if (isAutoWalk && !manualControlling) {
+            Object.keys(keysPressed).forEach((key) => (keysPressed[key] = false));
           }
 
           if (event.shiftKey && characterControls) {
@@ -145,13 +152,12 @@ export function gltfModelLayer(props: ConstructorProps): mapbox.AnyLayer & Custo
         'keyup',
         (event) => {
           keysPressed[event.key.toLowerCase()] = false;
-          if(manualControlling&&DIRECTIONS.every(key=>keysPressed[key] === false)){
+          if (manualControlling && DIRECTIONS.every((key) => keysPressed[key] === false)) {
             manualControlling = false;
           }
         },
         false
       );
-
 
       layermap = map;
 
@@ -176,9 +182,11 @@ export function gltfModelLayer(props: ConstructorProps): mapbox.AnyLayer & Custo
       // ANIMATE
       const clock = new THREE.Clock();
       function animate() {
-
-        if(isAutoWalk && !manualControlling && (keysPressed[W]  === undefined || keysPressed[W] === false)){
+        if (isAutoWalk && !manualControlling && (keysPressed[W] === undefined || keysPressed[W] === false)) {
           keysPressed[W] = true;
+        }
+        if (!isAutoWalk && !manualControlling) {
+          keysPressed[W] = undefined;
         }
 
         const mixerUpdateDelta = clock.getDelta();
@@ -210,16 +218,17 @@ export function gltfModelLayer(props: ConstructorProps): mapbox.AnyLayer & Custo
       renderer.render(scene, camera);
       layermap.triggerRepaint();
     },
-    autoWakingChange: function (autoWalk:boolean) {
+    autoWakingChange: function (autoWalk: boolean) {
       isAutoWalk = autoWalk;
     },
-    trackingChange:function(isTracking:boolean){
-      if(characterControls){
+    trackingChange: function (isTracking: boolean) {
+      if (characterControls) {
         characterControls.changeTracking(isTracking);
       }
     },
-    
-
+    getModelLocation: function () {
+      return modelLocation;
+    }
   };
 }
 

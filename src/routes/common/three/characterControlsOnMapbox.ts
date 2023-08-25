@@ -4,7 +4,7 @@ import { A, D, DIRECTIONS, S, W } from './utils';
 import type { ModelTransformProps } from '../map/GltfModelLayer';
 import { calcDirection } from './function';
 import mapboxgl from 'mapbox-gl';
-export class CharacterControlsOnMap {
+export class CharacterControlsOnMapbox {
   model: THREE.Group;
   mixer: THREE.AnimationMixer;
   animationsMap: Map<string, THREE.AnimationAction> = new Map(); // Walk, Run, Idle
@@ -30,7 +30,8 @@ export class CharacterControlsOnMap {
   bearing: number;
   map: mapboxgl.Map;
   isTrackingModel: boolean;
-  movingOffset : number;
+  movingOffset: number;
+  modelLocation: { origin: mapboxgl.LngLatLike; attidude: number; };
 
   constructor(
     model: THREE.Group,
@@ -41,7 +42,11 @@ export class CharacterControlsOnMap {
     modelTransform: ModelTransformProps,
     bearing: number,
     map: mapboxgl.Map,
-    movingOffset:number,
+    modelLocation: {
+      origin: mapboxgl.LngLatLike;
+      attidude: number;
+    },
+    movingOffset: number,
     isTrackingModel?: boolean
   ) {
     this.model = model;
@@ -59,6 +64,7 @@ export class CharacterControlsOnMap {
     this.map = map;
     this.isTrackingModel = isTrackingModel ?? false;
     this.movingOffset = movingOffset;
+    this.modelLocation = modelLocation;
   }
 
   public switchRunToggle() {
@@ -120,18 +126,33 @@ export class CharacterControlsOnMap {
       this.modelTransform.translateX += moveX * this.movingOffset;
       this.modelTransform.translateY += moveZ * this.movingOffset;
 
-      this.updateCameraTarget(moveX, moveZ, keysPressed);
+      // NOTE: 更新後の位置から地図上の座標と高さを求める 高さはモデルに反映する
+      const mercatorCoordinate = new mapboxgl.MercatorCoordinate(
+        this.modelTransform.translateX,
+        this.modelTransform.translateY,
+        this.map.getZoom()
+      );
+      const lngLat = mercatorCoordinate.toLngLat();
+      const elevation = this.map.queryTerrainElevation(lngLat, { exaggerated: false }) || 0;
+      const modelAsMercatorCoordinate = mapboxgl.MercatorCoordinate.fromLngLat(lngLat, elevation);
+      this.model.position.y = modelAsMercatorCoordinate.z || 0;
+      this.modelTransform.translateZ = modelAsMercatorCoordinate.z;
+      this.modelLocation.origin = lngLat;
+      this.modelLocation.attidude = elevation;
+
+      // NOTE: 視点更新
+      this.updateCameraTarget(moveX, moveZ, lngLat);
     }
   }
 
   public updateCameraRotation(bearing: number) {
     this.bearing = bearing;
   }
-  public changeTracking(isTrack:boolean){
+  public changeTracking(isTrack: boolean) {
     this.isTrackingModel = isTrack;
   }
 
-  private updateCameraTarget(moveX: number, moveZ: number, keysPressed: any) {
+  private updateCameraTarget(moveX: number, moveZ: number, lngLat: mapboxgl.LngLat) {
     // move camera
     this.camera.position.x += moveX;
     this.camera.position.z += moveZ;
@@ -143,17 +164,23 @@ export class CharacterControlsOnMap {
     // const originPosition = this.map.getCenter();
 
     if (this.isTrackingModel) {
-      const mercatorCoordinate = new mapboxgl.MercatorCoordinate(
-        this.modelTransform.translateX,
-        this.modelTransform.translateY,
-        this.map.getZoom()
-      );
-      const lngLat = mercatorCoordinate.toLngLat();
+      // const mercatorCoordinate = new mapboxgl.MercatorCoordinate(
+      //   this.modelTransform.translateX,
+      //   this.modelTransform.translateY,
+      //   this.map.getZoom()
+      // );
+      // const lngLat = mercatorCoordinate.toLngLat();
+      // const elevation = Math.floor(this.map.queryTerrainElevation(lngLat,{exaggerated:false}) || 0);
+      // console.log(elevation)
 
       if (-180 <= lngLat.lng && lngLat.lng <= 180 && -90 <= lngLat.lat && lngLat.lat <= 90) {
         // NOTE:移動後の 経度と緯度の座標
-        console.log(lngLat.toArray())
-        this.map.panTo(lngLat.toArray() as mapboxgl.LngLatLike,{duration:100});
+        if (!this.map.isMoving()) {
+          this.map.panTo(lngLat, {
+            duration: 100,
+            animate: false
+          });
+        }
       }
     }
   }

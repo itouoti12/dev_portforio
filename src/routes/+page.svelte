@@ -6,10 +6,9 @@
   import { storemap } from './common/store';
   import myPhoto from '$lib/assets/img/myphoto.jpg';
   import qiitaLogo from '$lib/assets/img/qiita_logo.png';
-  import { D } from './common/three/utils';
   import { TextScramble } from './textScrumble';
   import { defportforioTexts } from './text';
-  import { fly, fade } from 'svelte/transition';
+  import { fade } from 'svelte/transition';
   import DarkButton from './DarkButton.svelte';
   import { isElementAppear } from './functions';
   import BuildingLayer from './common/map/BuildingLayer.svelte';
@@ -35,8 +34,6 @@
   let isDrawModel = false;
   const MODEL_LAYER_ID = 'soldier';
   const movingOffset = 0.00000005;
-  let isWalking= true;
-  let isTracking= true;
 
   onMount(() => {
     totalPageHeight = document.documentElement.scrollHeight;
@@ -75,6 +72,7 @@
       pageElements['title'].isTrrigerd = false;
       pageElements['about_detail'].isTrrigerd = true;
       isDrawLandscape = true;
+      return;
     }
 
     // NOTE: aboutから上に戻る
@@ -93,6 +91,7 @@
       pageElements['title'].isTrrigerd = true;
       pageElements['about_detail'].isTrrigerd = false;
       isDrawLandscape = false;
+      return;
     }
 
     // NOTE: historyに遷移
@@ -101,6 +100,7 @@
         duration: 60000
       });
       pageElements['history_detail'].isTrrigerd = true;
+      return;
     }
 
     // NOTE: historyから上に戻る
@@ -114,6 +114,7 @@
         duration: 1500
       });
       pageElements['history_detail'].isTrrigerd = false;
+      return;
     }
 
     // NOTE: projectsに遷移
@@ -126,24 +127,16 @@
       });
       pageElements['project_detail'].isTrrigerd = true;
       isDrawModel = true;
-      if(!isWalking){
-        isTracking = true;
-        isWalking = true;
-      }
+      return;
     }
 
     // NOTE: projectsから上に戻る
     if (
       pageElements['skills_detail'].isDisplay &&
       !pageElements['project_detail'].isDisplay &&
-      pageElements['project_detail'].isTrrigerd 
-      // &&
-      // map?.loaded()
+      pageElements['project_detail'].isTrrigerd &&
+      map?.loaded()
     ) {
-      if(isWalking){
-        isTracking = false;
-        isWalking = false;
-      }
       map?.flyTo({
         center: [139.777116, 35.723513],
         zoom: 18,
@@ -152,6 +145,7 @@
       });
       pageElements['project_detail'].isTrrigerd = false;
       isDrawModel = false;
+      return;
     }
   });
 
@@ -186,10 +180,9 @@
         scale={2}
         bearing={-58}
         {movingOffset}
-        />
+        isTrackingModel
+        isAutowalk />
     {/if}
-        <!-- isTrackingModel={isTracking}
-        isAutowalk={isWalking} -->
   </Map>
 </div>
 

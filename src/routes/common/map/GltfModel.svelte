@@ -1,58 +1,52 @@
 <script lang="ts">
   import { afterUpdate, getContext, onDestroy, onMount } from 'svelte';
   import { mapbox, key } from './mapbox';
-  import { gltfModelLayer } from './GltfModelLayer';
+  import { gltfModelLayer, type CustomLayer } from './GltfModelLayer';
   const { getMap }: { getMap: () => mapbox.Map } = getContext(key);
   const map = getMap();
 
   export let layerId: string;
   export let modelPath: string;
-  export let altitude = 0;
   export let scale = 1;
   export let modelOrigin: mapbox.LngLatLike;
   export let bearing = 0;
   export let isTrackingModel = false;
   export let isAutowalk = false;
-  export let movingOffset:number;
-  let model = gltfModelLayer({
-    id: layerId,
-    url: modelPath,
-    origin: modelOrigin,
-    altitude,
-    scale,
-    bearing,
-    isTrackingModel,
-    movingOffset
+  export let movingOffset: number;
+  let model: mapbox.AnyLayer & CustomLayer;
+
+  onMount(() => {
+    if (!map.getLayer(layerId))
+      map.once('idle', () => {
+        const elevation = map.queryTerrainElevation(modelOrigin, { exaggerated: false }) || 0;
+
+        model = gltfModelLayer({
+          id: layerId,
+          url: modelPath,
+          origin: modelOrigin,
+          altitude: elevation,
+          scale,
+          bearing,
+          isTrackingModel,
+          movingOffset
+        });
+
+        map.addLayer(model);
+        if (isAutowalk) {
+          if (model.autoWakingChange) model.autoWakingChange(true);
+        }
+      });
   });
 
-  onMount(()=>{
-    if(!map.getLayer(layerId))map.once('idle', () => {
-      map.addLayer(model);
-      if(isAutowalk){
-        if(model.autoWakingChange)model.autoWakingChange(true);
-      }
-    });
+  afterUpdate(() => {
+    if (model.autoWakingChange) model.autoWakingChange(isAutowalk);
+    if (model.trackingChange) model.trackingChange(isTrackingModel);
   });
 
-  afterUpdate(()=>{
-    if(!isAutowalk){
-      console.log('autoWakingStop')
-        if(model.autoWakingChange)model.autoWakingChange(false);
-    }else{
-      console.log('autoWakingStart')
-        if(model.autoWakingChange)model.autoWakingChange(true);
-    }
-
-    if(isTrackingModel){
-      if(model.trackingChange)model.trackingChange(true);
-    }else{
-      if(model.trackingChange)model.trackingChange(false);
-    }
-
-  })
-
-  onDestroy(()=>{
-    if(map.getLayer(layerId))map.removeLayer(layerId);
-    if(map.getSource(layerId))map.removeSource(layerId);
-  })
+  onDestroy(() => {
+    if (model.autoWakingChange) model.autoWakingChange(false);
+    if (model.trackingChange) model.trackingChange(false);
+    if (map.getLayer(layerId)) map.removeLayer(layerId);
+    if (map.getSource(layerId)) map.removeSource(layerId);
+  });
 </script>
