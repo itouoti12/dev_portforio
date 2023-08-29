@@ -44,7 +44,7 @@ jobs:
 
       - name: Build
         run: |
-          yarn build
+          yarn build_prod
 #         一時的にLintチェックを無効にする
         env:
           CI: false

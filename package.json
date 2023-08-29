@@ -5,7 +5,8 @@
 	"scripts": {
 		"dev": "vite dev --open",
 		"prod": "NODE_ENV=production vite dev --open",
-		"build": "vite build",
+		"build": "NODE_ENV=development vite build",
+		"build_prod": "NODE_ENV=production vite build",
 		"preview": "vite preview",
 		"test": "npm run test:integration && npm run test:unit",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
