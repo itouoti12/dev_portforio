@@ -14,23 +14,28 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Setup
-        uses: actions/setup-node@v3
-        id: setup_node_id
-        with:
-          node-version: '16'
-      - uses: actions/cache@v3
-        id: node_modules_cache_id
-        env:
-          cache-name: cache-node-modules
-        with:
-          path: '**/node_modules'
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
-      - run: echo '${{ toJSON(steps.node_modules_cache_id.outputs) }}'
+      # - name: Setup
+      #   uses: actions/setup-node@v3
+      #   id: setup_node_id
+      #   with:
+      #     node-version: '16'
+      # - uses: actions/cache@v3
+      #   id: node_modules_cache_id
+      #   env:
+      #     cache-name: cache-node-modules
+      #   with:
+      #     path: '**/node_modules'
+      #     key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
+      # - run: echo '${{ toJSON(steps.node_modules_cache_id.outputs) }}'
 
-      - if: ${{ steps.node_modules_cache_id.outputs.cache-hit != 'true' }}
+      # - if: ${{ steps.node_modules_cache_id.outputs.cache-hit != 'true' }}
+      #   run: |
+      #     yarn install
+
+      - name: setup
         run: |
           yarn install
+
       
       - name: Make env
         run: |
