@@ -7,8 +7,8 @@ const config = {
 
   kit: {
     adapter: adapter(),
+    // NOTE: github pagesで、カスタムドメイン使わない場合はこの設定入れる
     // paths: { base: process.env.NODE_ENV === 'development' ? '' : '/dev_portforio' },
-    paths: { base: process.env.NODE_ENV === 'development' ? '' : '' },
     serviceWorker: { register: false },
   }
 };

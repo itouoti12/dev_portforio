@@ -46,9 +46,6 @@
         isDispMain = true;
       }, 5000);
     }, 300);
-
-    console.info(myPhoto)
-    console.info(qiitaLogo)
   });
 
   afterUpdate(() => {
@@ -241,7 +238,6 @@
   <section class="w-6/12 my-auto mx-auto py-40" bind:this={pageElements['about_detail']}>
     <h2 class="text-4xl" bind:this={portforioTexts['about_name'].el}>{portforioTexts['about_name'].jp}</h2>
     <img class="mt-5 w-full" src={myPhoto} alt="myphoto" />
-    <img class="mt-5 w-full" src={qiitaLogo} alt="qiita" />
     <p class="pt-10" bind:this={portforioTexts['about_desc1'].el}>
       {portforioTexts['about_desc1'].jp}
     </p>
