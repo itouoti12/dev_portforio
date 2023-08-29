@@ -8,7 +8,11 @@ const config = {
   kit: {
     adapter: adapter(),
     paths: { base: process.env.NODE_ENV === 'development' ? '' : '/dev_portforio' },
-    serviceWorker: { register: false }
+    serviceWorker: { register: false },
+    alias: {
+      "$lib": './src/lib',
+      "$lib/*": './src/lib/*'
+    }
   }
 };
 

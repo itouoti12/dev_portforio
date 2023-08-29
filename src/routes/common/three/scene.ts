@@ -3,10 +3,10 @@ import * as THREE from 'three';
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls'
 import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader'
 import placeholderImg from '$lib/assets/three/textures/placeholder/placeholder.png';
-import sandBaseImg from '$lib/assets/three/textures/sand/Sand 002_COLOR.jpg';
-import sandNormalImg from '$lib/assets/three/textures/sand/Sand 002_NRM.jpg';
-import sandHeightImg from '$lib/assets/three/textures/sand/Sand 002_DISP.jpg';
-import sandAmbientImg from '$lib/assets/three/textures/sand/Sand 002_OCC.jpg';
+import sandBaseImg from '$lib/assets/three/textures/sand/002_COLOR.jpg';
+import sandNormalImg from '$lib/assets/three/textures/sand/002_NRM.jpg';
+import sandHeightImg from '$lib/assets/three/textures/sand/002_DISP.jpg';
+import sandAmbientImg from '$lib/assets/three/textures/sand/002_OCC.jpg';
 import soldierModel from '$lib/assets/three/models/Soldier.glb';
 import { CharacterControls } from './characterControls';
 
