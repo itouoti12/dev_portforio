@@ -4,7 +4,7 @@ import postcss from './postcss.config.js';
 
 export default defineConfig({
   plugins: [sveltekit()],
-  assetsInclude:['**/*.glb'],
+  assetsInclude:['**/*.glb','**/*.png','**/*.jpg'],
   test: {
     include: ['src/**/*.{test,spec}.{js,ts}']
   },
