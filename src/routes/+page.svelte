@@ -47,8 +47,8 @@
       }, 5000);
     }, 300);
 
-    console.log(myPhoto)
-    console.log(qiitaLogo)
+    console.info(myPhoto)
+    console.info(qiitaLogo)
   });
 
   afterUpdate(() => {
