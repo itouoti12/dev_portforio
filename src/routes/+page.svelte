@@ -134,8 +134,7 @@
     if (
       pageElements['skills_detail'].isDisplay &&
       !pageElements['project_detail'].isDisplay &&
-      pageElements['project_detail'].isTrrigerd &&
-      map?.loaded()
+      pageElements['project_detail'].isTrrigerd 
     ) {
       map?.flyTo({
         center: [139.777116, 35.723513],
@@ -225,7 +224,7 @@
 {/if}
 
 <div
-  class="fixed h-[calc(100vh-_2rem)] w-screen flex justify-center items-center -z-30 bg-slate-50/50 dark:bg-slate-700/50 backdrop-blur-sm" />
+  class="fixed h-[calc(100vh-_2rem)] w-screen flex justify-center items-center -z-30 bg-slate-50/25 dark:bg-slate-700/25 backdrop-blur-sm" />
 
 <main>
   <section class="h-screen w-screen flex justify-center items-center" bind:this={pageElements['title']}>

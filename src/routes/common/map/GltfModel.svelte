@@ -39,6 +39,7 @@
   });
 
   afterUpdate(() => {
+    if(!model)return;
     if (model.autoWakingChange) model.autoWakingChange(isAutowalk);
     if (model.trackingChange) model.trackingChange(isTrackingModel);
   });
