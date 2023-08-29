@@ -5,7 +5,7 @@
   import { get } from 'svelte/store';
   import { storemap } from './common/store';
   import myPhoto from '$lib/assets/img/myphoto.jpg';
-  import qiitaLogo from '$lib/assets/img/qiita_logo.png';
+  import qiitaLogo from '$lib/assets/img/qiitaLogo.png';
   import { TextScramble } from './textScrumble';
   import { defportforioTexts } from './text';
   import { fade } from 'svelte/transition';
