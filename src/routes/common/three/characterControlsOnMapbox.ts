@@ -32,6 +32,7 @@ export class CharacterControlsOnMapbox {
   isTrackingModel: boolean;
   movingOffset: number;
   modelLocation: { origin: mapboxgl.LngLatLike; attidude: number; };
+  updateModelPositionOnMap?:(lngLat:mapboxgl.LngLat,isTracking:boolean)=>void;
 
   constructor(
     model: THREE.Group,
@@ -47,7 +48,8 @@ export class CharacterControlsOnMapbox {
       attidude: number;
     },
     movingOffset: number,
-    isTrackingModel?: boolean
+    isTrackingModel?: boolean,
+    updateModelPositionOnMap?:(lngLat:mapboxgl.LngLat,isTracking:boolean)=>void,
   ) {
     this.model = model;
     this.mixer = mixer;
@@ -65,6 +67,7 @@ export class CharacterControlsOnMapbox {
     this.isTrackingModel = isTrackingModel ?? false;
     this.movingOffset = movingOffset;
     this.modelLocation = modelLocation;
+    this.updateModelPositionOnMap = updateModelPositionOnMap;
   }
 
   public switchRunToggle() {
@@ -133,15 +136,20 @@ export class CharacterControlsOnMapbox {
         this.map.getZoom()
       );
       const lngLat = mercatorCoordinate.toLngLat();
-      const elevation = this.map.queryTerrainElevation(lngLat, { exaggerated: false }) || 0;
-      const modelAsMercatorCoordinate = mapboxgl.MercatorCoordinate.fromLngLat(lngLat, elevation);
-      this.model.position.y = modelAsMercatorCoordinate.z || 0;
-      this.modelTransform.translateZ = modelAsMercatorCoordinate.z;
-      this.modelLocation.origin = lngLat;
-      this.modelLocation.attidude = elevation;
+      if (-180 <= lngLat.lng && lngLat.lng <= 180 && -90 <= lngLat.lat && lngLat.lat <= 90) {
 
-      // NOTE: 視点更新
-      this.updateCameraTarget(moveX, moveZ, lngLat);
+        // NOTE: 更新後の位置から地図上の座標と高さを求める 高さはモデルに反映する
+        const elevation = this.map.queryTerrainElevation(lngLat, { exaggerated: false }) || 0;
+        const modelAsMercatorCoordinate = mapboxgl.MercatorCoordinate.fromLngLat(lngLat, elevation);
+        this.model.position.y = modelAsMercatorCoordinate.z || 0;
+        this.modelTransform.translateZ = modelAsMercatorCoordinate.z;
+        this.modelLocation.origin = lngLat;
+        this.modelLocation.attidude = elevation;
+        if(this.updateModelPositionOnMap)this.updateModelPositionOnMap(lngLat,this.isTrackingModel);
+  
+        // NOTE: 視点更新
+        this.updateCameraTarget(moveX, moveZ, lngLat);
+      }
     }
   }
 
@@ -173,14 +181,12 @@ export class CharacterControlsOnMapbox {
       // const elevation = Math.floor(this.map.queryTerrainElevation(lngLat,{exaggerated:false}) || 0);
       // console.log(elevation)
 
-      if (-180 <= lngLat.lng && lngLat.lng <= 180 && -90 <= lngLat.lat && lngLat.lat <= 90) {
-        // NOTE:移動後の 経度と緯度の座標
-        if (!this.map.isMoving()) {
-          this.map.panTo(lngLat, {
-            duration: 100,
-            animate: false
-          });
-        }
+      // NOTE:移動後の 経度と緯度の座標
+      if (!this.map.isMoving()) {
+        this.map.panTo(lngLat, {
+          duration: 100,
+          animate: false
+        });
       }
     }
   }

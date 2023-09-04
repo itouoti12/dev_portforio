@@ -16,6 +16,7 @@ interface ConstructorProps {
   bearing: number;
   isTrackingModel?: boolean;
   onLoad?: () => void;
+  updateModelPositionOnMap?:(lngLat:mapboxgl.LngLat,isTracking:boolean)=>void;
 }
 export interface ModelTransformProps {
   translateX: number;
@@ -124,7 +125,8 @@ export function gltfModelLayer(props: ConstructorProps): mapbox.AnyLayer & Custo
           layermap,
           modelLocation,
           props.movingOffset,
-          props.isTrackingModel
+          props.isTrackingModel,
+          props.updateModelPositionOnMap?props.updateModelPositionOnMap:undefined,
         );
       });
 

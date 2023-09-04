@@ -1,8 +1,9 @@
 <script lang="ts">
-  import { afterUpdate, getContext, onDestroy, onMount } from 'svelte';
+  import { afterUpdate, createEventDispatcher, getContext, onDestroy, onMount } from 'svelte';
   import { mapbox, key } from './mapbox';
   import { gltfModelLayer, type CustomLayer } from './GltfModelLayer';
   const { getMap }: { getMap: () => mapbox.Map } = getContext(key);
+  const dispatch = createEventDispatcher();
   const map = getMap();
 
   export let layerId: string;
@@ -14,6 +15,10 @@
   export let isAutowalk = false;
   export let movingOffset: number;
   let model: mapbox.AnyLayer & CustomLayer;
+
+  function updatePosition(lngLat:mapbox.LngLat,isTracking:boolean){
+    dispatch('changeLngLat',{lngLat,isTracking});
+  }
 
   onMount(() => {
     if (!map.getLayer(layerId))
@@ -28,7 +33,8 @@
           scale,
           bearing,
           isTrackingModel,
-          movingOffset
+          movingOffset,
+          updateModelPositionOnMap:updatePosition
         });
 
         map.addLayer(model);
