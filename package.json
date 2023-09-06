@@ -47,6 +47,6 @@
 	"dependencies": {
 		"lodash": "^4.17.21",
 		"mapbox-gl": "^2.15.0",
-		"three": "^0.155.0"
+		"three": "^0.156.0"
 	}
 }
