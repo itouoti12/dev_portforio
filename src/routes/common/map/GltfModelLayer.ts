@@ -2,9 +2,13 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import type { mapbox } from './mapbox';
 import mapboxgl from 'mapbox-gl';
-import { CharacterControlsOnMapbox } from '../three/characterControlsOnMapbox';
+import { CharacterControlsOnMapbox, type modelPositionProps } from '../three/characterControlsOnMapbox';
 import { calcDirection } from '../three/function';
 import { DIRECTIONS, W } from '../three/utils';
+import type { Position } from 'geojson';
+import * as turf from '@turf/turf';
+
+export const SEND_PER_DURATION = 500;
 
 interface ConstructorProps {
   url: string;
@@ -15,8 +19,10 @@ interface ConstructorProps {
   scale: number;
   bearing: number;
   isTrackingModel?: boolean;
+  isMe:boolean;
   onLoad?: () => void;
-  updateModelPositionOnMap?:(lngLat:mapboxgl.LngLat,isTracking:boolean)=>void;
+  updateModelPositionOnMap?: ({ lngLat, directionOnMap, elevation, isTracking,isRun }: modelPositionProps) => void;
+  onStopMove?:()=>void;
 }
 export interface ModelTransformProps {
   translateX: number;
@@ -29,9 +35,10 @@ export interface ModelTransformProps {
 }
 
 export interface CustomLayer {
-  updateLngLat?: ({ lngLat, altitude, deg }: { lngLat?: mapboxgl.LngLatLike; altitude?: number; deg?: number }) => void;
+  updateLngLat?: ({ lngLat, altitude, deg }: { lngLat: mapboxgl.LngLatLike; altitude: number; deg: number }) => void;
   autoWakingChange?: (isAutoWalk: boolean) => void;
   trackingChange?: (isTracking: boolean) => void;
+  walkMotionChange?: (isRun: boolean) => void;
   getModelLocation?: () => {
     origin: mapbox.LngLatLike;
     attidude: number;
@@ -52,6 +59,7 @@ export function gltfModelLayer(props: ConstructorProps): mapbox.AnyLayer & Custo
   let characterControls: CharacterControlsOnMapbox;
   let isAutoWalk = false;
   const bearing = props.bearing;
+  const keysPressed: { [key: string]: any } = {};
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
@@ -88,17 +96,17 @@ export function gltfModelLayer(props: ConstructorProps): mapbox.AnyLayer & Custo
       const gltfLoader = new GLTFLoader();
 
       gltfLoader.load(props.url, function (gltf) {
-        const model = gltf.scene;
-        model.traverse(function (object: any) {
+        const loadModel = gltf.scene;
+        loadModel.traverse(function (object: any) {
           if (object.isMesh) object.castShadow = true;
           if (object.isMesh) object.material.needsUpdate = true;
         });
 
-        model.scale.set(props.scale, props.scale, props.scale);
-        scene.add(model);
+        loadModel.scale.set(props.scale, props.scale, props.scale);
+        scene.add(loadModel);
 
         const gltfAnimations: THREE.AnimationClip[] = gltf.animations;
-        const mixer = new THREE.AnimationMixer(model);
+        const mixer = new THREE.AnimationMixer(loadModel);
         const animationsMap: Map<string, THREE.AnimationAction> = new Map();
         gltfAnimations
           .filter((animation) => animation.name != 'TPose')
@@ -112,10 +120,10 @@ export function gltfModelLayer(props: ConstructorProps): mapbox.AnyLayer & Custo
           new THREE.Vector3(0, 1, 0), // NOTE: y軸をベースに回転
           addBearingDirectionOffset // 回転角
         );
-        model.quaternion.rotateTowards(rotateQuarternion, 1);
+        loadModel.quaternion.rotateTowards(rotateQuarternion, 1);
 
         characterControls = new CharacterControlsOnMapbox(
-          model,
+          loadModel,
           mixer,
           animationsMap,
           camera,
@@ -125,41 +133,48 @@ export function gltfModelLayer(props: ConstructorProps): mapbox.AnyLayer & Custo
           layermap,
           modelLocation,
           props.movingOffset,
+          !props.isMe,
           props.isTrackingModel,
           props.updateModelPositionOnMap?props.updateModelPositionOnMap:undefined,
         );
       });
 
       // CONTROL KEYS
-      const keysPressed: { [key: string]: any } = {};
       let manualControlling = false;
-      document.addEventListener(
-        'keydown',
-        (event) => {
-          if (isAutoWalk && !manualControlling) {
-            Object.keys(keysPressed).forEach((key) => (keysPressed[key] = false));
-          }
+      if(props.isMe){
+        document.addEventListener(
+          'keydown',
+          (event) => {
+            if (isAutoWalk && !manualControlling) {
+              Object.keys(keysPressed).forEach((key) => (keysPressed[key] = false));
+            }
 
-          if (event.shiftKey && characterControls) {
-            characterControls.switchRunToggle();
-          } else {
-            manualControlling = true;
-            keysPressed[event.key.toLowerCase()] = true;
-          }
-        },
-        false
-      );
+            if (event.shiftKey && characterControls) {
+              characterControls.switchRunToggle();
+            } else {
+              manualControlling = true;
+              keysPressed[event.key.toLowerCase()] = true;
+            }
+          },
+          false
+        );
 
-      document.addEventListener(
-        'keyup',
-        (event) => {
-          keysPressed[event.key.toLowerCase()] = false;
-          if (manualControlling && DIRECTIONS.every((key) => keysPressed[key] === false)) {
-            manualControlling = false;
-          }
-        },
-        false
-      );
+        document.addEventListener(
+          'keyup',
+          (event) => {
+            keysPressed[event.key.toLowerCase()] = false;
+            if (DIRECTIONS.every((key) => keysPressed[key] === false || keysPressed[key] === undefined)) {
+              if(manualControlling){
+                manualControlling = false;
+              }
+              if(!isAutoWalk){
+                if(props.onStopMove)props.onStopMove();
+              }
+            }
+          },
+          false
+        );
+      }
 
       layermap = map;
 
@@ -173,13 +188,15 @@ export function gltfModelLayer(props: ConstructorProps): mapbox.AnyLayer & Custo
       //NOTE: これ入れるとmapboxのりサイズに追従できない renderer.shadowMap.enabled = true;
       renderer.autoClear = false;
 
-      // MAP rotate
-      map.on('rotate', function () {
-        const bearing = map.getBearing();
-        if (characterControls) {
-          characterControls.updateCameraRotation(bearing);
-        }
-      });
+      if(props.isMe){
+        // MAP rotate
+        map.on('rotate', function () {
+          const bearing = map.getBearing();
+          if (characterControls) {
+            characterControls.updateCameraRotation(bearing);
+          }
+        });
+      }
 
       // ANIMATE
       const clock = new THREE.Clock();
@@ -230,6 +247,55 @@ export function gltfModelLayer(props: ConstructorProps): mapbox.AnyLayer & Custo
     },
     getModelLocation: function () {
       return modelLocation;
+    },
+    walkMotionChange: function(isRun: boolean){
+      if (characterControls) {
+        characterControls.switchRunToggle(isRun);
+      }
+
+    },
+    updateLngLat: function ({ lngLat, altitude, deg }: { lngLat: mapbox.LngLatLike; altitude: number; deg: number }) {
+      // NOTE: 与えられた情報を元に更新
+
+      if(characterControls){
+        characterControls.changeDirection(deg);
+      }
+
+      const updateMercator = mapboxgl.MercatorCoordinate.fromLngLat(lngLat);
+
+      const moveStartPoint:Position = [modelTransform.translateX,modelTransform.translateY];
+      const moveEndPoint:Position = [updateMercator.x,updateMercator.y];
+
+      const path = turf.lineString([moveStartPoint,moveEndPoint]);
+      const pathDistance = turf.lineDistance(path);
+      let start = 0;
+      function frame(time:number){
+        if(!start)start = time;
+        const animationPhase = (time - start) / SEND_PER_DURATION;
+        if(animationPhase > 1){
+          return;
+        }
+        const alongPath = turf.along(path,pathDistance * animationPhase).geometry.coordinates;
+        modelTransform.translateX = alongPath[0];
+        modelTransform.translateY = alongPath[1];
+
+        const mercatorCoordinate = new mapboxgl.MercatorCoordinate(
+          modelTransform.translateX,
+          modelTransform.translateY,
+          layermap.getZoom()
+        );
+        const pointLngLat = mercatorCoordinate.toLngLat();
+        const elevation = layermap.queryTerrainElevation(pointLngLat,{exaggerated:false}) || 0;
+        const modelAsMercatorCoordinate = mapboxgl.MercatorCoordinate.fromLngLat(pointLngLat,elevation);
+        modelTransform.translateZ = modelAsMercatorCoordinate.z;
+
+        requestAnimationFrame(frame);
+      }
+      requestAnimationFrame(frame);
+
+      modelLocation.origin = lngLat;
+      modelLocation.attidude = altitude;
+
     }
   };
 }

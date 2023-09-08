@@ -4,6 +4,15 @@ import { A, D, DIRECTIONS, S, W } from './utils';
 import type { ModelTransformProps } from '../map/GltfModelLayer';
 import { calcDirection } from './function';
 import mapboxgl from 'mapbox-gl';
+
+export interface modelPositionProps {
+  lngLat: mapboxgl.LngLat;
+  directionOnMap: number;
+  elevation: number;
+  isTracking: boolean;
+  isRun:boolean;
+}
+
 export class CharacterControlsOnMapbox {
   model: THREE.Group;
   mixer: THREE.AnimationMixer;
@@ -31,8 +40,11 @@ export class CharacterControlsOnMapbox {
   map: mapboxgl.Map;
   isTrackingModel: boolean;
   movingOffset: number;
-  modelLocation: { origin: mapboxgl.LngLatLike; attidude: number; };
-  updateModelPositionOnMap?:(lngLat:mapboxgl.LngLat,isTracking:boolean)=>void;
+  modelLocation: { origin: mapboxgl.LngLatLike; attidude: number };
+  updateModelPositionOnMap?: ({ lngLat, directionOnMap, elevation, isTracking,isRun }: modelPositionProps) => void;
+
+  // CONTROLS
+  onlyUseAnimation = false;
 
   constructor(
     model: THREE.Group,
@@ -48,8 +60,9 @@ export class CharacterControlsOnMapbox {
       attidude: number;
     },
     movingOffset: number,
+    onlyUseAnimation:boolean,
     isTrackingModel?: boolean,
-    updateModelPositionOnMap?:(lngLat:mapboxgl.LngLat,isTracking:boolean)=>void,
+    updateModelPositionOnMap?: ({ lngLat, directionOnMap, elevation, isTracking,isRun }: modelPositionProps) => void
   ) {
     this.model = model;
     this.mixer = mixer;
@@ -68,10 +81,15 @@ export class CharacterControlsOnMapbox {
     this.movingOffset = movingOffset;
     this.modelLocation = modelLocation;
     this.updateModelPositionOnMap = updateModelPositionOnMap;
+    this.onlyUseAnimation = onlyUseAnimation;
   }
 
-  public switchRunToggle() {
-    this.toggleRun = !this.toggleRun;
+  public switchRunToggle(isRun?:boolean) {
+    if(isRun === undefined){
+      this.toggleRun = !this.toggleRun;
+    }else{
+      this.toggleRun = isRun;
+    }
   }
 
   public update(delta: number, keysPressed: any) {
@@ -97,6 +115,10 @@ export class CharacterControlsOnMapbox {
     }
 
     this.mixer.update(delta);
+
+    if(this.onlyUseAnimation){
+      return;
+    }
 
     if (this.currentAction === 'Run' || this.currentAction === 'Walk') {
       const directionOffset = this.directionOffset(keysPressed);
@@ -137,7 +159,6 @@ export class CharacterControlsOnMapbox {
       );
       const lngLat = mercatorCoordinate.toLngLat();
       if (-180 <= lngLat.lng && lngLat.lng <= 180 && -90 <= lngLat.lat && lngLat.lat <= 90) {
-
         // NOTE: 更新後の位置から地図上の座標と高さを求める 高さはモデルに反映する
         const elevation = this.map.queryTerrainElevation(lngLat, { exaggerated: false }) || 0;
         const modelAsMercatorCoordinate = mapboxgl.MercatorCoordinate.fromLngLat(lngLat, elevation);
@@ -145,8 +166,15 @@ export class CharacterControlsOnMapbox {
         this.modelTransform.translateZ = modelAsMercatorCoordinate.z;
         this.modelLocation.origin = lngLat;
         this.modelLocation.attidude = elevation;
-        if(this.updateModelPositionOnMap)this.updateModelPositionOnMap(lngLat,this.isTrackingModel);
-  
+        if (this.updateModelPositionOnMap) {
+          this.updateModelPositionOnMap({
+            lngLat,
+            directionOnMap: addBearingDirectionOffset,
+            elevation,
+            isTracking: this.isTrackingModel,
+            isRun: this.toggleRun,
+          });
+        }
         // NOTE: 視点更新
         this.updateCameraTarget(moveX, moveZ, lngLat);
       }
@@ -160,6 +188,22 @@ export class CharacterControlsOnMapbox {
     this.isTrackingModel = isTrack;
   }
 
+  public changeDirection(deg: number) {
+    // rotate model
+    this.rotateQuarternion.setFromAxisAngle(
+      this.rotateAngle, // NOTE: y軸をベースに回転
+      deg // 回転角
+    );
+
+    this.model.quaternion.rotateTowards(this.rotateQuarternion, 1);
+    // calculate direction
+    this.camera.getWorldDirection(this.walkDirection);
+    this.walkDirection.y = 0;
+    this.walkDirection.normalize();
+
+    this.walkDirection.applyAxisAngle(this.rotateAngle, deg);
+  }
+
   private updateCameraTarget(moveX: number, moveZ: number, lngLat: mapboxgl.LngLat) {
     // move camera
     this.camera.position.x += moveX;
@@ -169,18 +213,7 @@ export class CharacterControlsOnMapbox {
     this.cameraTarget.y = this.model.position.y + 1;
     this.cameraTarget.z = this.model.position.z;
 
-    // const originPosition = this.map.getCenter();
-
     if (this.isTrackingModel) {
-      // const mercatorCoordinate = new mapboxgl.MercatorCoordinate(
-      //   this.modelTransform.translateX,
-      //   this.modelTransform.translateY,
-      //   this.map.getZoom()
-      // );
-      // const lngLat = mercatorCoordinate.toLngLat();
-      // const elevation = Math.floor(this.map.queryTerrainElevation(lngLat,{exaggerated:false}) || 0);
-      // console.log(elevation)
-
       // NOTE:移動後の 経度と緯度の座標
       if (!this.map.isMoving()) {
         this.map.panTo(lngLat, {

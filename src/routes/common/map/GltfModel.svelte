@@ -2,6 +2,7 @@
   import { afterUpdate, createEventDispatcher, getContext, onDestroy, onMount } from 'svelte';
   import { mapbox, key } from './mapbox';
   import { gltfModelLayer, type CustomLayer } from './GltfModelLayer';
+  import type { modelPositionProps } from '../three/characterControlsOnMapbox';
   const { getMap }: { getMap: () => mapbox.Map } = getContext(key);
   const dispatch = createEventDispatcher();
   const map = getMap();
@@ -14,10 +15,20 @@
   export let isTrackingModel = false;
   export let isAutowalk = false;
   export let movingOffset: number;
+  export let isMe =  false;
   let model: mapbox.AnyLayer & CustomLayer;
 
-  function updatePosition(lngLat:mapbox.LngLat,isTracking:boolean){
-    dispatch('changeLngLat',{lngLat,isTracking});
+  
+  export let elevation = 0; 
+  export let direction = 0;
+  export let isRunning = true;
+
+  function updatePosition({ lngLat, directionOnMap, elevation, isTracking,isRun }: modelPositionProps){
+    dispatch('changeLngLat',{lngLat,directionOnMap,elevation,isTracking,isRun});
+  }
+
+  function onStopMove(){
+    dispatch('stopMove');
   }
 
   onMount(() => {
@@ -34,7 +45,9 @@
           bearing,
           isTrackingModel,
           movingOffset,
-          updateModelPositionOnMap:updatePosition
+          updateModelPositionOnMap:updatePosition,
+          isMe,
+          onStopMove
         });
 
         map.addLayer(model);
@@ -46,11 +59,26 @@
 
   afterUpdate(() => {
     if(!model)return;
-    if (model.autoWakingChange) model.autoWakingChange(isAutowalk);
-    if (model.trackingChange) model.trackingChange(isTrackingModel);
+    if(isMe){
+      if (model.autoWakingChange) model.autoWakingChange(isAutowalk);
+      if (model.trackingChange) model.trackingChange(isTrackingModel);
+    } else {
+
+      if (model.autoWakingChange) model.autoWakingChange(isAutowalk);
+      if (model.walkMotionChange) model.walkMotionChange(isRunning);
+
+      // NOTE: propsの更新によってmodelを動かす
+      if(model.updateLngLat)model.updateLngLat({
+        lngLat:modelOrigin,
+        altitude:elevation,
+        deg:direction
+      });
+    }
+
   });
 
   onDestroy(() => {
+    if(!model)return;
     if (model.autoWakingChange) model.autoWakingChange(false);
     if (model.trackingChange) model.trackingChange(false);
     if (map.getLayer(layerId)) map.removeLayer(layerId);
