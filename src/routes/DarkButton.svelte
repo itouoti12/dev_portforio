@@ -1,7 +1,8 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
+  import { createEventDispatcher, onMount } from 'svelte';
   import { fly } from 'svelte/transition';
   import { isDarkmode } from './common/store';
+  const dispatch = createEventDispatcher();
 
   const toggle = () => {
     isDarkmode.update((pre) => !pre);
@@ -11,11 +12,14 @@
       document.body.classList.remove('dark');
     }
     localStorage.setItem('isDarkmode', $isDarkmode ? '1' : '0');
+    dispatch('change',{isDarkmode:$isDarkmode});
   };
 
   onMount(() => {
     isDarkmode.update(() => document.body.classList.contains('dark'));
+    dispatch('change',{isDarkmode:document.body.classList.contains('dark')});
   });
+
 </script>
 
 <button on:click={toggle}>

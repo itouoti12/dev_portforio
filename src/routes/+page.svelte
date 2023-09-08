@@ -164,6 +164,29 @@
       console.log('finish all');
     });
   }
+
+  function changeDarkMode(event: CustomEvent<{isDarkmode:boolean}>){
+    const isDarkmode = event.detail.isDarkmode;
+    const map = get(storemap);
+
+    function change(){
+      map?.setFog({
+        color:'rgb(255, 255, 255)',
+        "high-color":isDarkmode?'rgb(41, 209, 255)':'rgb(180, 227, 104)',
+        'horizon-blend':0.05,
+        "space-color":isDarkmode?'rgb(26, 1, 61)':'rgb(192, 235, 242)',
+        'star-intensity':isDarkmode?0.3:0,
+      });
+    }
+    if(map?.isStyleLoaded()){
+      change();
+    }else{
+      map?.on('style.load',()=>{
+        change();
+      })
+    }
+    
+  }
 </script>
 
 <svelte:window bind:scrollY bind:innerHeight={viewHeight} />
@@ -200,7 +223,7 @@
 <div class="fixed top-0 left-0 w-screen h-16 z-10 backdrop-blur-sm bg-white/10 text-white">
   <div class="h-full grid grid-cols-12">
     <div class="col-span-2 mx-auto my-auto">
-      <DarkButton />
+      <DarkButton on:change={changeDarkMode}/>
     </div>
 
     <div class="col-end-13 col-span-3 mx-auto my-auto">
