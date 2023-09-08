@@ -14,6 +14,8 @@
   import BuildingLayer from './common/map/BuildingLayer.svelte';
   import soldierModel from '$lib/assets/three/models/Soldier.glb';
   import GltfModel from './common/map/GltfModel.svelte';
+  import worksImg1 from '$lib/assets/img/mapbox_on_model.png';
+  import worksImg2 from '$lib/assets/img/threejs_basic_controls.png';
 
   let totalPageHeight: number;
   let viewHeight: number;
@@ -180,6 +182,7 @@
         bearing={-58}
         {movingOffset}
         isTrackingModel
+        isMe
         isAutowalk />
     {/if}
   </Map>
@@ -459,6 +462,59 @@
       </div>
       <div class="row-span-2 col-span-1 text-xs">backend engineer</div>
     </div>
+  </section>
+
+
+  <section class="h-screen w-screen flex justify-center items-center">
+    <h1 class="text-6xl font-bold">WORKS</h1>
+  </section>
+
+  <section class="h-screen w-screen flex justify-center items-center">
+
+    <div class="grid grid-cols-7 ">
+      <div class="col-start-2 col-end-4">
+        <a href="/samplepage/mapbox" role="button" target="_blank" class="hover:brightness-110">
+          <div class="max-w-sm rounded overflow-hidden shadow-lg bg-slate-50 dark:bg-slate-800">
+            <img class="w-full h-60" src={worksImg1} alt="Sunset in the mountains">
+            <div class="px-6 py-4 h-40">
+              <div class="font-bold text-xl mb-2">Digital twin</div>
+              <p class="text-base">
+                Share the location of the person manipulating the model with the map by opening the page.
+              </p>
+            </div>
+            <div class="px-6 pt-4 pb-2 h-32">
+              <span class="skill-badge-gray">mapbox.gl</span>
+              <span class="skill-badge-gray">websocket</span>
+              <span class="skill-badge-gray">three.js</span>
+              <span class="skill-badge-gray">svelte.js</span>
+              <span class="skill-badge-gray">Typescript</span>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <div class="col-start-5 col-end-7">
+        <a href="/samplepage/three" role="button" target="_blank" class="hover:brightness-110">
+          <div class="max-w-sm rounded overflow-hidden shadow-lg bg-slate-50 dark:bg-slate-800">
+            <img class="w-full  h-60" src={worksImg2} alt="Sunset in the mountains">
+            <div class="px-6 py-4 h-40">
+              <div class="font-bold text-xl mb-2">three.js Basic Character Controls with Svelte</div>
+              <p class="text-base">
+                Three.js controller reproduced on Svelte by 
+                <a href="https://youtu.be/C3s0UHpwlf8?si=S6QgZo_0XY26Dv0s" class="font-medium text-blue-600 underline dark:text-blue-500 hover:no-underline" target="_blank">Link's</a> tutorial.
+              </p>
+            </div>
+            <div class="px-6 pt-4 pb-2 h-32">
+              <span class="skill-badge-gray">three.js</span>
+              <span class="skill-badge-gray">svelte.js</span>
+              <span class="skill-badge-gray">Typescript</span>
+            </div>
+          </div>
+        </a>
+      </div>
+  </div>
+
+
   </section>
 
   <section class="h-screen w-screen flex justify-center items-center">
