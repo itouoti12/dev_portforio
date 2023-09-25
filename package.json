@@ -47,6 +47,7 @@
 	"type": "module",
 	"prepare": "svelte-kit sync",
 	"dependencies": {
+		"@pixiv/three-vrm": "^2.0.5",
 		"@turf/turf": "^6.5.0",
 		"lodash": "^4.17.21",
 		"mapbox-gl": "^2.15.0",
