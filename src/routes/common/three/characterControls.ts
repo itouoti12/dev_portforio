@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import type { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import { A, D, DIRECTIONS, S, W } from './utils';
+import { A, D, DIRECTIONS, J, S, SPACE, W } from './utils';
 export class CharacterControls {
   model: THREE.Group;
   mixer: THREE.AnimationMixer;
@@ -22,6 +22,7 @@ export class CharacterControls {
   fadeDuration = 0.2;
   runVelocity = 5;
   walkVelocity = 2;
+  jumpVelocity = 5;
 
   constructor(
     model: THREE.Group,
@@ -52,15 +53,22 @@ export class CharacterControls {
     const directionPressed = DIRECTIONS.some((key) => keysPressed[key] == true);
 
     let play = '';
-    if (directionPressed && this.toggleRun) {
-      play = 'Run';
-    } else if (directionPressed) {
-      play = 'Walk';
-    } else {
-      play = 'Idle';
+    if(keysPressed[J] == true){
+        play = 'Dance';
+    }else if(keysPressed[SPACE] == true){
+        play = 'Jump';
+    }else{
+      if (directionPressed && this.toggleRun) {
+        play = 'Run';
+      } else if (directionPressed) {
+        play = 'Walk';
+      } else {
+        play = 'Idle';
+      }
     }
 
     if (this.currentAction !== play) {
+
       const toPlay = this.animationsMap.get(play);
       const current = this.animationsMap.get(this.currentAction);
 
@@ -70,9 +78,16 @@ export class CharacterControls {
       this.currentAction = play;
     }
 
+    if(play === 'Jump'){
+      const jumpAction = this.animationsMap.get(play)
+      if(!jumpAction?.isRunning()){
+        keysPressed[SPACE] = false;
+      }
+    }
+
     this.mixer.update(delta);
 
-    if (this.currentAction === 'Run' || this.currentAction === 'Walk') {
+    if (this.currentAction === 'Run' || this.currentAction === 'Walk' || this.currentAction === 'Jump') {
       // calculate towards camera direction
       const angleYCameraDirection = Math.atan2(
         this.camera.position.x - this.model.position.x,
@@ -95,6 +110,7 @@ export class CharacterControls {
       const moveZ = this.walkDirection.z * velocity * delta;
       this.model.position.x += moveX;
       this.model.position.z += moveZ;
+
       this.updateCameraTarget(moveX, moveZ);
     }
   }

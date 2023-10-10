@@ -1,6 +1,6 @@
 <script>
     import { onMount } from 'svelte';
-  import { createScene } from '../../common/three/scene';
+    import { createScene } from '../../common/three/scene';
     /**
    * @type {HTMLCanvasElement}
    */
