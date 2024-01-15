@@ -516,7 +516,8 @@
         </a>
       </div>
 
-      <div class="col-start-5 col-end-7">
+      <!-- NOTE: 実験中 -->
+      <!-- <div class="col-start-5 col-end-7">
         <a href="/samplepage/three" role="button" target="_blank" class="hover:brightness-110">
           <div class="max-w-sm rounded overflow-hidden shadow-lg bg-slate-50 dark:bg-slate-800">
             <img class="w-full  h-60" src={worksImg2} alt="Sunset in the mountains">
@@ -534,7 +535,7 @@
             </div>
           </div>
         </a>
-      </div>
+      </div> -->
   </div>
 
 
