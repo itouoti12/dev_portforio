@@ -48,7 +48,7 @@
 	"prepare": "svelte-kit sync",
 	"dependencies": {
 		"@pixiv/three-vrm": "^2.0.5",
-		"@skyway-sdk/room": "^1.5.4",
+		"@skyway-sdk/room": "^1.6.2",
 		"@turf/turf": "^6.5.0",
 		"lodash": "^4.17.21",
 		"mapbox-gl": "^2.15.0",
