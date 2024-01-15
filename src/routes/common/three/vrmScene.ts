@@ -61,6 +61,14 @@ function load(url:string){
       async function (gltf) {
         const vrm = gltf.userData.vrm as VRMCore;
 
+        const joints = gltf.parser.json.skins[0].joints;
+        console.log('関数の一覧:');
+        joints.forEach((jointIndex: number) => {
+          const joint = gltf.parser.json.nodes[jointIndex];
+          const jointname = joint.name;
+          console.log(`- ${jointname}`);
+        });
+
         // calling these functions greatly improves the performance
         VRMUtils.removeUnnecessaryVertices( gltf.scene );
         VRMUtils.removeUnnecessaryJoints( gltf.scene );
@@ -101,8 +109,12 @@ function load(url:string){
         currentVrm = vrm;
         scene.add(vrm.scene);
 
+        // HELPER
+        const helper = new THREE.SkeletonHelper(vrm.scene);
+        scene.add(helper);
+
         // rotate if the VRM is VRM0.0
-    	VRMUtils.rotateVRM0( vrm );
+    	  VRMUtils.rotateVRM0( vrm );
 
         console.log(vrm);
       },

@@ -54,7 +54,13 @@ function gltfload() {
     model.traverse(function (object: any) {
       if (object.isMesh) object.castShadow = true;
     });
-    scene.add(model);
+
+    // scene.add(model);
+    const group = new THREE.Group();
+    group.rotateX(Math.PI/2);
+    group.add(model);
+    scene.add(group);
+
 
     // HELPER
     const helper = new THREE.SkeletonHelper(model);
@@ -73,17 +79,17 @@ function gltfload() {
     const gltfAnimations: THREE.AnimationClip[] = gltf.animations;
     const mixer = new THREE.AnimationMixer(model);
     const animationsMap: Map<string, THREE.AnimationAction> = new Map();
-    gltfAnimations.filter(animation=>animation.name != 'TPose').forEach((animation)=>{
-        animationsMap.set(animation.name, mixer.clipAction(animation));
-    });
+    // gltfAnimations.filter(animation=>animation.name != 'TPose').forEach((animation)=>{
+    //     animationsMap.set(animation.name, mixer.clipAction(animation));
+    // });
 
     // FIXME: mixamoから読み込んだファイルをボーンとマッピングする必要あり
-    // const idleClip = await loadMixamoAnimationToGLTF(idle, 'Idle', gltf as any);
-    // animationsMap.set(idleClip.name, mixer.clipAction(idleClip));
-    // const walkClip = await loadMixamoAnimationToGLTF(walk, 'Walk', gltf as any);
-    // animationsMap.set(walkClip.name, mixer.clipAction(walkClip));
-    // const runClip = await loadMixamoAnimationToGLTF(run, 'Run', gltf as any);
-    // animationsMap.set(runClip.name, mixer.clipAction(runClip));
+    const idleClip = await loadMixamoAnimationToGLTF(idle, 'Idle', gltf as any);
+    animationsMap.set(idleClip.name, mixer.clipAction(idleClip));
+    const walkClip = await loadMixamoAnimationToGLTF(walk, 'Walk', gltf as any);
+    animationsMap.set(walkClip.name, mixer.clipAction(walkClip));
+    const runClip = await loadMixamoAnimationToGLTF(run, 'Run', gltf as any);
+    animationsMap.set(runClip.name, mixer.clipAction(runClip));
     // model.rotateX(Math.PI/2);
 
     characterControls = new CharacterControls(model, mixer, animationsMap, camera, 'Idle', orbitControls);

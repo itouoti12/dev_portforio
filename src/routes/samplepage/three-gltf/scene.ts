@@ -3,7 +3,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import soldierModel from '$lib/assets/three/models/Soldier.glb';
-import fbxModel from '$lib/assets/three/animationWithSkin/neutral_Idle.fbx';
+import fbxModel from '$lib/assets/three/animation/Hip_Hop_Dancing.fbx';
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader';
 
 // SCENE
@@ -96,16 +96,27 @@ function gltfWithFbxAnimation(){
             const model = gltf.scene;
             // 
             // model.rotateX(Math.PI/2)
-            scene.add(gltf.scene);
+
+            const group = new THREE.Group();
+            group.rotateX(Math.PI/2);
+            group.add(gltf.scene);
+            // scene.add(gltf.scene);
+
+            scene.add(group);
 
             mixer = new THREE.AnimationMixer(model);
-            targetAnimation = mixer.clipAction(fbx.animations[1]);
+            fbx.animations.forEach(e=>console.log(e.name));
+
+            targetAnimation = mixer.clipAction(fbx.animations[0]);
             targetAnimation.play();
 
         });
     });
 }
 gltfWithFbxAnimation();
+
+
+
 
 // ANIMATE
 const clock = new THREE.Clock();

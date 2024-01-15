@@ -8,7 +8,6 @@ export function loadMixamoAnimationToGLTF(path:string,motionName:string, model:G
     const loader = new FBXLoader();
     return loader.loadAsync(path).then((asset) => {
 
-
         const clip = THREE.AnimationClip.findByName(asset.animations, 'mixamo.com');
         const tracks:THREE.KeyframeTrack[] = [];
 
@@ -19,6 +18,7 @@ export function loadMixamoAnimationToGLTF(path:string,motionName:string, model:G
 
         // NOTE: Adjust with reference to hips height.
         const motionHipsHeight = asset.getObjectByName('mixamorigHips')?.position.y;
+        console.log(model.scene.getObjectByName('mixamorigHips')?.getWorldPosition(_vec3).y)
         const hipsY = model.scene.getObjectByName('mixamorigHips')?.getWorldPosition(_vec3).y;
         const rootY = model.scene.getWorldPosition(_vec3).y;
         let hipsPositionScale = 0;
@@ -26,16 +26,18 @@ export function loadMixamoAnimationToGLTF(path:string,motionName:string, model:G
             const hipsHeight = Math.abs(hipsY - rootY);
             hipsPositionScale = hipsHeight / motionHipsHeight;
         }
+        console.log(hipsPositionScale)
 
         clip.tracks.forEach((track)=>{
             // NOTE: Convert each tracks for GLTF use, and push to `tracks`
             const trackSplitted = track.name.split('.');
             const mixamoRigName = trackSplitted[0];
-            const gltfBoneName = mixamoGLTFRigMap[mixamoRigName];
-            const gltfNodeName = model.scene.getObjectByName(gltfBoneName)?.name;
+            // const gltfBoneName = mixamoGLTFRigMap[mixamoRigName];
+            // const gltfNodeName = model.scene.getObjectByName(gltfBoneName)?.name;
+            const gltfNodeName = model.scene.getObjectByName(mixamoRigName)?.name;
             const mixamoRigNode = asset.getObjectByName(mixamoRigName);
 
-            console.log(gltfNodeName)
+            // console.log(gltfNodeName)
             if(gltfNodeName != null){
                 const propertyName = trackSplitted[1];
                 // NOTE: Store rotations of rest-pose.
@@ -44,33 +46,35 @@ export function loadMixamoAnimationToGLTF(path:string,motionName:string, model:G
 
                 if(track instanceof THREE.QuaternionKeyframeTrack) {
                     // NOTE: Retarget rotation of mixamoRig to NormalizedBone.
-                    // for (let i = 0; i < track.values.length; i += 4) {
-                    //     const flatQuaternion = track.values.slice(i,i + 4);
-                    //     _quatA.fromArray(flatQuaternion);
-                    //     // NOTE: 親のレスト時ワールド回転 * トラックの回転 * レスト時ワールド回転の逆 = ベクトルV
-                    //     // FIXME: ここで回転軸をどうにかしないといけない
-                    //     // .premultiply(parentRestWorldRotation)
-                    //     // .multiply(restRotationInverse);
-                    //     // parentRestWorldRotation
-                    //     // .setFromAxisAngle(new THREE.Vector3(0,1,0).normalize(), Math.PI/2);
-                    //     // _quatA
-                    //     // .multiply(parentRestWorldRotation);
-                    //     _quatA.toArray(flatQuaternion);
-                    //     flatQuaternion.forEach((val,index)=>{
-                    //         track.values[index + i] = val;
-                    //     });
-                    // };
+                    for (let i = 0; i < track.values.length; i += 4) {
+                        const flatQuaternion = track.values.slice(i,i + 4);
+                        _quatA.fromArray(flatQuaternion);
+                        // NOTE: 親のレスト時ワールド回転 * トラックの回転 * レスト時ワールド回転の逆 = ベクトルV
+                        // FIXME: ここで回転軸をどうにかしないといけない
+                        _quatA
+                        .premultiply(parentRestWorldRotation)
+                        .multiply(restRotationInverse)
+                        ;
+                        // parentRestWorldRotation
+                        // .setFromAxisAngle(new THREE.Vector3(0,1,0).normalize(), Math.PI/2);
+                        // _quatA
+                        // .multiply(parentRestWorldRotation);
+                        // _quatA.toArray(flatQuaternion);
+                        flatQuaternion.forEach((val,index)=>{
+                            track.values[index + i] = val;
+                        });
+                    };
 
                     tracks.push(
                         new THREE.QuaternionKeyframeTrack(
                             `${gltfNodeName}.${propertyName}`,
                             track.times,
+                            // track.values.map((val,i)=>(i % 2 === 0 ? -val : val))
                             track.values
                         )
                     );
                 } else if (track instanceof THREE.VectorKeyframeTrack){
                     const value = track.values.map((val,i)=>(i % 3 !== 1 ? -val : val) * hipsPositionScale);
-                    // const value = track.values.map((val,i)=> val * hipsPositionScale);
                     tracks.push(new THREE.VectorKeyframeTrack(`${gltfNodeName}.${propertyName}`, track.times,value));
                 }
             }

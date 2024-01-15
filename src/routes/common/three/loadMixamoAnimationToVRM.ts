@@ -21,7 +21,8 @@ export function loadMixamoAnimationToVRM(path:string,motionName:string, model:VR
 
         // NOTE: Adjust with reference to hips height.
         const motionHipsHeight = asset.getObjectByName('mixamorigHips')?.position.y;
-        console.log(model.humanoid?.getNormalizedBoneNode('hips')?.getWorldPosition(_vec3))
+        console.log(model.humanoid?.getNormalizedBoneNode('hips')?.getWorldPosition(_vec3).y)
+        console.log(model.scene.getObjectByName('J_Bip_C_Hips')?.getWorldPosition(_vec3).y)
         const vrmHipsY = model.humanoid?.getNormalizedBoneNode('hips')?.getWorldPosition(_vec3).y;
         const vrmRootY = model.scene.getWorldPosition(_vec3).y;
         let hipsPositionScale = 0;
