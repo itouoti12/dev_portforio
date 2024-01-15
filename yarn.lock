@@ -618,7 +618,7 @@
   resolved "https://registry.yarnpkg.com/@skyway-sdk/model/-/model-1.0.1.tgz#f747e2fe03f10860adcbb3b1a06219afa46faa8a"
   integrity sha512-tMMptnun0r/jYsoSbFn6C468DtPlp51CLxvSbhzvVhhFIxhJsbE8F3DaW6Or5VSz5o8wjY2q/EyADGpjI0KUXA==
 
-"@skyway-sdk/room@^1.6.2":
+"@skyway-sdk/room@^1.5.4":
   version "1.6.2"
   resolved "https://registry.yarnpkg.com/@skyway-sdk/room/-/room-1.6.2.tgz#b4dfa13bdbdfeb4870dbbd94531a60fe33162b86"
   integrity sha512-9GbPz3/c9ssID9CMfFQaUsE5wuh0I5sg1eQ4sqk3ggKJ7/Aj8iwRoneZ8DIAsLIC3XcUTG3Ycu16qq50VBHvMQ==
@@ -4232,7 +4232,6 @@ std-env@^3.3.3:
   integrity sha512-JPbdCEQLj1w5GilpiHAx3qJvFndqybBysA3qUOnznweH4QbNYUsW/ea8QzSrnh0vNsezMMw5bcVool8lM0gwzg==
 
 "string-width-cjs@npm:string-width@^4.2.0", string-width@^4.1.0:
-  name string-width-cjs
   version "4.2.3"
   resolved "https://registry.yarnpkg.com/string-width/-/string-width-4.2.3.tgz#269c7117d27b05ad2e536830a8ec895ef9c6d010"
   integrity sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==
