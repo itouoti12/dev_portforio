@@ -609,10 +609,10 @@
   dependencies:
     axios "^1.6.0"
 
-"@skyway-sdk/core@^1.8.0":
-  version "1.8.0"
-  resolved "https://registry.yarnpkg.com/@skyway-sdk/core/-/core-1.8.0.tgz#5eac3c4cde6f47e7181a0679c47ac06d0f763f6b"
-  integrity sha512-VfRqWZ9mp+gdo8CMoExXf61z1vxo01CQeAOfJyt6A3H93q0cJuFZEd8ulw2nC+S5Gt9BgyHv8/XuLQhYThZmqg==
+"@skyway-sdk/core@^1.8.1":
+  version "1.8.1"
+  resolved "https://registry.yarnpkg.com/@skyway-sdk/core/-/core-1.8.1.tgz#dce1097e62b59ea6be6f8b78b652c3461787968c"
+  integrity sha512-ct6OtO7JE8pOdlv3X06rTd8cBRrCfKqgai3dbKJnI1URzHSJLEX5eXYu64Mp9smTY3dgsLdSITW89pYNrLzN9w==
   dependencies:
     "@skyway-sdk/analytics-client" "^0.1.0-beta3"
     "@skyway-sdk/rtc-api-client" "^1.6.0"
@@ -629,12 +629,12 @@
   integrity sha512-tMMptnun0r/jYsoSbFn6C468DtPlp51CLxvSbhzvVhhFIxhJsbE8F3DaW6Or5VSz5o8wjY2q/EyADGpjI0KUXA==
 
 "@skyway-sdk/room@^1.5.4":
-  version "1.8.0"
-  resolved "https://registry.yarnpkg.com/@skyway-sdk/room/-/room-1.8.0.tgz#9cc7bc6f332d9670bc758f2f4e4d04a0939808f6"
-  integrity sha512-sss60YSxTGeRLbAqXUIRivyJtZ8E0dUf3PhIa2VC7cCCJrKBcDBz97yJzwWM0Jj8JXvJ0SXT++WvtUqEt4UqLQ==
+  version "1.8.1"
+  resolved "https://registry.yarnpkg.com/@skyway-sdk/room/-/room-1.8.1.tgz#a15f8a1567c1c08f2228a3e23f49f8ece95242cf"
+  integrity sha512-gzurMuYUY13PIgvzS6+yVDmH+2CVVxujPLz533ctoRdr592Z4nrC4VYhb2AUdaIUpr8fTDWqLomogzNwIWfeLQ==
   dependencies:
-    "@skyway-sdk/core" "^1.8.0"
-    "@skyway-sdk/sfu-bot" "^1.8.0"
+    "@skyway-sdk/core" "^1.8.1"
+    "@skyway-sdk/sfu-bot" "^1.8.1"
     uuid "^9.0.0"
 
 "@skyway-sdk/rtc-api-client@^1.6.0":
@@ -665,12 +665,12 @@
     "@skyway-sdk/common" "^1.4.6"
     mediasoup-client "^3.6.52"
 
-"@skyway-sdk/sfu-bot@^1.8.0":
-  version "1.8.0"
-  resolved "https://registry.yarnpkg.com/@skyway-sdk/sfu-bot/-/sfu-bot-1.8.0.tgz#1eb30ed49bebc879c6c9e7f0158c0bb5d7fe3530"
-  integrity sha512-DOJY1oM+aVwyHSqjjtjhs7CbhsbbSDLJc5QNr4GboY9/tXOvA+x72z2V+Uvh04IbWWb6LT4RCGAz1WlrJR24xQ==
+"@skyway-sdk/sfu-bot@^1.8.1":
+  version "1.8.1"
+  resolved "https://registry.yarnpkg.com/@skyway-sdk/sfu-bot/-/sfu-bot-1.8.1.tgz#31c2a60443609cccd04230a3ad746355e85b61cf"
+  integrity sha512-Q29K0mlwXgWF62B9DaPhEWwkeKteWgS/tyGMJY2uYhdaB5RFQT3X49Mm6Z7nLaCEkDFxtkfBL5nG2oV6hLL3jw==
   dependencies:
-    "@skyway-sdk/core" "^1.8.0"
+    "@skyway-sdk/core" "^1.8.1"
     "@skyway-sdk/sfu-api-client" "^1.4.6"
     lodash "4.17.21"
     mediasoup-client "3.6.82"
@@ -2255,9 +2255,9 @@ awaitqueue@^3.0.1, awaitqueue@^3.0.2:
     debug "^4.3.4"
 
 axios@^1.6.0:
-  version "1.6.8"
-  resolved "https://registry.yarnpkg.com/axios/-/axios-1.6.8.tgz#66d294951f5d988a00e87a0ffb955316a619ea66"
-  integrity sha512-v/ZHtJDU39mDpyBoFVkETcd/uNdxrWRrg3bKpOKzXFA6Bvqopts6ALSMU3y6ijYxbw2B+wPrIv46egTzJXCLGQ==
+  version "1.7.1"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-1.7.1.tgz#522145622a09dfaf49359837db9649ff245a35b9"
+  integrity sha512-+LV37nQcd1EpFalkXksWNBiA17NZ5m5/WspmHGmZmdx1qBOg/VNq/c4eRJiA9VQQHBOs+N0ZhhdU10h2TyNK7Q==
   dependencies:
     follow-redirects "^1.15.6"
     form-data "^4.0.0"
@@ -3522,9 +3522,9 @@ mediasoup-client@3.6.82:
     supports-color "^9.3.1"
 
 mediasoup-client@^3.6.52:
-  version "3.7.7"
-  resolved "https://registry.yarnpkg.com/mediasoup-client/-/mediasoup-client-3.7.7.tgz#7102ad723d4e4d38ac8e0bb8e862b9cd2d0d390d"
-  integrity sha512-LAgC/UlWTR6VGbi0lwsW4wvIC7VKbh8UVjRL9LN7FHtcyDetBU2zgMh1kKl17YH4OpA2QrN/k/TgNedJ4FuvCg==
+  version "3.7.8"
+  resolved "https://registry.yarnpkg.com/mediasoup-client/-/mediasoup-client-3.7.8.tgz#fec9fe9f9248220949fd558d0f5d4dcd4d8f65e3"
+  integrity sha512-an/2vQfMpHNtCMkrujJ65KsnvGebJO8QNpUOK+y7rvkd1fkRRAq9zN3DenDd7zXMSev2eD1AkFIYX/susrLNSg==
   dependencies:
     "@types/debug" "^4.1.12"
     awaitqueue "^3.0.2"
