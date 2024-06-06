@@ -609,13 +609,13 @@
   dependencies:
     axios "^1.6.0"
 
-"@skyway-sdk/core@^1.8.1":
-  version "1.8.1"
-  resolved "https://registry.yarnpkg.com/@skyway-sdk/core/-/core-1.8.1.tgz#dce1097e62b59ea6be6f8b78b652c3461787968c"
-  integrity sha512-ct6OtO7JE8pOdlv3X06rTd8cBRrCfKqgai3dbKJnI1URzHSJLEX5eXYu64Mp9smTY3dgsLdSITW89pYNrLzN9w==
+"@skyway-sdk/core@^1.9.0":
+  version "1.9.0"
+  resolved "https://registry.yarnpkg.com/@skyway-sdk/core/-/core-1.9.0.tgz#a1e6e1f426ae035690740a348b42c21a152c05f9"
+  integrity sha512-9iRoZDN9e22ZrlbTDxp7z5nKphD4zqjTTrwSmB8xLabHCBu6N3snzgM/1nt2EPvVQUxPHI1rYc7cu2YvG3MATw==
   dependencies:
     "@skyway-sdk/analytics-client" "^0.1.0-beta3"
-    "@skyway-sdk/rtc-api-client" "^1.6.0"
+    "@skyway-sdk/rtc-api-client" "^1.7.0"
     "@skyway-sdk/signaling-client" "^1.0.4"
     bowser "^2.11.0"
     deepmerge "^4.2.2"
@@ -629,28 +629,28 @@
   integrity sha512-tMMptnun0r/jYsoSbFn6C468DtPlp51CLxvSbhzvVhhFIxhJsbE8F3DaW6Or5VSz5o8wjY2q/EyADGpjI0KUXA==
 
 "@skyway-sdk/room@^1.5.4":
-  version "1.8.1"
-  resolved "https://registry.yarnpkg.com/@skyway-sdk/room/-/room-1.8.1.tgz#a15f8a1567c1c08f2228a3e23f49f8ece95242cf"
-  integrity sha512-gzurMuYUY13PIgvzS6+yVDmH+2CVVxujPLz533ctoRdr592Z4nrC4VYhb2AUdaIUpr8fTDWqLomogzNwIWfeLQ==
+  version "1.9.0"
+  resolved "https://registry.yarnpkg.com/@skyway-sdk/room/-/room-1.9.0.tgz#c431aa32983634539686a155c560dbbefe34659e"
+  integrity sha512-PCBcC/eNPSFmGABlaXVlRv1RbVwKiwkBLkTDdPNDpY6S4U9oQYzYsLyNm6vM3Y7+0U6zUAUahUoE6eJaTzZ24Q==
   dependencies:
-    "@skyway-sdk/core" "^1.8.1"
-    "@skyway-sdk/sfu-bot" "^1.8.1"
+    "@skyway-sdk/core" "^1.9.0"
+    "@skyway-sdk/sfu-bot" "^1.9.0"
     uuid "^9.0.0"
 
-"@skyway-sdk/rtc-api-client@^1.6.0":
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/@skyway-sdk/rtc-api-client/-/rtc-api-client-1.6.0.tgz#b870c68db4e100cac62ccd283b341fa5212add3d"
-  integrity sha512-UoawTXQp7VRp9GgWkyIUxHmraT9let+luRmR6S/SKuK42RvpxyN2z9xdQRWK8jx/kDDEZRNzAwG0BEqaC5Mzbg==
+"@skyway-sdk/rtc-api-client@^1.7.0":
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/@skyway-sdk/rtc-api-client/-/rtc-api-client-1.7.0.tgz#bc42a8a8720100a8d9e18ca986d0d692a74009de"
+  integrity sha512-r6NL8l+W4Hn1O5ERah1j+lRpgKYXie6LhgB/Amn7gr6cuT1HeoXX09Cv7rM1kFblpxdMnGZZOlhIW6zNd5QekA==
   dependencies:
-    "@skyway-sdk/rtc-rpc-api-client" "^1.6.0"
+    "@skyway-sdk/rtc-rpc-api-client" "^1.7.0"
     "@skyway-sdk/token" "^1.6.0"
     deepmerge "^4.2.2"
     uuid "^9.0.0"
 
-"@skyway-sdk/rtc-rpc-api-client@^1.6.0":
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/@skyway-sdk/rtc-rpc-api-client/-/rtc-rpc-api-client-1.6.0.tgz#0932a88c349cb56400eab1462d3a406af5e0e373"
-  integrity sha512-ewgW6CEJuVIAC+slnxgp8aqvMmeBY3p/UBjYVN5LgTaZhqZe2BjrE5UGyKoyN57WindFSyia4ydWUL2+dpoTkw==
+"@skyway-sdk/rtc-rpc-api-client@^1.7.0":
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/@skyway-sdk/rtc-rpc-api-client/-/rtc-rpc-api-client-1.7.0.tgz#711a94096bbf7b12726258e65cde3c83ab98c71a"
+  integrity sha512-SpSbd8AfQ2IzlUl1vORPXBr/+pDk4g6zuM/3dweWQRxW7Vyr+Vu56D7Qu8b+AhiUGGQ2VRvy0sTLjT9cyCK5wA==
   dependencies:
     "@skyway-sdk/common" "^1.4.6"
     "@skyway-sdk/model" "^1.0.1"
@@ -665,12 +665,12 @@
     "@skyway-sdk/common" "^1.4.6"
     mediasoup-client "^3.6.52"
 
-"@skyway-sdk/sfu-bot@^1.8.1":
-  version "1.8.1"
-  resolved "https://registry.yarnpkg.com/@skyway-sdk/sfu-bot/-/sfu-bot-1.8.1.tgz#31c2a60443609cccd04230a3ad746355e85b61cf"
-  integrity sha512-Q29K0mlwXgWF62B9DaPhEWwkeKteWgS/tyGMJY2uYhdaB5RFQT3X49Mm6Z7nLaCEkDFxtkfBL5nG2oV6hLL3jw==
+"@skyway-sdk/sfu-bot@^1.9.0":
+  version "1.9.0"
+  resolved "https://registry.yarnpkg.com/@skyway-sdk/sfu-bot/-/sfu-bot-1.9.0.tgz#ba62bd7d2174550ba4527efeda03c64936040044"
+  integrity sha512-c4mzSTwatgWOVD9EgynTTJV8xw6Q10X8T+CNA7HayN5z/dv7aR0/0fQ6upyOG27B/F+2TLfoxru83xi12jJE0A==
   dependencies:
-    "@skyway-sdk/core" "^1.8.1"
+    "@skyway-sdk/core" "^1.9.0"
     "@skyway-sdk/sfu-api-client" "^1.4.6"
     lodash "4.17.21"
     mediasoup-client "3.6.82"
@@ -2255,9 +2255,9 @@ awaitqueue@^3.0.1, awaitqueue@^3.0.2:
     debug "^4.3.4"
 
 axios@^1.6.0:
-  version "1.7.1"
-  resolved "https://registry.yarnpkg.com/axios/-/axios-1.7.1.tgz#522145622a09dfaf49359837db9649ff245a35b9"
-  integrity sha512-+LV37nQcd1EpFalkXksWNBiA17NZ5m5/WspmHGmZmdx1qBOg/VNq/c4eRJiA9VQQHBOs+N0ZhhdU10h2TyNK7Q==
+  version "1.7.2"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-1.7.2.tgz#b625db8a7051fbea61c35a3cbb3a1daa7b9c7621"
+  integrity sha512-2A8QhOMrbomlDuiLeK9XibIBzuHeRcqqNOHp0Cyp5EoJ1IFDh+XZH3A6BkXtv0K4gFGCI0Y4BM7B1wOEi0Rmgw==
   dependencies:
     follow-redirects "^1.15.6"
     form-data "^4.0.0"
@@ -2498,10 +2498,17 @@ d3-voronoi@1.1.2:
   resolved "https://registry.yarnpkg.com/d3-voronoi/-/d3-voronoi-1.1.2.tgz#1687667e8f13a2d158c80c1480c5a29cb0d8973c"
   integrity sha512-RhGS1u2vavcO7ay7ZNAPo4xeDh/VYeGof3x5ZLJBQgYhLegxr3s5IykvWmJ94FTU6mcbtp4sloqZ54mP6R4Utw==
 
-debug@^4.3.1, debug@^4.3.2, debug@^4.3.4:
+debug@^4.3.1, debug@^4.3.2:
   version "4.3.4"
   resolved "https://registry.yarnpkg.com/debug/-/debug-4.3.4.tgz#1319f6579357f2338d3337d2cdd4914bb5dcc865"
   integrity sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==
+  dependencies:
+    ms "2.1.2"
+
+debug@^4.3.4:
+  version "4.3.5"
+  resolved "https://registry.yarnpkg.com/debug/-/debug-4.3.5.tgz#e83444eceb9fedd4a1da56d671ae2446a01a6e1e"
+  integrity sha512-pt0bNEmneDIvdL1Xsd9oDQ/wrQRkXDT4AUWlNZNPKvW5x/jyO9VFXkJUP07vQ2upmw5PlaITaPKc31jK13V+jg==
   dependencies:
     ms "2.1.2"
 
@@ -4602,9 +4609,9 @@ typescript@^5.0.0, typescript@^5.0.3:
   integrity sha512-vcI4UpRgg81oIRUFwR0WSIHKt11nJ7SAVlYNIu+QpqeyXP+gpQJy/Z4+F0aGxSE4MqwjyXvW/TzgkLAx2AGHwQ==
 
 ua-parser-js@^1.0.35, ua-parser-js@^1.0.37:
-  version "1.0.37"
-  resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-1.0.37.tgz#b5dc7b163a5c1f0c510b08446aed4da92c46373f"
-  integrity sha512-bhTyI94tZofjo+Dn8SN6Zv8nBDvyXTymAdM3LDI/0IboIUwTu1rEhW7v2TfiVsoYWgkQ4kOVqnI8APUFbIQIFQ==
+  version "1.0.38"
+  resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-1.0.38.tgz#66bb0c4c0e322fe48edfe6d446df6042e62f25e2"
+  integrity sha512-Aq5ppTOfvrCMgAPneW1HfWj66Xi7XL+/mIy996R1/CLS/rcyJQm6QZdsKrUeivDFQ+Oc9Wyuwor8Ze8peEoUoQ==
 
 ufo@^1.3.2:
   version "1.3.2"
