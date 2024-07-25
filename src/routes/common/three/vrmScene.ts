@@ -28,7 +28,7 @@ scene.background = new THREE.Color(0xa8def0);
 
 // CAMERA
 const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-camera.position.y = 5;
+camera.position.y = 2;
 camera.position.z = 5;
 camera.position.x = 0;
 
@@ -84,9 +84,6 @@ function load(url:string){
         });
 
 
-        // const helper = new THREE.SkeletonHelper( vrm.scene );
-        // scene.add( helper );
-
         // NOTE: loadMixamoAnimation
         const animationsMap: Map<string,THREE.AnimationAction> = new Map();
         const mixer = new THREE.AnimationMixer(vrm.scene);
@@ -110,8 +107,8 @@ function load(url:string){
         scene.add(vrm.scene);
 
         // HELPER
-        const helper = new THREE.SkeletonHelper(vrm.scene);
-        scene.add(helper);
+        // const helper = new THREE.SkeletonHelper(vrm.scene);
+        // scene.add(helper);
 
         // rotate if the VRM is VRM0.0
     	  VRMUtils.rotateVRM0( vrm );
@@ -190,6 +187,8 @@ export const createScene = (el: any) => {
   orbitControls.maxDistance = 15;
   orbitControls.enablePan = false;
   orbitControls.maxPolarAngle = Math.PI / 2 - 0.05;
+  // 注視点の位置を少しY軸方向上にする
+  orbitControls.target.set(0,1,0);
   orbitControls.update();
   resize();
   animate();

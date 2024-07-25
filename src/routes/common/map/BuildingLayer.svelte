@@ -1,3 +1,4 @@
+<!-- NOTE: mapbox-gl v2でのbuilding -->
 <script lang="ts">
   import { getContext, onDestroy, onMount } from 'svelte';
   import { mapbox, key } from './mapbox';

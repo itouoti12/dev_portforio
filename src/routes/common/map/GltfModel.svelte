@@ -1,9 +1,12 @@
 <script lang="ts">
   import { afterUpdate, createEventDispatcher, getContext, onDestroy, onMount } from 'svelte';
   import { mapbox, key } from './mapbox';
+  import { mapbox as mapboxV3, key as keyV3 } from './mapbox_v3';
   import { gltfModelLayer, type CustomLayer } from './GltfModelLayer';
   import type { modelPositionProps } from '../three/characterControlsOnMapbox';
-  const { getMap }: { getMap: () => mapbox.Map } = getContext(key);
+
+  export let glVer: 'v2'|'v3'= 'v2';
+  const { getMap }: { getMap: () => mapbox.Map } = getContext(glVer==='v2'?key:keyV3);
   const dispatch = createEventDispatcher();
   const map = getMap();
 
