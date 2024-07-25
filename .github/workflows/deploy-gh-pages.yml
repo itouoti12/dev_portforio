@@ -36,6 +36,12 @@ jobs:
         run: |
           echo -e  "VITE_MAPBOX_TOKEN=${{ secrets.MAPBOX_TOKEN }}"\
             > .env
+          echo -e  "VITE_SKYWAY_PROJECT_ID=${{ secrets.SKYWAY_PROJECT_ID }}"\
+            >> .env
+          echo -e  "VITE_SKYWAY_ROOM_NAME=${{ secrets.SKYWAY_ROOM_NAME }}"\
+            >> .env
+          echo -e  "VITE_SKYWAY_SECRET=${{ secrets.SKYWAY_SECRET }}"\
+            >> .env
 
       - name: Build
         run: |

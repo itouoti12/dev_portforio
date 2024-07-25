@@ -1,3 +1,5 @@
+<!-- TODO: achex死んだぽいので、これを機にwebsocketやめてWebRTCに変える -->
+
 <script lang="ts">
   import Map from '../../common/map/Map.svelte';
   import '../../../app.css';
@@ -35,9 +37,10 @@
   let modelElevation = 0;
   let isRunning = true;
 
+  // NOTE: Dead
   // NOTE: setting websocket
-  let ws: WebSocket;
-  let wsSid: number = 0;
+  // let ws: WebSocket;
+  // let wsSid: number = 0;
 
   // NOTE: otherModelInformation
   interface OhterModelPorps {
@@ -51,102 +54,106 @@
       isRunning:boolean;
     };
   }
-  let others: OhterModelPorps = {};
-  const DELETE_JUDGE_DURATION = 120 * 1000;
+
+  // NOTE: Dead
+  // let others: OhterModelPorps = {};
+  // const DELETE_JUDGE_DURATION = 120 * 1000;
 
   onMount(() => {
+    // NOTE: Dead
     // WS接続(to Achex)
-    ws = new WebSocket('wss://cloud.achex.ca/itouoti_samplepage');
+    // ws = new WebSocket('wss://cloud.achex.ca/itouoti_samplepage');
     // WS接続時callback
-    ws.onopen = (e) => {
-      console.log('open websocket');
-      // Authentificate request
-      ws.send(JSON.stringify({ auth: 'model', password: '9999' }));
-    };
+    // ws.onopen = (e) => {
+    //   console.log('open websocket');
+    //   // Authentificate request
+    //   ws.send(JSON.stringify({ auth: 'model', password: '9999' }));
+    // };
 
     // WS受信時callback
-    ws.onmessage = (e) => {
-      var msg = JSON.parse(e.data);
-      if (!wsSid && msg.auth === 'OK') {
-        console.log('Authentificate oK');
-        wsSid = msg.SID;
-        // join Hub
-        ws.send(JSON.stringify({ joinHub: 'mapboxwalking' }));
-        ws.send(
-          JSON.stringify({
-            to: 'model',
-            lat: modelLat,
-            lng: modelLng,
-            elevation: modelElevation,
-            direction: modelDirection,
-            timestamp: moment().valueOf(),
-            isRunning,
-            moving:false,
-            // modelBinaly: 'xxxxxx'
-          })
-        );
-        return;
-      }
+    // ws.onmessage = (e) => {
+    //   var msg = JSON.parse(e.data);
+    //   if (!wsSid && msg.auth === 'OK') {
+    //     console.log('Authentificate oK');
+    //     wsSid = msg.SID;
+    //     // join Hub
+    //     ws.send(JSON.stringify({ joinHub: 'mapboxwalking' }));
+    //     ws.send(
+    //       JSON.stringify({
+    //         to: 'model',
+    //         lat: modelLat,
+    //         lng: modelLng,
+    //         elevation: modelElevation,
+    //         direction: modelDirection,
+    //         timestamp: moment().valueOf(),
+    //         isRunning,
+    //         moving:false,
+    //         // modelBinaly: 'xxxxxx'
+    //       })
+    //     );
+    //     return;
+    //   }
 
-      if (msg.joinHub === 'OK') {
-        console.log('join hub oK');
-        return;
-      }
+    //   if (msg.joinHub === 'OK') {
+    //     console.log('join hub oK');
+    //     return;
+    //   }
 
-      if (wsSid === msg.sID) {
-        return;
-      }
+    //   if (wsSid === msg.sID) {
+    //     return;
+    //   }
 
-      // NOTE: use Debug
-      // console.log(msg);
+    //   // NOTE: use Debug
+    //   // console.log(msg);
 
-      // NOTE: 他のユーザーがセッションを抜けた
-      if(msg.leftHub === 'mapboxwalking'){
-        console.log(`${msg.sID}:leave session`);
-        delete others[msg.sID];
-        // NOTE: renderをトリガー
-        others = others;
-        return;
-      }
+    //   // NOTE: 他のユーザーがセッションを抜けた
+    //   if(msg.leftHub === 'mapboxwalking'){
+    //     console.log(`${msg.sID}:leave session`);
+    //     delete others[msg.sID];
+    //     // NOTE: renderをトリガー
+    //     others = others;
+    //     return;
+    //   }
 
-      // NOTE: 他のモデルの情報を更新
-      others[msg.sID] = {
-        lat: msg.lat,
-        lng: msg.lng,
-        elevation: msg.elevation,
-        direction: msg.direction,
-        timestamp: msg.timestamp,
-        moving:msg.moving,
-        isRunning:msg.isRunning,
-      };
-      // console.log(others)
+    //   // NOTE: 他のモデルの情報を更新
+    //   others[msg.sID] = {
+    //     lat: msg.lat,
+    //     lng: msg.lng,
+    //     elevation: msg.elevation,
+    //     direction: msg.direction,
+    //     timestamp: msg.timestamp,
+    //     moving:msg.moving,
+    //     isRunning:msg.isRunning,
+    //   };
+    //   // console.log(others)
 
-      // NOTE: 他のモデルで一定時間動きがない場合は表示を消す
-      const nowTimestamp = moment().valueOf();
-      let dleteTargetSID: number[] = [];
-      Object.keys(others).forEach((other) => {
-        const targetTimestamp = others[Number(other)].timestamp;
-        if (nowTimestamp - targetTimestamp === DELETE_JUDGE_DURATION) {
-          dleteTargetSID.push(Number(other));
-        }
-      });
-      dleteTargetSID.forEach((target) => {
-        console.log(`${msg.sID}: session timeout`);
-        delete others[target];
-      });
-      // NOTE: renderをトリガー
-      others = others;
-    };
+    //   // NOTE: 他のモデルで一定時間動きがない場合は表示を消す
+    //   const nowTimestamp = moment().valueOf();
+    //   let dleteTargetSID: number[] = [];
+    //   Object.keys(others).forEach((other) => {
+    //     const targetTimestamp = others[Number(other)].timestamp;
+    //     if (nowTimestamp - targetTimestamp === DELETE_JUDGE_DURATION) {
+    //       dleteTargetSID.push(Number(other));
+    //     }
+    //   });
+    //   dleteTargetSID.forEach((target) => {
+    //     console.log(`${msg.sID}: session timeout`);
+    //     delete others[target];
+    //   });
+    //   // NOTE: renderをトリガー
+    //   others = others;
+    // };
 
     // WS切断時callback
-    ws.onclose = (e) => {
-      console.log('closed');
-      // leave message
-      // ws.send(JSON.stringify({ to: 'model', leave: 'OK' }));
-    };
+    // ws.onclose = (e) => {
+    //   console.log('closed');
+    //   // leave message
+    //   // ws.send(JSON.stringify({ to: 'model', leave: 'OK' }));
+    // };
   });
   onDestroy(() => {
-    ws.close();
+    // NOTE: Dead
+    // ws.close();
   });
 
   let latestSendTime = moment().valueOf();
@@ -154,26 +161,27 @@
   afterUpdate(() => {
     if (!needupdate) return;
 
-    if (!!ws && ws.readyState === ws.OPEN) {
-      const nowTimestamp = moment().valueOf();
-      // NOTE: 0.5秒ごとにsendするように
-      if (nowTimestamp - latestSendTime > SEND_PER_DURATION) {
-        console.log('send position');
-        ws.send(
-          JSON.stringify({
-            to: 'model',
-            lat: modelLat,
-            lng: modelLng,
-            elevation: modelElevation,
-            direction: modelDirection,
-            timestamp: nowTimestamp,
-            isRunning,
-            moving:true
-          })
-        );
-        latestSendTime = nowTimestamp;
-      }
-    }
+    // NOTE: Dead
+    // if (!!ws && ws.readyState === ws.OPEN) {
+    //   const nowTimestamp = moment().valueOf();
+    //   // NOTE: 0.5秒ごとにsendするように
+    //   if (nowTimestamp - latestSendTime > SEND_PER_DURATION) {
+    //     console.log('send position');
+    //     ws.send(
+    //       JSON.stringify({
+    //         to: 'model',
+    //         lat: modelLat,
+    //         lng: modelLng,
+    //         elevation: modelElevation,
+    //         direction: modelDirection,
+    //         timestamp: nowTimestamp,
+    //         isRunning,
+    //         moving:true
+    //       })
+    //     );
+    //     latestSendTime = nowTimestamp;
+    //   }
+    // }
     needupdate = false;
   });
 
@@ -200,20 +208,21 @@
 
   function stopMove(event: CustomEvent){
     console.log('stop move')
-    if (!!ws && ws.readyState === ws.OPEN) {
-      ws.send(
-        JSON.stringify({
-          to: 'model',
-          lat: modelLat,
-          lng: modelLng,
-          elevation: modelElevation,
-          direction: modelDirection,
-          timestamp: moment().valueOf(),
-          isRunning,
-          moving:false
-        })
-      );
-    }
+    // NOTE: Dead
+    // if (!!ws && ws.readyState === ws.OPEN) {
+    //   ws.send(
+    //     JSON.stringify({
+    //       to: 'model',
+    //       lat: modelLat,
+    //       lng: modelLng,
+    //       elevation: modelElevation,
+    //       direction: modelDirection,
+    //       timestamp: moment().valueOf(),
+    //       isRunning,
+    //       moving:false
+    //     })
+    //   );
+    // }
   }
 
   function updateModelPositionOnMap(
@@ -240,7 +249,8 @@
   <button class="bg-sky-500/75" on:click={() => changeWalk(true)}>AutoWalk</button>
   <button class="bg-sky-500/75" on:click={() => changeWalk(false)}>ManualWalk</button>
   <button class="bg-lime-500/75" on:click={() => toggleTracking()}>Tracking</button>
-  <div>now login session: me and {Object.keys(others).length}people.</div>
+  <!-- NOTE: DEAD -->
+  <!-- <div>now login session: me and {Object.keys(others).length}people.</div> -->
 </div>
 <div class="h-screen w-screen">
   <Map
@@ -249,12 +259,13 @@
     {bearing}
     {pitch}
     {zoom}
+    glVer='v3'
+    lightPreset='dusk'
     on:changePich={changePitch}
     on:changeRotate={changePitch}
     on:changeZoom={changeZoom}
     on:changeCenter={changeCenter}>
-    <TerrainLayer />
-    <BuildingLayer />
+    <TerrainLayer glVer='v3' />
     <GltfModel
       layerId="soldier"
       modelOrigin={[lng, lat]}
@@ -265,12 +276,14 @@
       {isAutowalk}
       isTrackingModel={isTracking}
       isMe
+      glVer='v3'
       on:changeLngLat={updateModelPositionOnMap} 
       on:stopMove={stopMove}
     />
 
+    <!-- NOTE: DEAD -->
     <!-- 他の人がアクセスしてきた時 -->
-    {#each Object.keys(others) as key}
+    <!-- {#each Object.keys(others) as key}
       <GltfModel
         layerId={key}
         modelOrigin={[others[Number(key)].lng, others[Number(key)].lat]}
@@ -282,6 +295,6 @@
         isAutowalk={others[Number(key)].moving}
         isRunning={others[Number(key)].isRunning}
       />
-    {/each}
+    {/each} -->
   </Map>
 </div>

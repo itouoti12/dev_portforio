@@ -16,13 +16,14 @@
   import GltfModel from './common/map/GltfModel.svelte';
   import worksImg1 from '$lib/assets/img/mapbox_on_model.png';
   import worksImg2 from '$lib/assets/img/threejs_basic_controls.png';
+  import worksImg_threejsvrm from '$lib/assets/img/threejs_vrm.png';
 
   let totalPageHeight: number;
   let viewHeight: number;
   let scrollY: number;
   let currentScrollPercentage = 0;
 
-  let isJp = true;
+  let isJp = false;
   let portforioTexts = defportforioTexts;
   let isDispTitle = false;
   let isDispMain = false;
@@ -230,9 +231,9 @@
       <button class="" on:click={onChangeLanguage}>
         <i class="fa-solid fa-globe fa-xl" />
         <span class="text-xs">
-          <span class:font-bold={isJp === true} class:text-sm={isJp === true}>Japanese</span>
-          {' / '}
           <span class:font-bold={isJp === false} class:text-sm={isJp === false}>English</span>
+          {' / '}
+          <span class:font-bold={isJp === true} class:text-sm={isJp === true}>Japanese</span>
         </span>
       </button>
     </div>
@@ -262,13 +263,13 @@
   </section>
 
   <section class="w-6/12 my-auto mx-auto py-40" bind:this={pageElements['about_detail']}>
-    <h2 class="text-4xl" bind:this={portforioTexts['about_name'].el}>{portforioTexts['about_name'].jp}</h2>
+    <h2 class="text-4xl" bind:this={portforioTexts['about_name'].el}>{portforioTexts['about_name'].en}</h2>
     <img class="mt-5 w-full" src={myPhoto} alt="myphoto" />
     <p class="pt-10" bind:this={portforioTexts['about_desc1'].el}>
-      {portforioTexts['about_desc1'].jp}
+      {portforioTexts['about_desc1'].en}
     </p>
     <p class="pt-5" bind:this={portforioTexts['about_desc2'].el}>
-      {portforioTexts['about_desc2'].jp}
+      {portforioTexts['about_desc2'].en}
     </p>
   </section>
 
@@ -279,34 +280,34 @@
     <div class="grid grid-rows-4 grid-cols-2 grid-flow-col gap-1">
       <div class="row-span-4">1992.12.16</div>
       <div class="col-span-1" bind:this={portforioTexts['history_0'].el}>
-        {portforioTexts['history_0'].jp}
+        {portforioTexts['history_0'].en}
       </div>
     </div>
     <div class="grid grid-rows-4 grid-cols-2 grid-flow-col gap-1">
       <div class="row-span-4">2015.04 - 2019.03</div>
       <div class="col-span-1" bind:this={portforioTexts['history_1'].el}>
-        {portforioTexts['history_1'].jp}
+        {portforioTexts['history_1'].en}
       </div>
       <div class="row-span-2 col-span-1 text-xs" bind:this={portforioTexts['history_1_position'].el}>
-        {portforioTexts['history_1_position'].jp}
+        {portforioTexts['history_1_position'].en}
       </div>
     </div>
     <div class="grid grid-rows-4 grid-cols-2 grid-flow-col gap-1">
       <div class="row-span-4">2019.04 - 2021.09</div>
       <div class="col-span-1" bind:this={portforioTexts['history_2'].el}>
-        {portforioTexts['history_2'].jp}
+        {portforioTexts['history_2'].en}
       </div>
       <div class="row-span-2 col-span-1 text-xs break-keep" bind:this={portforioTexts['history_2_position'].el}>
-        {portforioTexts['history_2_position'].jp}
+        {portforioTexts['history_2_position'].en}
       </div>
     </div>
     <div class="grid grid-rows-4 grid-cols-2 grid-flow-col gap-1">
       <div class="row-span-4">2021.10 -</div>
       <div class="col-span-1" bind:this={portforioTexts['history_3'].el}>
-        {portforioTexts['history_3'].jp}
+        {portforioTexts['history_3'].en}
       </div>
       <div class="row-span-2 col-span-1 text-xs" bind:this={portforioTexts['history_3_position'].el}>
-        {portforioTexts['history_3_position'].jp}
+        {portforioTexts['history_3_position'].en}
       </div>
     </div>
   </section>
@@ -412,9 +413,9 @@
     </div>
 
     <div class="dark:text-slate-200 text-slate-800 pt-8">
-      <span bind:this={portforioTexts['skill_note1'].el}>{portforioTexts['skill_note1'].jp}</span>
+      <span bind:this={portforioTexts['skill_note1'].el}>{portforioTexts['skill_note1'].en}</span>
       <span class="skill-badge-pink ml-3">badge</span>
-      <span bind:this={portforioTexts['skill_note2'].el}>{portforioTexts['skill_note2'].jp}</span>
+      <span bind:this={portforioTexts['skill_note2'].el}>{portforioTexts['skill_note2'].en}</span>
     </div>
   </section>
 
@@ -424,64 +425,64 @@
   <section class="w-6/12 my-auto mx-auto py-40" bind:this={pageElements['project_detail']}>
     <div class="grid grid-rows-3 grid-cols-2 grid-flow-col gap-1">
       <div class="row-span-3" bind:this={portforioTexts['projects_1_company'].el}>
-        {portforioTexts['projects_1_company'].jp}
+        {portforioTexts['projects_1_company'].en}
       </div>
       <div class="col-span-1" bind:this={portforioTexts['projects_1_product'].el}>
-        {portforioTexts['projects_1_product'].jp}
+        {portforioTexts['projects_1_product'].en}
       </div>
       <div class="row-span-2 col-span-1 text-xs">frontend engineer</div>
     </div>
     <div class="grid grid-rows-4 grid-cols-2 grid-flow-col gap-1">
       <div class="row-span-4" bind:this={portforioTexts['projects_2_company'].el}>
-        {portforioTexts['projects_2_company'].jp}
+        {portforioTexts['projects_2_company'].en}
       </div>
       <div class="col-span-1" bind:this={portforioTexts['projects_2_product'].el}>
-        {portforioTexts['projects_2_product'].jp}
+        {portforioTexts['projects_2_product'].en}
       </div>
       <div class="row-span-2 col-span-1 text-xs">scrum master</div>
     </div>
     <div class="grid grid-rows-4 grid-cols-2 grid-flow-col gap-1">
       <div class="row-span-4" bind:this={portforioTexts['projects_3_company'].el}>
-        {portforioTexts['projects_3_company'].jp}
+        {portforioTexts['projects_3_company'].en}
       </div>
       <div class="col-span-1" bind:this={portforioTexts['projects_3_product'].el}>
-        {portforioTexts['projects_3_product'].jp}
+        {portforioTexts['projects_3_product'].en}
       </div>
       <div class="row-span-2 col-span-1 text-xs">fullstack engineer/scrum master</div>
     </div>
     <div class="grid grid-rows-4 grid-cols-2 grid-flow-col gap-1">
       <div class="row-span-4" bind:this={portforioTexts['projects_4_company'].el}>
-        {portforioTexts['projects_4_company'].jp}
+        {portforioTexts['projects_4_company'].en}
       </div>
       <div class="col-span-1" bind:this={portforioTexts['projects_4_product'].el}>
-        {portforioTexts['projects_4_product'].jp}
+        {portforioTexts['projects_4_product'].en}
       </div>
       <div class="row-span-2 col-span-1 text-xs">backend engineer</div>
     </div>
     <div class="grid grid-rows-4 grid-cols-2 grid-flow-col gap-1">
       <div class="row-span-4" bind:this={portforioTexts['projects_5_company'].el}>
-        {portforioTexts['projects_5_company'].jp}
+        {portforioTexts['projects_5_company'].en}
       </div>
       <div class="col-span-1" bind:this={portforioTexts['projects_5_product'].el}>
-        {portforioTexts['projects_5_product'].jp}
+        {portforioTexts['projects_5_product'].en}
       </div>
       <div class="row-span-2 col-span-1 text-xs">backend engineer</div>
     </div>
     <div class="grid grid-rows-4 grid-cols-2 grid-flow-col gap-1">
       <div class="row-span-4" bind:this={portforioTexts['projects_6_company'].el}>
-        {portforioTexts['projects_6_company'].jp}
+        {portforioTexts['projects_6_company'].en}
       </div>
       <div class="col-span-1" bind:this={portforioTexts['projects_6_product'].el}>
-        {portforioTexts['projects_6_product'].jp}
+        {portforioTexts['projects_6_product'].en}
       </div>
       <div class="row-span-2 col-span-1 text-xs">"TERASOLUNA batch" document writer</div>
     </div>
     <div class="grid grid-rows-4 grid-cols-2 grid-flow-col gap-1">
       <div class="row-span-4" bind:this={portforioTexts['projects_7_company'].el}>
-        {portforioTexts['projects_7_company'].jp}
+        {portforioTexts['projects_7_company'].en}
       </div>
       <div class="col-span-1" bind:this={portforioTexts['projects_7_product'].el}>
-        {portforioTexts['projects_7_product'].jp}
+        {portforioTexts['projects_7_product'].en}
       </div>
       <div class="row-span-2 col-span-1 text-xs">backend engineer</div>
     </div>
@@ -495,10 +496,11 @@
   <section class="h-screen w-screen flex justify-center items-center">
 
     <div class="grid grid-cols-7 ">
+      <!-- mapbox上でモデルを動かす -->
       <div class="col-start-2 col-end-4">
         <a href="/samplepage/mapbox" role="button" target="_blank" class="hover:brightness-110">
           <div class="max-w-sm rounded overflow-hidden shadow-lg bg-slate-50 dark:bg-slate-800">
-            <img class="w-full h-60" src={worksImg1} alt="Sunset in the mountains">
+            <img class="w-full h-60 object-cover" src={worksImg1} alt="Sunset in the mountains">
             <div class="px-6 py-4 h-40">
               <div class="font-bold text-xl mb-2">Digital twin</div>
               <p class="text-base">
@@ -507,7 +509,27 @@
             </div>
             <div class="px-6 pt-4 pb-2 h-32">
               <span class="skill-badge-gray">mapbox.gl</span>
-              <span class="skill-badge-gray">websocket</span>
+              <span class="skill-badge-gray">WebRTC</span>
+              <span class="skill-badge-gray">three.js</span>
+              <span class="skill-badge-gray">svelte.js</span>
+              <span class="skill-badge-gray">Typescript</span>
+            </div>
+          </div>
+        </a>
+      </div>
+      <!-- VRMモデルを動かす -->
+      <div class="col-start-5 col-end-7">
+        <a href="/samplepage/three-vrm" role="button" target="_blank" class="hover:brightness-110">
+          <div class="max-w-sm rounded overflow-hidden shadow-lg bg-slate-50 dark:bg-slate-800">
+            <img class="w-full h-60 object-cover" src={worksImg_threejsvrm} alt="Sunset in the mountains">
+            <div class="px-6 py-4 h-40">
+              <div class="font-bold text-xl mb-2">Vrm Model Controls</div>
+              <p class="text-base">
+                Vrm Model Controls on Svelte with three.js.
+                In addition, Mixamo Animation is attached after model loaded.
+              </p>
+            </div>
+            <div class="px-6 pt-4 pb-2 h-32">
               <span class="skill-badge-gray">three.js</span>
               <span class="skill-badge-gray">svelte.js</span>
               <span class="skill-badge-gray">Typescript</span>
