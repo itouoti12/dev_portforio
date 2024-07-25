@@ -15,7 +15,6 @@
   import type { RoomSubscription, RoomPublication, LocalP2PRoomMember, RemoteRoomMember } from '@skyway-sdk/room';
 
   const ROOM_NAME = import.meta.env.VITE_SKYWAY_ROOM_NAME;
-  // const ROOM_NAME = 'itouoti_mapbox_three';
   // export let data : any;
 
   const token = new SkyWayAuthToken({
