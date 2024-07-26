@@ -34,11 +34,13 @@ export const defportforioTexts:PortforioTextProps = {
     'about_desc2':{
         jp:`
             2015年4月、株式会社NTTデータフロンティアでバックエンドエンジニアとしてキャリアをスタート。
-            2019年4月にソフトバンク株式会社への転職を経て、2023年現在、BOLDLY株式会社にてフロントエンドエンジニアとして活動中。
+            2019年4月にソフトバンク株式会社への転職を経て、2024年までBOLDLY株式会社にてフロントエンドエンジニアとして活動。
+            現在は海外のソフトウェア開発の文化を身を持って感じたいとの思いからカナダにIT留学中。
         `,
         en:`
             In April 2015, he started his career as a backend engineer at NTT Data Frontier Inc.
-            In April 2019, he moved to Softbank Corporation, and as of 2023, he is working as a front-end engineer at BOLDLY Corporation.
+            After moving to Softbank Corporation in April 2019, he worked as a front-end engineer at BOLDLY Corporation until 2024.
+            Currently studying IT abroad in Canada with a desire to experience the culture of software development overseas firsthand.
         `
     },
     // NOTE: HISTORY 

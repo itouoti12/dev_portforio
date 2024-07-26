@@ -303,7 +303,7 @@
       </div>
     </div>
     <div class="grid grid-rows-4 grid-cols-2 grid-flow-col gap-1">
-      <div class="row-span-4">2021.10 -</div>
+      <div class="row-span-4">2021.10 - 2024.06</div>
       <div class="col-span-1" bind:this={portforioTexts['history_3'].el}>
         {portforioTexts['history_3'].en}
       </div>
