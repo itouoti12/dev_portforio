@@ -19,6 +19,7 @@
   export let isAutowalk = false;
   export let movingOffset: number;
   export let isMe =  false;
+  export let color:string|undefined = undefined;
   let model: mapbox.AnyLayer & CustomLayer;
 
   
@@ -50,6 +51,7 @@
           movingOffset,
           updateModelPositionOnMap:updatePosition,
           isMe,
+          color,
           onStopMove
         });
 
@@ -77,14 +79,25 @@
         deg:direction
       });
     }
-
   });
 
   onDestroy(() => {
+
     if(!model)return;
     if (model.autoWakingChange) model.autoWakingChange(false);
     if (model.trackingChange) model.trackingChange(false);
-    if (map.getLayer(layerId)) map.removeLayer(layerId);
-    if (map.getSource(layerId)) map.removeSource(layerId);
+
+    try {
+      map.removeLayer(layerId);
+    } catch (error) {
+      console.log('削除対象のレイヤーは存在しない target:',layerId);
+    }
+
+    try {
+      map.removeSource(layerId);
+    } catch (error) {
+      console.log('削除対象のソースは存在しない target:',layerId);
+    }
+
   });
 </script>

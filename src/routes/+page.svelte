@@ -207,7 +207,8 @@
         {movingOffset}
         isTrackingModel
         isMe
-        isAutowalk />
+        isAutowalk
+        />
     {/if}
   </Map>
 </div>
@@ -537,27 +538,6 @@
           </div>
         </a>
       </div>
-
-      <!-- NOTE: 実験中 -->
-      <!-- <div class="col-start-5 col-end-7">
-        <a href="/samplepage/three" role="button" target="_blank" class="hover:brightness-110">
-          <div class="max-w-sm rounded overflow-hidden shadow-lg bg-slate-50 dark:bg-slate-800">
-            <img class="w-full  h-60" src={worksImg2} alt="Sunset in the mountains">
-            <div class="px-6 py-4 h-40">
-              <div class="font-bold text-xl mb-2">three.js Basic Character Controls with Svelte</div>
-              <p class="text-base">
-                Three.js controller reproduced on Svelte by 
-                <a href="https://youtu.be/C3s0UHpwlf8?si=S6QgZo_0XY26Dv0s" class="font-medium text-blue-600 underline dark:text-blue-500 hover:no-underline" target="_blank">Link's</a> tutorial.
-              </p>
-            </div>
-            <div class="px-6 pt-4 pb-2 h-32">
-              <span class="skill-badge-gray">three.js</span>
-              <span class="skill-badge-gray">svelte.js</span>
-              <span class="skill-badge-gray">Typescript</span>
-            </div>
-          </div>
-        </a>
-      </div> -->
   </div>
 
 
