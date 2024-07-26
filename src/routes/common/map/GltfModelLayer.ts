@@ -23,6 +23,7 @@ interface ConstructorProps {
   onLoad?: () => void;
   updateModelPositionOnMap?: ({ lngLat, directionOnMap, elevation, isTracking,isRun }: modelPositionProps) => void;
   onStopMove?:()=>void;
+  color?:string;
 }
 export interface ModelTransformProps {
   translateX: number;
@@ -98,8 +99,14 @@ export function gltfModelLayer(props: ConstructorProps): mapbox.AnyLayer & Custo
       gltfLoader.load(props.url, function (gltf) {
         const loadModel = gltf.scene;
         loadModel.traverse(function (object: any) {
-          if (object.isMesh) object.castShadow = true;
-          if (object.isMesh) object.material.needsUpdate = true;
+          if(object.isMesh){
+            object.castShadow = true;
+            if(props.color && object.material.name === "Vanguard_VisorMat"){
+              const material = new THREE.MeshBasicMaterial({color:props.color});
+              object.material = material;
+            } 
+            object.material.needsUpdate = true;
+          }
         });
 
         loadModel.scale.set(props.scale, props.scale, props.scale);

@@ -7,58 +7,11 @@
     SkyWayRoom,
     SkyWayContext,
     SkyWayStreamFactory,
-    SkyWayAuthToken,
-    nowInSec,
     uuidV4,
     LocalDataStream
   } from '@skyway-sdk/room';
   import type { RoomSubscription, RoomPublication, LocalP2PRoomMember, RemoteRoomMember } from '@skyway-sdk/room';
-
-  const ROOM_NAME = import.meta.env.VITE_SKYWAY_ROOM_NAME;
-  // export let data : any;
-
-  const token = new SkyWayAuthToken({
-    jti: uuidV4(),
-    iat: nowInSec(),
-    exp: nowInSec() + 60 * 60 * 24,
-    scope: {
-      app: {
-        id: import.meta.env.VITE_SKYWAY_PROJECT_ID,
-        turn: true,
-        actions: ['read'],
-        channels: [
-          {
-            id: '*',
-            name: '*',
-            actions: ['write'],
-            members: [
-              {
-                id: '*',
-                name: '*',
-                actions: ['write'],
-                publication: {
-                  actions: ['write']
-                },
-                subscription: {
-                  actions: ['write']
-                }
-              }
-            ],
-            sfuBots: [
-              {
-                actions: ['write'],
-                forwardings: [
-                  {
-                    actions: ['write']
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      }
-    }
-  }).encode(import.meta.env.VITE_SKYWAY_SECRET);
+  import { getRoomType, getSkyWayToken } from '../../common/skyway/skywayConfig';
 
   let dataStream: LocalDataStream;
   let me: LocalP2PRoomMember;
@@ -98,12 +51,9 @@
     const initialize = async () => {
       dataStream = await SkyWayStreamFactory.createDataStream();
 
-      const context = await SkyWayContext.Create(token);
+      const context = await SkyWayContext.Create(getSkyWayToken());
       // NOTE: create or get room
-      const room = await SkyWayRoom.FindOrCreate(context, {
-        type: 'p2p',
-        name: ROOM_NAME
-      });
+      const room = await SkyWayRoom.FindOrCreate(context, getRoomType());
 
       myId = uuidV4();
       const randomColor = () => {
@@ -130,7 +80,7 @@
           console.log('already joined member', p.id);
 
           if (p.publisher.name) {
-            const metadataJson =p.publisher.metadata ? JSON.parse(p.publisher.metadata):{};
+            const metadataJson = p.publisher.metadata ? JSON.parse(p.publisher.metadata) : {};
             others[p.publisher.name] = {
               lat: 0,
               lng: 0,
@@ -142,11 +92,11 @@
               id: p.publisher.id,
               color: metadataJson.color ? metadataJson.color : '#000000'
             };
-            if(metadataJson.model){
-                const blob = new Blob([metadataJson.model as ArrayBuffer], { type: 'application/octet-stream' });
-                const url = URL.createObjectURL(blob);
-                console.log(url);
-                others[p.publisher.name].model = url;
+            if (metadataJson.model) {
+              const blob = new Blob([metadataJson.model as ArrayBuffer], { type: 'application/octet-stream' });
+              const url = URL.createObjectURL(blob);
+              console.log(url);
+              others[p.publisher.name].model = url;
             }
             others = others;
           }
@@ -332,7 +282,7 @@
     <p>更新時間: {myState.timestamp}</p>
     <p>移動中: {myState.moving}</p>
     <p>走っている: {myState.isRunning}</p>
-    <p>カスタムモデル: {myState.model?myState.model:'未使用'}</p>
+    <p>カスタムモデル: {myState.model ? myState.model : '未使用'}</p>
   </div>
 {/if}
 
@@ -347,7 +297,7 @@
     <p>更新時間: {others[key].timestamp}</p>
     <p>移動中: {others[key].moving}</p>
     <p>走っている: {others[key].isRunning}</p>
-    <p>カスタムモデル: {others[key].model?others[key].model:'未使用'}</p>
+    <p>カスタムモデル: {others[key].model ? others[key].model : '未使用'}</p>
   </div>
 {/each}
 

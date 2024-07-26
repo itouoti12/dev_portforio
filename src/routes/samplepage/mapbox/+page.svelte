@@ -1,16 +1,31 @@
-<!-- TODO: achex死んだぽいので、これを機にwebsocketやめてWebRTCに変える -->
-
 <script lang="ts">
   import Map from '../../common/map/Map.svelte';
   import '../../../app.css';
   import type mapboxgl from 'mapbox-gl';
   import TerrainLayer from '../../common/map/TerrainLayer.svelte';
-  import BuildingLayer from '../../common/map/BuildingLayer.svelte';
   import { SEND_PER_DURATION } from '../../common/map/GltfModelLayer';
   import GltfModel from '../../common/map/GltfModel.svelte';
   import soldierModel from '$lib/assets/three/models/Soldier.glb';
   import { afterUpdate, onDestroy, onMount } from 'svelte';
   import moment from 'moment';
+  import {
+    LocalDataStream,
+    RemoteDataStream,
+    SkyWayContext,
+    SkyWayRoom,
+    SkyWayStreamFactory,
+    uuidV4
+  } from '@skyway-sdk/room';
+  import type {
+    DataStreamMessageType,
+    RoomSubscription,
+    RoomPublication,
+    LocalP2PRoomMember,
+    RemoteRoomMember
+  } from '@skyway-sdk/room';
+  import { getRoomType, getSkyWayToken } from '../../common/skyway/skywayConfig';
+  import { exchangeBlobToUrl, generateRandomColor, initOtherState, initState } from './settings';
+  import type { ModelProps, SendLatLngProps, SendModelProps } from './settings';
 
   // NOTE: 東京タワーふもとの一定区画の範囲でランダムに座標を取りたい
   // 139.74601546518954 ~ 139.7461369537515,
@@ -36,124 +51,100 @@
   let modelDirection = 0;
   let modelElevation = 0;
   let isRunning = true;
+  // NOTE: using webRTC
+  let dataStream: LocalDataStream;
+  let me: LocalP2PRoomMember;
+  let myPublication: RoomPublication<LocalDataStream>;
+  let subscriptions: { [key: string]: RoomSubscription<RemoteDataStream> } = {};
 
-  // NOTE: Dead
-  // NOTE: setting websocket
-  // let ws: WebSocket;
-  // let wsSid: number = 0;
-
-  // NOTE: otherModelInformation
-  interface OhterModelPorps {
-    [key: number]: {
-      lat: number;
-      lng: number;
-      elevation: number;
-      direction: number;
-      timestamp: number;
-      moving:boolean;
-      isRunning:boolean;
-    };
-  }
-
-  // NOTE: Dead
-  // let others: OhterModelPorps = {};
-  // const DELETE_JUDGE_DURATION = 120 * 1000;
+  let others: { [key: string]: ModelProps } = {};
+  let myState: ModelProps & { name: string } = initState();
 
   onMount(() => {
-    // NOTE: Dead
-    // WS接続(to Achex)
-    // ws = new WebSocket('wss://cloud.achex.ca/itouoti_samplepage');
-    // WS接続時callback
-    // ws.onopen = (e) => {
-    //   console.log('open websocket');
-    //   // Authentificate request
-    //   ws.send(JSON.stringify({ auth: 'model', password: '9999' }));
-    // };
+    const initialize = async () => {
+      // NOTE: initialize
+      dataStream = await SkyWayStreamFactory.createDataStream();
+      const context = await SkyWayContext.Create(getSkyWayToken());
+      // NOTE: create and get room
+      const room = await SkyWayRoom.FindOrCreate(context, getRoomType());
+      // NOTE: setting my Status
+      myState.name = uuidV4();
+      myState.color = generateRandomColor();
+      // NOTE: join room
+      me = await room.join({
+        name: myState.name,
+        metadata: JSON.stringify({ color: myState.color, model: '' })
+      });
+      myState.id = me.id;
+      myState = myState;
+      // NOTE: 配信開始
+      myPublication = await me.publish(dataStream);
+      // NOTE: 現在参加/配信中のmemberの設定
+      room.publications
+        .filter((p) => p.publisher.id !== me.id)
+        .forEach(async (p) => {
+          // NOTE: 初期情報設定
+          if (p.publisher.name) {
+            console.log('既にいるメンバー');
 
-    // WS受信時callback
-    // ws.onmessage = (e) => {
-    //   var msg = JSON.parse(e.data);
-    //   if (!wsSid && msg.auth === 'OK') {
-    //     console.log('Authentificate oK');
-    //     wsSid = msg.SID;
-    //     // join Hub
-    //     ws.send(JSON.stringify({ joinHub: 'mapboxwalking' }));
-    //     ws.send(
-    //       JSON.stringify({
-    //         to: 'model',
-    //         lat: modelLat,
-    //         lng: modelLng,
-    //         elevation: modelElevation,
-    //         direction: modelDirection,
-    //         timestamp: moment().valueOf(),
-    //         isRunning,
-    //         moving:false,
-    //         // modelBinaly: 'xxxxxx'
-    //       })
-    //     );
-    //     return;
-    //   }
+            const metadataJson = p.publisher.metadata ? JSON.parse(p.publisher.metadata) : {};
+            others[p.publisher.name] = initOtherState(p.publisher.id, metadataJson.color);
+            // NOTE: モデル設定済みの場合設定
+            if (metadataJson.model) {
+              const url = exchangeBlobToUrl(metadataJson.model);
+              // TODO: モデルの描画
 
-    //   if (msg.joinHub === 'OK') {
-    //     console.log('join hub oK');
-    //     return;
-    //   }
+              others[p.publisher.name].model = url;
+              others[p.publisher.name].modelType = metadataJson.modelType;
+            }
+            others = others;
+          }
 
-    //   if (wsSid === msg.sID) {
-    //     return;
-    //   }
+          // NOTE: subscribe設定
+          const remoteMember = await me.subscribe<RemoteDataStream>(p.id);
+          subscriptions[p.id] = remoteMember.subscription;
+          remoteMember.stream.onData.add(updateOthersState);
+        });
 
-    //   // NOTE: use Debug
-    //   // console.log(msg);
+      // NOTE: roomにメンバーが新規参加
+      room.onMemberJoined.add(async (event) => {
+        if (event.member.name) {
+          console.log('メンバー新規参加');
+          // NOTE: 初期情報設定
+          const metadataJson = event.member.metadata ? JSON.parse(event.member.metadata) : {};
+          others[event.member.name] = initOtherState(event.member.id, metadataJson.color);
+          others = others;
+        }
+      });
 
-    //   // NOTE: 他のユーザーがセッションを抜けた
-    //   if(msg.leftHub === 'mapboxwalking'){
-    //     console.log(`${msg.sID}:leave session`);
-    //     delete others[msg.sID];
-    //     // NOTE: renderをトリガー
-    //     others = others;
-    //     return;
-    //   }
+      // NOTE: roomからメンバーが離脱
+      room.onMemberLeft.add((event) => {
+        if (event.member.id === me.id) return;
+        subscriptions[event.member.id]?.cancel();
+        if (event.member.name) {
+          console.log('メンバー離脱');
+          delete others[event.member.name];
+          others = others;
+        }
+      });
 
-    //   // NOTE: 他のモデルの情報を更新
-    //   others[msg.sID] = {
-    //     lat: msg.lat,
-    //     lng: msg.lng,
-    //     elevation: msg.elevation,
-    //     direction: msg.direction,
-    //     timestamp: msg.timestamp,
-    //     moving:msg.moving,
-    //     isRunning:msg.isRunning,
-    //   };
-    //   // console.log(others)
-
-    //   // NOTE: 他のモデルで一定時間動きがない場合は表示を消す
-    //   const nowTimestamp = moment().valueOf();
-    //   let dleteTargetSID: number[] = [];
-    //   Object.keys(others).forEach((other) => {
-    //     const targetTimestamp = others[Number(other)].timestamp;
-    //     if (nowTimestamp - targetTimestamp === DELETE_JUDGE_DURATION) {
-    //       dleteTargetSID.push(Number(other));
-    //     }
-    //   });
-    //   dleteTargetSID.forEach((target) => {
-    //     console.log(`${msg.sID}: session timeout`);
-    //     delete others[target];
-    //   });
-    //   // NOTE: renderをトリガー
-    //   others = others;
-    // };
-
-    // WS切断時callback
-    // ws.onclose = (e) => {
-    //   console.log('closed');
-    //   // leave message
-    //   // ws.send(JSON.stringify({ to: 'model', leave: 'OK' }));
-    // };
+      // NOTE: roomに新規メンバーがpublish開始した時
+      room.onStreamPublished.add(async (event) => {
+        if (event.publication.id === me.id) return;
+        const remoteMember = await me.subscribe<RemoteDataStream>(event.publication.id);
+        subscriptions[event.publication.id] = remoteMember.subscription;
+        remoteMember.stream.onData.add(updateOthersState);
+      });
+    };
+    initialize();
   });
   onDestroy(() => {
-    // NOTE: Dead
-    // ws.close();
+    // NOTE: publishを停止
+    myPublication?.cancel();
+    // NOTE: subscribeを停止
+    Object.keys(subscriptions).forEach((key) => {
+      subscriptions[key].cancel();
+    });
   });
 
   let latestSendTime = moment().valueOf();
@@ -161,29 +152,52 @@
   afterUpdate(() => {
     if (!needupdate) return;
 
-    // NOTE: Dead
-    // if (!!ws && ws.readyState === ws.OPEN) {
-    //   const nowTimestamp = moment().valueOf();
-    //   // NOTE: 0.5秒ごとにsendするように
-    //   if (nowTimestamp - latestSendTime > SEND_PER_DURATION) {
-    //     console.log('send position');
-    //     ws.send(
-    //       JSON.stringify({
-    //         to: 'model',
-    //         lat: modelLat,
-    //         lng: modelLng,
-    //         elevation: modelElevation,
-    //         direction: modelDirection,
-    //         timestamp: nowTimestamp,
-    //         isRunning,
-    //         moving:true
-    //       })
-    //     );
-    //     latestSendTime = nowTimestamp;
-    //   }
-    // }
+    // NOTE: 位置情報送信
+    if (!dataStream) return;
+    const nowTimestamp = moment().valueOf();
+    // NOTE: 0.5秒ごとに送信する
+    if (nowTimestamp - latestSendTime > SEND_PER_DURATION) {
+      const writeObject: SendLatLngProps = {
+        name: myState.name,
+        lat: modelLat,
+        lng: modelLng,
+        direction: modelDirection,
+        elevation: modelElevation,
+        isRunning,
+        moving: true,
+        timestamp: nowTimestamp
+      };
+      dataStream.write(writeObject);
+      myState = { ...myState, ...writeObject };
+      myState = myState;
+
+      latestSendTime = nowTimestamp;
+    }
+
     needupdate = false;
   });
+
+  const updateOthersState = (data: DataStreamMessageType) => {
+    // NOTE: 位置情報受信時
+    if ((data as SendLatLngProps).direction) {
+      others[(data as SendLatLngProps).name] = {
+        ...others[(data as SendLatLngProps).name],
+        ...(data as SendLatLngProps)
+      };
+      others = others;
+    }
+
+    // NOTE: モデルデータ受信時
+    if ((data as SendModelProps).model) {
+      if (others[(data as SendModelProps).name]) {
+        const url = exchangeBlobToUrl((data as SendModelProps).model);
+        // TODO: モデルの描画
+        others[(data as SendModelProps).name].model = url;
+        others[(data as SendModelProps).name].modelType = (data as SendModelProps).modelType;
+        others = others;
+      }
+    }
+  };
 
   function changeZoom(event: CustomEvent<{ zoom: number }>) {
     zoom = event.detail.zoom;
@@ -206,27 +220,31 @@
     isTracking = !isTracking;
   }
 
-  function stopMove(event: CustomEvent){
-    console.log('stop move')
-    // NOTE: Dead
-    // if (!!ws && ws.readyState === ws.OPEN) {
-    //   ws.send(
-    //     JSON.stringify({
-    //       to: 'model',
-    //       lat: modelLat,
-    //       lng: modelLng,
-    //       elevation: modelElevation,
-    //       direction: modelDirection,
-    //       timestamp: moment().valueOf(),
-    //       isRunning,
-    //       moving:false
-    //     })
-    //   );
-    // }
+  function stopMove(event: CustomEvent) {
+    if (!dataStream) return;
+    const writeObject: SendLatLngProps = {
+      name: myState.name,
+      lat: modelLat,
+      lng: modelLng,
+      direction: modelDirection,
+      elevation: modelElevation,
+      isRunning,
+      moving: false,
+      timestamp: moment().valueOf()
+    };
+    dataStream.write(writeObject);
+    myState = { ...myState, ...writeObject };
+    myState = myState;
   }
 
   function updateModelPositionOnMap(
-    event: CustomEvent<{ lngLat: mapboxgl.LngLat; isTracking: boolean; directionOnMap: number; elevation: number,isRun:boolean }>
+    event: CustomEvent<{
+      lngLat: mapboxgl.LngLat;
+      isTracking: boolean;
+      directionOnMap: number;
+      elevation: number;
+      isRun: boolean;
+    }>
   ) {
     needupdate = true;
     modelLng = event.detail.lngLat.lng;
@@ -250,7 +268,7 @@
   <button class="bg-sky-500/75" on:click={() => changeWalk(false)}>ManualWalk</button>
   <button class="bg-lime-500/75" on:click={() => toggleTracking()}>Tracking</button>
   <!-- NOTE: DEAD -->
-  <!-- <div>now login session: me and {Object.keys(others).length}people.</div> -->
+  <div>now login session: me and {Object.keys(others).length}people.</div>
 </div>
 <div class="h-screen w-screen">
   <Map
@@ -259,13 +277,13 @@
     {bearing}
     {pitch}
     {zoom}
-    glVer='v3'
-    lightPreset='dusk'
+    glVer="v3"
+    lightPreset="dusk"
     on:changePich={changePitch}
     on:changeRotate={changePitch}
     on:changeZoom={changeZoom}
     on:changeCenter={changeCenter}>
-    <TerrainLayer glVer='v3' />
+    <TerrainLayer glVer="v3" />
     <GltfModel
       layerId="soldier"
       modelOrigin={[lng, lat]}
@@ -276,25 +294,25 @@
       {isAutowalk}
       isTrackingModel={isTracking}
       isMe
-      glVer='v3'
-      on:changeLngLat={updateModelPositionOnMap} 
-      on:stopMove={stopMove}
-    />
+      glVer="v3"
+      color={myState.color}
+      on:changeLngLat={updateModelPositionOnMap}
+      on:stopMove={stopMove} />
 
-    <!-- NOTE: DEAD -->
     <!-- 他の人がアクセスしてきた時 -->
-    <!-- {#each Object.keys(others) as key}
+    {#each Object.keys(others) as key}
       <GltfModel
         layerId={key}
-        modelOrigin={[others[Number(key)].lng, others[Number(key)].lat]}
+        modelOrigin={[others[key].lng, others[key].lat]}
         modelPath={soldierModel}
-        scale={2}
+        scale={2.5}
         {movingOffset}
-        elevation={others[Number(key)].elevation}
-        direction={others[Number(key)].direction}
-        isAutowalk={others[Number(key)].moving}
-        isRunning={others[Number(key)].isRunning}
-      />
-    {/each} -->
+        glVer="v3"
+        elevation={others[key].elevation}
+        direction={others[key].direction}
+        isAutowalk={others[key].moving}
+        isRunning={others[key].isRunning}
+        color={others[key].color} />
+    {/each}
   </Map>
 </div>
