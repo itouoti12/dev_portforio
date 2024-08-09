@@ -137,7 +137,7 @@
     if (
       pageElements['skills_detail'].isDisplay &&
       !pageElements['project_detail'].isDisplay &&
-      pageElements['project_detail'].isTrrigerd 
+      pageElements['project_detail'].isTrrigerd
     ) {
       map?.flyTo({
         center: [139.777116, 35.723513],
@@ -166,27 +166,26 @@
     });
   }
 
-  function changeDarkMode(event: CustomEvent<{isDarkmode:boolean}>){
+  function changeDarkMode(event: CustomEvent<{ isDarkmode: boolean }>) {
     const isDarkmode = event.detail.isDarkmode;
     const map = get(storemap);
 
-    function change(){
+    function change() {
       map?.setFog({
-        color:'rgb(255, 255, 255)',
-        "high-color":isDarkmode?'rgb(41, 209, 255)':'rgb(180, 227, 104)',
-        'horizon-blend':0.05,
-        "space-color":isDarkmode?'rgb(26, 1, 61)':'rgb(192, 235, 242)',
-        'star-intensity':isDarkmode?0.3:0,
+        color: 'rgb(255, 255, 255)',
+        'high-color': isDarkmode ? 'rgb(41, 209, 255)' : 'rgb(180, 227, 104)',
+        'horizon-blend': 0.05,
+        'space-color': isDarkmode ? 'rgb(26, 1, 61)' : 'rgb(192, 235, 242)',
+        'star-intensity': isDarkmode ? 0.3 : 0
       });
     }
-    if(map?.isStyleLoaded()){
+    if (map?.isStyleLoaded()) {
       change();
-    }else{
-      map?.on('style.load',()=>{
+    } else {
+      map?.on('style.load', () => {
         change();
-      })
+      });
     }
-    
   }
 </script>
 
@@ -207,8 +206,7 @@
         {movingOffset}
         isTrackingModel
         isMe
-        isAutowalk
-        />
+        isAutowalk />
     {/if}
   </Map>
 </div>
@@ -225,7 +223,7 @@
 <div class="fixed top-0 left-0 w-screen h-16 z-10 backdrop-blur-sm bg-white/10 text-white">
   <div class="h-full grid grid-cols-12">
     <div class="col-span-2 mx-auto my-auto">
-      <DarkButton on:change={changeDarkMode}/>
+      <DarkButton on:change={changeDarkMode} />
     </div>
 
     <div class="col-end-13 col-span-3 mx-auto my-auto">
@@ -489,19 +487,17 @@
     </div>
   </section>
 
-
   <section class="h-screen w-screen flex justify-center items-center">
     <h1 class="text-6xl font-bold">WORKS</h1>
   </section>
 
   <section class="h-screen w-screen flex justify-center items-center">
-
-    <div class="grid grid-cols-7 ">
+    <div class="grid grid-cols-7">
       <!-- mapbox上でモデルを動かす -->
       <div class="col-start-2 col-end-4">
         <a href="/samplepage/mapbox" role="button" target="_blank" class="hover:brightness-110">
           <div class="max-w-sm rounded overflow-hidden shadow-lg bg-slate-50 dark:bg-slate-800">
-            <img class="w-full h-60 object-cover" src={worksImg1} alt="Sunset in the mountains">
+            <img class="w-full h-60 object-cover" src={worksImg1} alt="Sunset in the mountains" />
             <div class="px-6 py-4 h-40">
               <div class="font-bold text-xl mb-2">Digital twin</div>
               <p class="text-base">
@@ -522,12 +518,12 @@
       <div class="col-start-5 col-end-7">
         <a href="/samplepage/three-vrm" role="button" target="_blank" class="hover:brightness-110">
           <div class="max-w-sm rounded overflow-hidden shadow-lg bg-slate-50 dark:bg-slate-800">
-            <img class="w-full h-60 object-cover" src={worksImg_threejsvrm} alt="Sunset in the mountains">
+            <img class="w-full h-60 object-cover" src={worksImg_threejsvrm} alt="Sunset in the mountains" />
             <div class="px-6 py-4 h-40">
               <div class="font-bold text-xl mb-2">Vrm Model Controls</div>
               <p class="text-base">
-                Vrm Model Controls on Svelte with three.js.
-                In addition, Mixamo Animation is attached after model loaded.
+                Vrm Model Controls on Svelte with three.js. In addition, Mixamo Animation is attached after model
+                loaded.
               </p>
             </div>
             <div class="px-6 pt-4 pb-2 h-32">
@@ -538,9 +534,7 @@
           </div>
         </a>
       </div>
-  </div>
-
-
+    </div>
   </section>
 
   <section class="h-screen w-screen flex justify-center items-center">
@@ -555,6 +549,29 @@
       <a href="https://ito-u-oti.com/" role="button" target="_blank" class="ml-10">
         <i class="fa-brands fa-wordpress fa-4x hover:text-slate-800 dark:hover:text-slate-200" />
       </a>
+    </div>
+  </section>
+
+  <section class="h-screen w-screen flex justify-center items-center">
+    <h1 class="text-6xl font-bold">PATENT</h1>
+  </section>
+
+  <section class="h-screen w-6/12 my-auto mx-auto py-40">
+    <div class="grid grid-rows-4 grid-cols-2 grid-flow-col gap-1">
+      <div class="row-span-4">特開2024-066676</div>
+      <div class="col-span-1">
+        <a href="https://jglobal.jst.go.jp/detail?JGLOBAL_ID=202403001530235598&rel=1" role="button" target="_blank" class="hover:text-[#0000ee]">
+          ウォーターサーバーの管理システム
+        </a>
+      </div>
+    </div>
+    <div class="grid grid-rows-4 grid-cols-2 grid-flow-col gap-1">
+      <div class="row-span-4">特開2023-158808</div>
+      <div class="col-span-1">
+        <a href="https://jglobal.jst.go.jp/detail?JGLOBAL_ID=202403000064684631&rel=1" role="button" target="_blank" class="hover:text-[#0000ee]">
+          情報処理装置、自動運転車両予約方法、および自動運転車両予約プログラム
+        </a>
+      </div>
     </div>
   </section>
 
