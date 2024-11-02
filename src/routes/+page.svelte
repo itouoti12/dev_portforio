@@ -474,7 +474,7 @@
       <div class="col-span-1" bind:this={portforioTexts['projects_6_product'].el}>
         {portforioTexts['projects_6_product'].en}
       </div>
-      <div class="row-span-2 col-span-1 text-xs">"TERASOLUNA batch" document writer</div>
+      <div class="row-span-2 col-span-1 text-xs">Open-source framework document writer</div>
     </div>
     <div class="grid grid-rows-4 grid-cols-2 grid-flow-col gap-1">
       <div class="row-span-4" bind:this={portforioTexts['projects_7_company'].el}>
@@ -586,7 +586,7 @@
       </p>
 
       <div class="pl-24 pt-3">
-        <a href="https://twitter.com/itouoti_iot" role="button" target="_blank">
+        <a href="https://twitter.com/kanito_u_oti" role="button" target="_blank">
           <i class="fa-brands fa-x-twitter fa-xl hover:text-slate-800 dark:hover:text-slate-200" />
         </a>
         <a href="https://www.linkedin.com/in/itouoti/" role="button" target="_blank" class="ml-2">
