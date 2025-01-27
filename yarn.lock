@@ -1935,9 +1935,9 @@
     "@types/geojson" "*"
 
 "@types/geojson@*", "@types/geojson@^7946.0.15":
-  version "7946.0.15"
-  resolved "https://registry.yarnpkg.com/@types/geojson/-/geojson-7946.0.15.tgz#f9d55fd5a0aa2de9dc80b1b04e437538b7298868"
-  integrity sha512-9oSxFzDCT2Rj6DfcHF8G++jxBKS7mBqXl5xrRW+Kbvjry6Uduya2iiwqHPhVXpasAVMBYKkEPGgKhd3+/HZ6xA==
+  version "7946.0.16"
+  resolved "https://registry.yarnpkg.com/@types/geojson/-/geojson-7946.0.16.tgz#8ebe53d69efada7044454e3305c19017d97ced2a"
+  integrity sha512-6C8nqWur3j98U6+lXDfTUWIfgvZU+EumvpHKcYjujKH7woYyLj2sUmff0tRhrqM7BohUw7Pz3ZB1jj2gW9Fvmg==
 
 "@types/geojson@7946.0.8":
   version "7946.0.8"
@@ -3566,9 +3566,9 @@ magic-string@^0.30.4, magic-string@^0.30.5:
     "@jridgewell/sourcemap-codec" "^1.5.0"
 
 mapbox-gl@^3.5.2:
-  version "3.9.3"
-  resolved "https://registry.yarnpkg.com/mapbox-gl/-/mapbox-gl-3.9.3.tgz#07e67fd774af52b6e50e82172ee8f1f016d74618"
-  integrity sha512-31mh95f35srpBMxAP32F9dKQXz7pT5VxQA5r6bFY6Aa5G6Z6NC/SVOTyWR+G/wY8wXWTHAnOaAAf5UkD5++/Kg==
+  version "3.9.4"
+  resolved "https://registry.yarnpkg.com/mapbox-gl/-/mapbox-gl-3.9.4.tgz#a80777d4f57267e021001337b712ac2c28cfd15e"
+  integrity sha512-IxfpdyNzjCMzkqj/q5OUamlF1QcS+IFEARteygEgao2B8l8+UF2ahpNRgHT2EpMSE8ma1bq4LKvr+EuJ6gqniw==
   dependencies:
     "@mapbox/jsonlint-lines-primitives" "^2.0.2"
     "@mapbox/mapbox-gl-supported" "^3.0.0"
