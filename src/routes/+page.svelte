@@ -17,6 +17,8 @@
   import worksImg1 from '$lib/assets/img/mapbox_on_model.png';
   import worksImg2 from '$lib/assets/img/threejs_basic_controls.png';
   import worksImg_threejsvrm from '$lib/assets/img/threejs_vrm.png';
+  import worksImg_tamaki from '$lib/assets/img/tamaki_ss.png';
+  import worksImg_storytailor from '$lib/assets/img/storytailor_ss.png';
 
   let totalPageHeight: number;
   let viewHeight: number;
@@ -309,6 +311,15 @@
         {portforioTexts['history_3_position'].en}
       </div>
     </div>
+    <div class="grid grid-rows-4 grid-cols-2 grid-flow-col gap-1">
+      <div class="row-span-4">2024.12 - 2025.01</div>
+      <div class="col-span-1" bind:this={portforioTexts['history_4'].el}>
+        {portforioTexts['history_4'].en}
+      </div>
+      <div class="row-span-2 col-span-1 text-xs" bind:this={portforioTexts['history_4_position'].el}>
+        {portforioTexts['history_4_position'].en}
+      </div>
+    </div>
   </section>
 
   <section class="h-screen w-screen flex justify-center items-center">
@@ -362,6 +373,7 @@
       <br />
       <span class="skill-badge-gray">Pytorch</span>
       <span class="skill-badge-gray">Flutter</span>
+      <span class="skill-badge-gray">React Native</span>
       <span class="skill-badge-gray">Googel App Script</span>
     </div>
 
@@ -392,6 +404,7 @@
       <span class="skill-badge-gray">vagrant</span>
       <span class="skill-badge-gray">docker</span>
       <span class="skill-badge-gray">AWS</span>
+      <span class="skill-badge-gray">Firebase</span>
     </div>
 
     <h2 class="text-4xl pt-8 pb-4">AUTOMATION</h2>
@@ -422,6 +435,15 @@
     <h1 class="text-6xl font-bold">PROJECTS</h1>
   </section>
   <section class="w-6/12 my-auto mx-auto py-40" bind:this={pageElements['project_detail']}>
+    <div class="grid grid-rows-3 grid-cols-2 grid-flow-col gap-1">
+      <div class="row-span-3" bind:this={portforioTexts['projects_vls_solution'].el}>
+        {portforioTexts['projects_vls_solution'].en}
+      </div>
+      <div class="col-span-1" bind:this={portforioTexts['projects_vls_solution_product'].el}>
+        {portforioTexts['projects_vls_solution_product'].en}
+      </div>
+      <div class="row-span-2 col-span-1 text-xs">frontend engineer</div>
+    </div>
     <div class="grid grid-rows-3 grid-cols-2 grid-flow-col gap-1">
       <div class="row-span-3" bind:this={portforioTexts['projects_1_company'].el}>
         {portforioTexts['projects_1_company'].en}
@@ -492,7 +514,7 @@
   </section>
 
   <section class="h-screen w-screen flex justify-center items-center">
-    <div class="grid grid-cols-7">
+    <div class="grid grid-cols-7 gap-4">
       <!-- mapbox上でモデルを動かす -->
       <div class="col-start-2 col-end-4">
         <a href="/samplepage/mapbox" role="button" target="_blank" class="hover:brightness-110">
@@ -514,6 +536,7 @@
           </div>
         </a>
       </div>
+
       <!-- VRMモデルを動かす -->
       <div class="col-start-5 col-end-7">
         <a href="/samplepage/three-vrm" role="button" target="_blank" class="hover:brightness-110">
@@ -530,6 +553,53 @@
               <span class="skill-badge-gray">three.js</span>
               <span class="skill-badge-gray">svelte.js</span>
               <span class="skill-badge-gray">Typescript</span>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <div class="col-start-2 col-end-4">
+        <a
+          href="https://apps.apple.com/us/app/storytailor/id6744620244?itscg=30200&itsct=apps_box_link&mttnsubad=6744620244"
+          role="button"
+          target="_blank"
+          class="hover:brightness-110">
+          <div class="max-w-sm rounded overflow-hidden shadow-lg bg-slate-50 dark:bg-slate-800">
+            <img class="w-full h-60 object-cover" src={worksImg_storytailor} alt="Sunset in the mountains" />
+            <div class="px-6 py-4 h-40">
+              <div class="font-bold text-xl mb-2">Storytailor (for iOS, Android)</div>
+              <p class="text-base">
+                StoryTailor is an application that generates unique and original stories based on words entered by the
+                user.
+              </p>
+            </div>
+            <div class="px-6 pt-4 pb-2 h-32">
+              <span class="skill-badge-gray">React Native</span>
+              <span class="skill-badge-gray">Firebase</span>
+              <span class="skill-badge-gray">Typescript</span>
+              <span class="skill-badge-gray">Recraft AI API</span>
+              <span class="skill-badge-gray">Open AI API</span>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <div class="col-start-5 col-end-7">
+        <a href="https://busstop.tamaki.ito-u-oti.com/" role="button" target="_blank" class="hover:brightness-110">
+          <div class="max-w-sm rounded overflow-hidden shadow-lg bg-slate-50 dark:bg-slate-800">
+            <img class="w-full h-60 object-cover" src={worksImg_tamaki} alt="Sunset in the mountains" />
+            <div class="px-6 py-4 h-40">
+              <div class="font-bold text-xl mb-2">TAMAKI (for iOS, Android)</div>
+              <p class="text-base">
+                TAMAKI is an application that specializes in accurately and quickly displaying the estimated arrival
+                time of public transportation buses.
+              </p>
+            </div>
+            <div class="px-6 pt-4 pb-2 h-32">
+              <span class="skill-badge-gray">React Native</span>
+              <span class="skill-badge-gray">Firebase</span>
+              <span class="skill-badge-gray">Typescript</span>
+              <span class="skill-badge-gray">GTFS Open Data</span>
             </div>
           </div>
         </a>
@@ -560,7 +630,11 @@
     <div class="grid grid-rows-4 grid-cols-2 grid-flow-col gap-1">
       <div class="row-span-4">特開2024-066676</div>
       <div class="col-span-1">
-        <a href="https://jglobal.jst.go.jp/detail?JGLOBAL_ID=202403001530235598&rel=1" role="button" target="_blank" class="hover:text-[#0000ee]">
+        <a
+          href="https://jglobal.jst.go.jp/detail?JGLOBAL_ID=202403001530235598&rel=1"
+          role="button"
+          target="_blank"
+          class="hover:text-[#0000ee]">
           ウォーターサーバーの管理システム
         </a>
       </div>
@@ -568,7 +642,11 @@
     <div class="grid grid-rows-4 grid-cols-2 grid-flow-col gap-1">
       <div class="row-span-4">特開2023-158808</div>
       <div class="col-span-1">
-        <a href="https://jglobal.jst.go.jp/detail?JGLOBAL_ID=202403000064684631&rel=1" role="button" target="_blank" class="hover:text-[#0000ee]">
+        <a
+          href="https://jglobal.jst.go.jp/detail?JGLOBAL_ID=202403000064684631&rel=1"
+          role="button"
+          target="_blank"
+          class="hover:text-[#0000ee]">
           情報処理装置、自動運転車両予約方法、および自動運転車両予約プログラム
         </a>
       </div>

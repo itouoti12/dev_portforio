@@ -71,6 +71,14 @@ export const defportforioTexts: PortforioTextProps = {
     jp: 'フロントエンドエンジニア',
     en: 'Frontend Engineer'
   },
+  history_4: {
+    jp: 'VLS Solutions',
+    en: 'VLS Solutions.'
+  },
+  history_4_position: {
+    jp: 'フロントエンドエンジニア',
+    en: 'Frontend Engineer'
+  },
   // NOTE: SKILL
   skill_note1: {
     jp: 'このポートフォリオで使われている技術については',
@@ -81,6 +89,14 @@ export const defportforioTexts: PortforioTextProps = {
     en: ''
   },
   // NOTE: PROJECTS
+  projects_vls_solution: {
+    jp: 'VLS Solutions',
+    en: 'VLS Solutions'
+  },
+  projects_vls_solution_product: {
+    jp: 'AIエージェントを活用したB2B向けの業務効率化ネイティブアプリ開発',
+    en: 'Development of B2B Business Efficiency Native App Using AI Agent'
+  },
   projects_1_company: {
     jp: 'BOLDLY',
     en: 'BOLDLY'
