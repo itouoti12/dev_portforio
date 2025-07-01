@@ -597,32 +597,32 @@
   resolved "https://registry.yarnpkg.com/@sinclair/typebox/-/typebox-0.27.8.tgz#6667fac16c436b5434a387a34dedb013198f6e6e"
   integrity sha512-+Fj43pSMwJs4KRrH/938Uf+uAELIgVBmQzg/q1YG10djyfA3TnrU8N8XzqCh/okZdszqBQTZf96idMfE5lnwTA==
 
-"@skyway-sdk/analytics-client@1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@skyway-sdk/analytics-client/-/analytics-client-1.0.2.tgz#97cfd8ec6243fe706f8d418c15ae4219b752ed20"
-  integrity sha512-CrBNX8gh8SgcK/CJDWzngpbaVEUduAZNfXU8IjpBvgTETqIvyoYYDeUY9yC2M/FrvnKwK/U1hMTS5Ki/yHWNjw==
+"@skyway-sdk/analytics-client@1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@skyway-sdk/analytics-client/-/analytics-client-1.0.3.tgz#8846503ebdc2831f36bb0019b496652a65c43716"
+  integrity sha512-9qq+vJKAOtVqelsSnCOuf4RdQzNGoQNJjUl0mfo/1F0VOaMEED+lXSIwQdaoJUofSmu9MNLulYGOWgMInl2BsA==
   dependencies:
     isomorphic-ws "^4.0.1"
     uuid "^9.0.0"
     ws "^8.17.1"
 
-"@skyway-sdk/common@1.4.9":
-  version "1.4.9"
-  resolved "https://registry.yarnpkg.com/@skyway-sdk/common/-/common-1.4.9.tgz#f67f3d0b0309536130732388337a38cf9175a199"
-  integrity sha512-aPzSMnvmRZr0nbrw+F15h8bAKTinBj2qoIhdAePk3asOQ5oHHwtXTzjlYRbowKjT/zsEHtib+RJa8EYOV/rZZA==
+"@skyway-sdk/common@1.4.10":
+  version "1.4.10"
+  resolved "https://registry.yarnpkg.com/@skyway-sdk/common/-/common-1.4.10.tgz#d990c94bac5ce3c2b14dfa652e31c945f07aae0c"
+  integrity sha512-LlzjS71V2ziBu2cqD6XMERdGCk8b/eio6beQvi2dm5lEW6GxEDfl/7ZZvu5Q05bBRd0TNbxrSXrWa+fFVy3umg==
   dependencies:
     axios "^1.7.7"
 
-"@skyway-sdk/core@1.13.1":
-  version "1.13.1"
-  resolved "https://registry.yarnpkg.com/@skyway-sdk/core/-/core-1.13.1.tgz#a4cb2343c9b7f3e60b6f9498c28b862842aa0ad8"
-  integrity sha512-POST/mGgTE38aDNS2GH1ERSO3MLe6xl/nSbqCVAWYH+8EuUdpjVKKkIeVfKyUqp09J/4RWUnOCey7V4Y91CblQ==
+"@skyway-sdk/core@1.13.2":
+  version "1.13.2"
+  resolved "https://registry.yarnpkg.com/@skyway-sdk/core/-/core-1.13.2.tgz#4129b63d8dd84658cabd58201e1b77d883c2d5af"
+  integrity sha512-AjBqPUyn6lC4Uwry7q+fSfQERLTpuUOtO86/cgUocsMDp24BhTUFuTUqvp4K4xssTF8QN0jF5ht0bX3gZyjB7g==
   dependencies:
-    "@skyway-sdk/analytics-client" "1.0.2"
-    "@skyway-sdk/common" "1.4.9"
-    "@skyway-sdk/rtc-api-client" "1.8.1"
-    "@skyway-sdk/signaling-client" "1.0.8"
-    "@skyway-sdk/token" "1.7.1"
+    "@skyway-sdk/analytics-client" "1.0.3"
+    "@skyway-sdk/common" "1.4.10"
+    "@skyway-sdk/rtc-api-client" "1.8.2"
+    "@skyway-sdk/signaling-client" "1.0.9"
+    "@skyway-sdk/token" "1.7.2"
     bowser "^2.11.0"
     deepmerge "^4.3.1"
     lodash "4.17.21"
@@ -630,78 +630,78 @@
     ua-parser-js "^1.0.35"
     uuid "^9.0.0"
 
-"@skyway-sdk/model@1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@skyway-sdk/model/-/model-1.0.2.tgz#e025ea1ce8a6c958128f5e17c52cdc268eeb76d0"
-  integrity sha512-t1Xo7QibNuVLx+PK4eCy4xOT7K+Tw8B+NjknK28vpBvVDSvB/Gm4XWWOdVy83O5ZNSFSG1QOO21Tz1c/NDyW0w==
+"@skyway-sdk/model@1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@skyway-sdk/model/-/model-1.0.3.tgz#dc635794e69efbcc270a0fec5dee7b3e105c8739"
+  integrity sha512-1sFnOY9phuO+v6f9HVeMCSRxHSkPRi2JdQVwUhqW0ArGwmBqUK+jIfU7qXGbRiuE0vxosBu+gDlMK0pw40ehSQ==
 
 "@skyway-sdk/room@^1.5.4":
-  version "1.13.1"
-  resolved "https://registry.yarnpkg.com/@skyway-sdk/room/-/room-1.13.1.tgz#c15fcdea7ad6738d8fce1462e2425aa5e6f9f4fc"
-  integrity sha512-3JV/dzm+l5gI2AaTLW0+KpjG3Y0pzASkYD3ONUMedDXkmgJn/snCxNN/PRxwhkBvuJHZYdB7ErZ72Vj6C9/6lg==
+  version "1.13.2"
+  resolved "https://registry.yarnpkg.com/@skyway-sdk/room/-/room-1.13.2.tgz#6cde01f26d725fd22ec566f02937a3c9f326976d"
+  integrity sha512-4gkNUfytKe+uib6CyfTzDePDMCpR5VTAHq/ffAX1IPgSxBloS3U4LpuhrNo0Sl1T0SLbeDB73UmVnXtGSF0/ig==
   dependencies:
-    "@skyway-sdk/common" "1.4.9"
-    "@skyway-sdk/core" "1.13.1"
-    "@skyway-sdk/sfu-bot" "1.13.1"
-    "@skyway-sdk/token" "1.7.1"
+    "@skyway-sdk/common" "1.4.10"
+    "@skyway-sdk/core" "1.13.2"
+    "@skyway-sdk/sfu-bot" "1.13.2"
+    "@skyway-sdk/token" "1.7.2"
     uuid "^9.0.0"
 
-"@skyway-sdk/rtc-api-client@1.8.1":
-  version "1.8.1"
-  resolved "https://registry.yarnpkg.com/@skyway-sdk/rtc-api-client/-/rtc-api-client-1.8.1.tgz#ea0758e29b86d202a2b3d7b48543e3108ca39701"
-  integrity sha512-qkfn9zUVE930lC8h6hdLPp3wvkVooCVjSMeBY7u6452pD9+OXzCl3Dm7V8iGSt/ZBlMM4+aRkTsC17ZWIFjI3w==
+"@skyway-sdk/rtc-api-client@1.8.2":
+  version "1.8.2"
+  resolved "https://registry.yarnpkg.com/@skyway-sdk/rtc-api-client/-/rtc-api-client-1.8.2.tgz#0915b7ff0adaa1d7486ef202b3ab70fab38397f6"
+  integrity sha512-aybAahInwxjAjdx9Gp7IPbE61+XTY6GEuYCBme+i5xEnhBHLgeJ2udhI/gZsKj6HlarauasGtroSdbqJ41P5Jw==
   dependencies:
-    "@skyway-sdk/common" "1.4.9"
-    "@skyway-sdk/rtc-rpc-api-client" "1.8.1"
-    "@skyway-sdk/token" "1.7.1"
+    "@skyway-sdk/common" "1.4.10"
+    "@skyway-sdk/rtc-rpc-api-client" "1.8.2"
+    "@skyway-sdk/token" "1.7.2"
     deepmerge "^4.3.1"
     uuid "^9.0.0"
 
-"@skyway-sdk/rtc-rpc-api-client@1.8.1":
-  version "1.8.1"
-  resolved "https://registry.yarnpkg.com/@skyway-sdk/rtc-rpc-api-client/-/rtc-rpc-api-client-1.8.1.tgz#aede5892301189fd3a214176214701c0ddf5df1c"
-  integrity sha512-b5ciEoUfCM8Z28q5wmg80x92UcjQ6ffAKEOcH1QFAwdMv/wB1/yvs3CjBTq7JFpU3Sp9MwLRX/ugxOSHprEgqA==
+"@skyway-sdk/rtc-rpc-api-client@1.8.2":
+  version "1.8.2"
+  resolved "https://registry.yarnpkg.com/@skyway-sdk/rtc-rpc-api-client/-/rtc-rpc-api-client-1.8.2.tgz#af61f2c8cbbc2186ce08636339cdc3706e98c17e"
+  integrity sha512-17ZY2MWUaIXm7CU9C+d/2K58f+6ZoVdh2fZuQwXVBfVLx4Wt8bNsGxMIADZ0tdqUEOnOnVdM7JFAK2SGZ1Eing==
   dependencies:
-    "@skyway-sdk/common" "1.4.9"
-    "@skyway-sdk/model" "1.0.2"
+    "@skyway-sdk/common" "1.4.10"
+    "@skyway-sdk/model" "1.0.3"
     isomorphic-ws "^4.0.1"
     uuid "^9.0.0"
 
-"@skyway-sdk/sfu-api-client@1.5.1":
-  version "1.5.1"
-  resolved "https://registry.yarnpkg.com/@skyway-sdk/sfu-api-client/-/sfu-api-client-1.5.1.tgz#01de9b3ffcb20d8c3e184ea6590ec1452f3b38eb"
-  integrity sha512-DkySfrBaro5UTCsptfoQKx7W3fGsdFThGHg2Gr5D0jZPFcxln/SuzEfFxsOL+wye0/Kxb+QDhw2BnxsEoEpxcg==
+"@skyway-sdk/sfu-api-client@1.5.2":
+  version "1.5.2"
+  resolved "https://registry.yarnpkg.com/@skyway-sdk/sfu-api-client/-/sfu-api-client-1.5.2.tgz#e106bea3141baf4ffd3c515c17831bde76ea8ab2"
+  integrity sha512-78nC0CnFOdJwKJMxBFmITPUIRy9QwehhiH9uad6TcKWy+PHcr2eINKc26YLZJC+11rpKCP3ikj8x8ostcd6bFA==
   dependencies:
-    "@skyway-sdk/common" "1.4.9"
+    "@skyway-sdk/common" "1.4.10"
     mediasoup-client "3.7.17"
 
-"@skyway-sdk/sfu-bot@1.13.1":
-  version "1.13.1"
-  resolved "https://registry.yarnpkg.com/@skyway-sdk/sfu-bot/-/sfu-bot-1.13.1.tgz#583464d91f55e2775cdc4dace715523be1f33a28"
-  integrity sha512-7IBmpxDMdOrbSlHE+Fque7ixrjEWxJC2IebYe9hKZAj6VvFdnA9qMIMGKkUGlg8JAfclU7UcHhUKLWFYxSJoKg==
+"@skyway-sdk/sfu-bot@1.13.2":
+  version "1.13.2"
+  resolved "https://registry.yarnpkg.com/@skyway-sdk/sfu-bot/-/sfu-bot-1.13.2.tgz#17c345c4cd5067566276be09278d22192b25d742"
+  integrity sha512-1TAW04OOcLWurBnGhQ4OXl/CZCwUvOGrWKZ+MWcLeJqeuaIaO58KzZxJVQ+CmneKqTdBsZ0ZZju9XgR8XZw+Ng==
   dependencies:
-    "@skyway-sdk/common" "1.4.9"
-    "@skyway-sdk/core" "1.13.1"
-    "@skyway-sdk/sfu-api-client" "1.5.1"
+    "@skyway-sdk/common" "1.4.10"
+    "@skyway-sdk/core" "1.13.2"
+    "@skyway-sdk/sfu-api-client" "1.5.2"
     lodash "4.17.21"
     mediasoup-client "3.7.17"
 
-"@skyway-sdk/signaling-client@1.0.8":
-  version "1.0.8"
-  resolved "https://registry.yarnpkg.com/@skyway-sdk/signaling-client/-/signaling-client-1.0.8.tgz#d1af9d4c14ba735872484774b8a7ea50950ad997"
-  integrity sha512-bcNPNkMiAfHiZJB492FxwTDuqN6u/Ikpv+8KT9izhqxI5dBk0qhIVQnJWDGceFORx/dZ2JG78ABkKD4Wj8C0kg==
+"@skyway-sdk/signaling-client@1.0.9":
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/@skyway-sdk/signaling-client/-/signaling-client-1.0.9.tgz#00cd3bff3b255fd5b96e74a2f6d7f282ff8476cf"
+  integrity sha512-8MZRgXOtsP9qDLthgPf6ugL2cAQLf3eWi3DIKy6dVFmWt+RtHQmRMtf2RdFK+t8XhSnOPeL+zqlnoISFG+FWTw==
   dependencies:
     isomorphic-fetch "^3.0.0"
     isomorphic-ws "^4.0.1"
     uuid "^9.0.0"
     ws "^8.17.1"
 
-"@skyway-sdk/token@1.7.1":
-  version "1.7.1"
-  resolved "https://registry.yarnpkg.com/@skyway-sdk/token/-/token-1.7.1.tgz#d1d5ccf4f79f16252a1e65e662f4e227ab386421"
-  integrity sha512-BnlWDGkKpEe18g9G7Uy5Fn4LeTfUyJrDUJwsCMPPq7qBpBY1Qvmb7YdPM9W0+grWG9DAA6aa9RlSzQd/Z5dHCQ==
+"@skyway-sdk/token@1.7.2":
+  version "1.7.2"
+  resolved "https://registry.yarnpkg.com/@skyway-sdk/token/-/token-1.7.2.tgz#83785f1f6d489dc7e890591dbeee2197ee9bded2"
+  integrity sha512-ybWG5bc5du8bng+ZB2gMpu43UeAtGjzgqZU0ps7rTUvBsgfWZdXHVxPy3/GbsOXmUhuxZTEHh32vFKhk6k9lNA==
   dependencies:
-    "@skyway-sdk/common" "1.4.9"
+    "@skyway-sdk/common" "1.4.10"
     jsrsasign "^11.1.0"
     jwt-decode "3.1.2"
     uuid "^9.0.0"
@@ -4987,9 +4987,9 @@ wrappy@1:
   integrity sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==
 
 ws@^8.17.1:
-  version "8.18.2"
-  resolved "https://registry.yarnpkg.com/ws/-/ws-8.18.2.tgz#42738b2be57ced85f46154320aabb51ab003705a"
-  integrity sha512-DMricUmwGZUVr++AEAe2uiVM7UoO9MAVZMDu05UQOaUII0lp+zOzLLU4Xqh/JvTqklB1T4uELaaPBKyjE1r4fQ==
+  version "8.18.3"
+  resolved "https://registry.yarnpkg.com/ws/-/ws-8.18.3.tgz#b56b88abffde62791c639170400c93dcb0c95472"
+  integrity sha512-PEIGCY5tSlUt50cqyMXfCzX+oOPqN0vuGqWzbcJ2xvnkzkq46oOpz7dQaTDBdfICb4N14+GARUDw2XV2N4tvzg==
 
 yallist@^4.0.0:
   version "4.0.0"
