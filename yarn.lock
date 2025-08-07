@@ -597,10 +597,10 @@
   resolved "https://registry.yarnpkg.com/@sinclair/typebox/-/typebox-0.27.8.tgz#6667fac16c436b5434a387a34dedb013198f6e6e"
   integrity sha512-+Fj43pSMwJs4KRrH/938Uf+uAELIgVBmQzg/q1YG10djyfA3TnrU8N8XzqCh/okZdszqBQTZf96idMfE5lnwTA==
 
-"@skyway-sdk/analytics-client@1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@skyway-sdk/analytics-client/-/analytics-client-1.1.0.tgz#ad54227f235caa6609ef521a5fbeeebd21feb783"
-  integrity sha512-54IEYY8KzQco8BxXDqPCO7QtbB5Xh65Xj7+S5r1ABbKfqiNLd6Z7wtiBsVeCNc8dJyGpdomEUP1LsJah7SxuOg==
+"@skyway-sdk/analytics-client@1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@skyway-sdk/analytics-client/-/analytics-client-1.1.1.tgz#9c981c4711456d3a19b1b22c8edabff380250c6b"
+  integrity sha512-kwoI1BebCM5b+09pLODjqO2jyBc2QKu8fcuLdzhQkla7ySBnDJGEVNxVMua0gzza4aH2Wn0bnGZU26zO0AQG2w==
   dependencies:
     isomorphic-ws "^4.0.1"
     uuid "^9.0.0"
@@ -613,12 +613,12 @@
   dependencies:
     axios "^1.7.7"
 
-"@skyway-sdk/core@1.14.0":
-  version "1.14.0"
-  resolved "https://registry.yarnpkg.com/@skyway-sdk/core/-/core-1.14.0.tgz#547dc39576e76df7e809d5037c830b6ab1197f01"
-  integrity sha512-HO2+o/p6cAfPd+HCpGg4jtjDZNcKDXpiRDH59ShldSrrXPcHiE9CdOyoQ0E/Yy9MMqKAYPtd6TGuf4GOkdcwbw==
+"@skyway-sdk/core@1.15.0":
+  version "1.15.0"
+  resolved "https://registry.yarnpkg.com/@skyway-sdk/core/-/core-1.15.0.tgz#8b72e3221c95447e01f96b8d9a24d03d8dc4897a"
+  integrity sha512-UCBUojRYJbvm39QHbvmlMewgotxwrCvB2D9Hlj0NHP4QNOzSZVBewHFtFkImYGJkgNyihif0ZlaaBP4uc/xe/Q==
   dependencies:
-    "@skyway-sdk/analytics-client" "1.1.0"
+    "@skyway-sdk/analytics-client" "1.1.1"
     "@skyway-sdk/common" "1.5.0"
     "@skyway-sdk/rtc-api-client" "1.8.3"
     "@skyway-sdk/signaling-client" "1.0.9"
@@ -636,13 +636,13 @@
   integrity sha512-1sFnOY9phuO+v6f9HVeMCSRxHSkPRi2JdQVwUhqW0ArGwmBqUK+jIfU7qXGbRiuE0vxosBu+gDlMK0pw40ehSQ==
 
 "@skyway-sdk/room@^1.5.4":
-  version "1.14.0"
-  resolved "https://registry.yarnpkg.com/@skyway-sdk/room/-/room-1.14.0.tgz#7155978b99b67f2cd1030892808e1cd1d330d710"
-  integrity sha512-Na3tsLDXvbSxAeHZu9HPBnZqnd9hyAnYmUr0YwApYJVzicmYfpP4DQC5JdYvGUJbe0Mt2m1twJW+jdjfInF3nw==
+  version "1.15.0"
+  resolved "https://registry.yarnpkg.com/@skyway-sdk/room/-/room-1.15.0.tgz#83f3cc864cedd8bce4c9e214f534048ea71ba2ac"
+  integrity sha512-UlHZVuO/N2ipLLe5picJQsaE4IieV84h8udNFNSVKJS28bV5OwMR3FzbMKBsZ0Ho2y9okZh0ZEJXYPJZ2A+5OQ==
   dependencies:
     "@skyway-sdk/common" "1.5.0"
-    "@skyway-sdk/core" "1.14.0"
-    "@skyway-sdk/sfu-bot" "1.14.0"
+    "@skyway-sdk/core" "1.15.0"
+    "@skyway-sdk/sfu-bot" "1.14.1"
     "@skyway-sdk/token" "1.7.3"
     uuid "^9.0.0"
 
@@ -675,13 +675,13 @@
     "@skyway-sdk/common" "1.5.0"
     mediasoup-client "3.7.17"
 
-"@skyway-sdk/sfu-bot@1.14.0":
-  version "1.14.0"
-  resolved "https://registry.yarnpkg.com/@skyway-sdk/sfu-bot/-/sfu-bot-1.14.0.tgz#e007dd3385eddc820072c7dd86088a6d4853ca53"
-  integrity sha512-7+CAbB+GaYuISyp/1otehjd+gcL2mHhuUggKZXE/Xl76JfXK2M2zDvRw2vGObPKijsd3DLOYWR7QN1A4to+52A==
+"@skyway-sdk/sfu-bot@1.14.1":
+  version "1.14.1"
+  resolved "https://registry.yarnpkg.com/@skyway-sdk/sfu-bot/-/sfu-bot-1.14.1.tgz#dd0df5507adfa127b1554be76155bcc5659235d9"
+  integrity sha512-MELoIasVC+R65we2GdAaEG1e3g4whK0PnrzXe3EX4VXqX4M9j1NlOfw6oaT7ZbIaldDRjjrv4KbWMLUuichPYA==
   dependencies:
     "@skyway-sdk/common" "1.5.0"
-    "@skyway-sdk/core" "1.14.0"
+    "@skyway-sdk/core" "1.15.0"
     "@skyway-sdk/sfu-api-client" "1.5.3"
     lodash "4.17.21"
     mediasoup-client "3.7.17"
@@ -2321,12 +2321,12 @@ awaitqueue@^3.0.2:
     debug "^4.4.1"
 
 axios@^1.7.7:
-  version "1.10.0"
-  resolved "https://registry.yarnpkg.com/axios/-/axios-1.10.0.tgz#af320aee8632eaf2a400b6a1979fa75856f38d54"
-  integrity sha512-/1xYAC4MP/HEG+3duIhFr4ZQXR4sQXOIe+o6sdqzeykGLx6Upp/1p8MHqhINOvGeP7xyNHe7tsiJByc4SSVUxw==
+  version "1.11.0"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-1.11.0.tgz#c2ec219e35e414c025b2095e8b8280278478fdb6"
+  integrity sha512-1Lx3WLFQWm3ooKDYZD1eXmoGO9fxYQjrycfHFC8P0sCfQVXyROp0p9PFWBehewBOdCwHc+f/b8I0fMto5eSfwA==
   dependencies:
     follow-redirects "^1.15.6"
-    form-data "^4.0.0"
+    form-data "^4.0.4"
     proxy-from-env "^1.1.0"
 
 axobject-query@^4.0.0:
@@ -3071,9 +3071,9 @@ flatted@^3.2.9:
   integrity sha512-X8cqMLLie7KsNUDSdzeN8FYK9rEt4Dt67OsG/DNGnYTSDBG4uFAJFBnUeiV+zCVAvwFy56IjM9sH51jVaEhNxw==
 
 follow-redirects@^1.15.6:
-  version "1.15.9"
-  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.15.9.tgz#a604fa10e443bf98ca94228d9eebcc2e8a2c8ee1"
-  integrity sha512-gew4GsXizNgdoRyqmyfMHyAmXsZDk6mHkSxZFCzW9gwlbtOW44CDtYavM+y+72qD/Vq2l550kMF52DT8fOLJqQ==
+  version "1.15.11"
+  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.15.11.tgz#777d73d72a92f8ec4d2e410eb47352a56b8e8340"
+  integrity sha512-deG2P0JfjrTxl50XGCDyfI97ZGVCxIpfKYmfyrQ54n5FO/0gfIES8C/Psl6kWVDolizcaaxZJnTS0QSMxvnsBQ==
 
 foreground-child@^3.1.0:
   version "3.3.0"
@@ -3083,10 +3083,10 @@ foreground-child@^3.1.0:
     cross-spawn "^7.0.0"
     signal-exit "^4.0.1"
 
-form-data@^4.0.0:
-  version "4.0.3"
-  resolved "https://registry.yarnpkg.com/form-data/-/form-data-4.0.3.tgz#608b1b3f3e28be0fccf5901fc85fb3641e5cf0ae"
-  integrity sha512-qsITQPfmvMOSAdeyZ+12I1c+CKSstAFAwu+97zrnWAbIr5u8wfsExUzCesVLC8NgHuRUqNN4Zy6UPWUTRGslcA==
+form-data@^4.0.4:
+  version "4.0.4"
+  resolved "https://registry.yarnpkg.com/form-data/-/form-data-4.0.4.tgz#784cdcce0669a9d68e94d11ac4eea98088edd2c4"
+  integrity sha512-KrGhL9Q4zjj0kiUt5OO4Mr/A/jlI2jDYs5eHBpYHPcBEVSiipAvn2Ko2HnPe20rmcuuvMHNdZFp+4IlGTMF0Ow==
   dependencies:
     asynckit "^0.4.0"
     combined-stream "^1.0.8"
