@@ -19,6 +19,7 @@
   import worksImg_threejsvrm from '$lib/assets/img/threejs_vrm.png';
   import worksImg_tamaki from '$lib/assets/img/tamaki_ss.png';
   import worksImg_storytailor from '$lib/assets/img/storytailor_ss.png';
+  import worksImg_instantpodedit from '$lib/assets/img/instantpodedit.png';
 
   let totalPageHeight: number;
   let viewHeight: number;
@@ -600,6 +601,29 @@
               <span class="skill-badge-gray">Firebase</span>
               <span class="skill-badge-gray">Typescript</span>
               <span class="skill-badge-gray">GTFS Open Data</span>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <div class="col-start-2 col-end-4">
+        <a href="https://1shotedit.com/" role="button" target="_blank" class="hover:brightness-110">
+          <div class="max-w-sm rounded overflow-hidden shadow-lg bg-slate-50 dark:bg-slate-800">
+            <img class="w-full h-60 object-cover" src={worksImg_instantpodedit} alt="InstantPodEdit" />
+            <div class="px-6 py-4 h-40">
+              <div class="font-bold text-xl mb-2">InstantPodEdit</div>
+              <p class="text-base">
+                InstantPodEdit is an AI-powered web tool for podcast creators that automatically removes
+                background noise, unwanted sounds, and long silences, reducing editing time from hours to minutes.
+              </p>
+            </div>
+            <div class="px-6 pt-4 pb-2 h-32">
+              <span class="skill-badge-gray">Next.js</span>
+              <span class="skill-badge-gray">Firebase</span>
+              <span class="skill-badge-gray">Cloudflare</span>
+              <span class="skill-badge-gray">Typescript</span>
+              <span class="skill-badge-gray">Python</span>
+              <span class="skill-badge-gray">Replicate AI</span>
             </div>
           </div>
         </a>
