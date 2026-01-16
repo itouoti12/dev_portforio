@@ -9,7 +9,6 @@
   import { TextScramble } from './textScrumble';
   import { defportforioTexts } from './text';
   import { fade } from 'svelte/transition';
-  import DarkButton from './DarkButton.svelte';
   import { isElementAppear } from './functions';
   import BuildingLayer from './common/map/BuildingLayer.svelte';
   import soldierModel from '$lib/assets/three/models/Soldier.glb';
@@ -20,6 +19,7 @@
   import worksImg_tamaki from '$lib/assets/img/tamaki_ss.png';
   import worksImg_storytailor from '$lib/assets/img/storytailor_ss.png';
   import worksImg_instantpodedit from '$lib/assets/img/instantpodedit.png';
+  import Header from './common/header/Header.svelte';
 
   let totalPageHeight: number;
   let viewHeight: number;
@@ -44,14 +44,14 @@
   onMount(() => {
     totalPageHeight = document.documentElement.scrollHeight;
 
-    setTimeout(() => {
-      isDispTitle = true;
+    // setTimeout(() => {
+    //   isDispTitle = true;
 
-      setTimeout(() => {
-        window.scrollTo(0, 0);
+    //   setTimeout(() => {
+    //     window.scrollTo(0, 0);
         isDispMain = true;
-      }, 5000);
-    }, 300);
+    //   }, 3000);
+    // }, 300);
   });
 
   afterUpdate(() => {
@@ -223,26 +223,9 @@
   {/if}
 </div> -->
 
-<div class="fixed top-0 left-0 w-screen h-16 z-10 backdrop-blur-sm bg-white/10 text-white">
-  <div class="h-full grid grid-cols-12">
-    <div class="col-span-2 mx-auto my-auto">
-      <DarkButton on:change={changeDarkMode} />
-    </div>
+<Header {isJp} on:changeLanguage={onChangeLanguage} on:changeDarkMode={changeDarkMode} />
 
-    <div class="col-end-13 col-span-3 mx-auto my-auto">
-      <button class="" on:click={onChangeLanguage}>
-        <i class="fa-solid fa-globe fa-xl" />
-        <span class="text-xs">
-          <span class:font-bold={isJp === false} class:text-sm={isJp === false}>English</span>
-          {' / '}
-          <span class:font-bold={isJp === true} class:text-sm={isJp === true}>Japanese</span>
-        </span>
-      </button>
-    </div>
-  </div>
-</div>
-
-{#if !isDispMain}
+<!-- {#if !isDispMain}
   <section
     class="fixed h-screen w-screen flex justify-center items-center z-30 bg-slate-50 dark:bg-slate-800"
     out:fade={{ duration: 1000 }}>
@@ -250,17 +233,17 @@
       <h1 class="text-6xl font-bold" in:fade={{ duration: 3000 }}>KANSUKE ITO</h1>
     {/if}
   </section>
-{/if}
+{/if} -->
 
 <div
   class="fixed h-[calc(100vh-_2rem)] w-screen flex justify-center items-center -z-30 bg-slate-50/25 dark:bg-slate-700/25 backdrop-blur-sm" />
 
 <main>
-  <section class="h-screen w-screen flex justify-center items-center" bind:this={pageElements['title']}>
+  <section class="h-screen w-screen flex justify-center items-center" id="title" bind:this={pageElements['title']}>
     <h1 class="text-6xl font-bold">KANSUKE ITO</h1>
   </section>
 
-  <section class="h-screen w-screen flex justify-center items-center">
+  <section class="h-screen w-screen flex justify-center items-center" id="about">
     <h1 class="text-6xl font-bold">ABOUT</h1>
   </section>
 
@@ -275,7 +258,7 @@
     </p>
   </section>
 
-  <section class="h-screen w-screen flex justify-center items-center">
+  <section class="h-screen w-screen flex justify-center items-center" id="history">
     <h1 class="text-6xl font-bold">HISTORY</h1>
   </section>
   <section class="h-screen w-6/12 my-auto mx-auto py-40" bind:this={pageElements['history_detail']}>
@@ -323,7 +306,7 @@
     </div>
   </section>
 
-  <section class="h-screen w-screen flex justify-center items-center">
+  <section class="h-screen w-screen flex justify-center items-center" id="skills">
     <h1 class="text-6xl font-bold">SKILLS</h1>
   </section>
 
@@ -432,7 +415,7 @@
     </div>
   </section>
 
-  <section class="h-screen w-screen flex justify-center items-center">
+  <section class="h-screen w-screen flex justify-center items-center" id="projects">
     <h1 class="text-6xl font-bold">PROJECTS</h1>
   </section>
   <section class="w-6/12 my-auto mx-auto py-40" bind:this={pageElements['project_detail']}>
@@ -510,11 +493,11 @@
     </div>
   </section>
 
-  <section class="h-screen w-screen flex justify-center items-center">
+  <section class="h-screen w-screen flex justify-center items-center" id="works">
     <h1 class="text-6xl font-bold">WORKS</h1>
   </section>
 
-  <section class="h-screen w-screen flex justify-center items-center">
+  <section class="w-screen flex justify-center items-center py-40">
     <div class="grid grid-cols-7 gap-4">
       <!-- mapbox上でモデルを動かす -->
       <div class="col-start-2 col-end-4">
@@ -631,7 +614,7 @@
     </div>
   </section>
 
-  <section class="h-screen w-screen flex justify-center items-center">
+  <section class="h-screen w-screen flex justify-center items-center" id="writing">
     <h1 class="text-6xl font-bold">WRITING</h1>
   </section>
 
@@ -646,7 +629,7 @@
     </div>
   </section>
 
-  <section class="h-screen w-screen flex justify-center items-center">
+  <section class="h-screen w-screen flex justify-center items-center" id="patent">
     <h1 class="text-6xl font-bold">PATENT</h1>
   </section>
 
@@ -677,7 +660,7 @@
     </div>
   </section>
 
-  <section class="h-screen w-screen flex justify-center items-center">
+  <section class="h-screen w-screen flex justify-center items-center" id="contact">
     <h1 class="text-6xl font-bold">CONTACT</h1>
   </section>
   <section class="h-screen w-screen flex justify-center items-center">

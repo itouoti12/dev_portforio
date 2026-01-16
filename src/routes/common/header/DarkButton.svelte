@@ -1,7 +1,7 @@
 <script lang="ts">
   import { createEventDispatcher, onMount } from 'svelte';
   import { fly } from 'svelte/transition';
-  import { isDarkmode } from './common/store';
+  import { isDarkmode } from '../store';
   const dispatch = createEventDispatcher();
 
   const toggle = () => {
