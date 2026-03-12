@@ -3569,9 +3569,9 @@ magic-string@^0.30.5:
     "@jridgewell/sourcemap-codec" "^1.5.0"
 
 mapbox-gl@*, mapbox-gl@^3.5.2:
-  version "3.19.1"
-  resolved "https://registry.yarnpkg.com/mapbox-gl/-/mapbox-gl-3.19.1.tgz#241d0430b610a70170572b88d94a2fd3613e498c"
-  integrity sha512-p1/nJ85IqpjKk7IKNDnH9AB4qE/MXbR5ToagNurofTpUgnXX9NXcOzm8WsRnrovQIwiefC4MiEWUK6Sa2HfWtg==
+  version "3.20.0"
+  resolved "https://registry.yarnpkg.com/mapbox-gl/-/mapbox-gl-3.20.0.tgz#fd9e8a3704cd036c72959b6678d9d3fb1e926ce7"
+  integrity sha512-+rVQkf6ymUlAEJiQBZy0OiamJvQN4Uk15mRHI98PRUSmRS40GOoLJyEZEG39LEUtvmzc7qGh+4ygZfJ//O5VnQ==
   dependencies:
     "@mapbox/jsonlint-lines-primitives" "^2.0.2"
     "@mapbox/mapbox-gl-supported" "^3.0.0"
