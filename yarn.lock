@@ -384,9 +384,9 @@
   integrity sha512-YGcBz1cg4ATXDCM/71L9xveh4dynfGmcLDqufR+nQQy3fKwsAZsWd/x4621/6uJaeB9mwOHE6hPeDgXz9uViUQ==
 
 "@mapbox/tiny-sdf@^2.0.6":
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/@mapbox/tiny-sdf/-/tiny-sdf-2.1.0.tgz#62f562340eaa1f1945a2b255e084f9377f9ab9b3"
-  integrity sha512-uFJhNh36BR4OCuWIEiWaEix9CA2WzT6CAIcqVjWYpnx8+QDtS+oC4QehRrx5cX4mgWs37MmKnwUejeHxVymzNg==
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@mapbox/tiny-sdf/-/tiny-sdf-2.2.0.tgz#95dae0dc371b8c55c53d70f3e25d56823427f4c8"
+  integrity sha512-LVL4wgI9YAum5V+LNVQO6QgFBPw7/MIIY4XJPNsPDMrjEwcE+JfKk1LuIl8GnF197ejVdC9QdPaxrx5gfgdGXg==
 
 "@mapbox/unitbezier@^0.0.1":
   version "0.0.1"
@@ -3091,9 +3091,9 @@ geojson-rbush@3.x:
     rbush "^3.0.1"
 
 geojson-vt@^4.0.2:
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/geojson-vt/-/geojson-vt-4.0.2.tgz#1162f6c7d61a0ba305b1030621e6e111f847828a"
-  integrity sha512-AV9ROqlNqoZEIJGfm1ncNjEXfkz2hdFlZf0qkVfmkwdKa8vj7H16YUOT81rJw1rdFhyEDlN2Tds91p/glzbl5A==
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/geojson-vt/-/geojson-vt-4.0.3.tgz#d31c8740596e35f8da81c108311608608019601f"
+  integrity sha512-jR1MwkLaZGa8Zftct9ZFruyWFrdl9ZyD2OliXNy9Qq5bBPeg5wHVpBQF9p5GjnicSDQqvBVpysxTPKmWdsfWMA==
 
 get-func-name@^2.0.1, get-func-name@^2.0.2:
   version "2.0.2"
@@ -3215,11 +3215,6 @@ graphemer@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/graphemer/-/graphemer-1.4.0.tgz#fb2f1d55e0e3a1849aeffc90c4fa0dd53a0e66c6"
   integrity sha512-EtKwoO6kxCL9WO5xipiHTZlSzBm7WLT627TqC/uVRd0HKmq8NXyebnNYxDoBi7wt8eTWrUrKXCOVaFq9x1kgag==
-
-grid-index@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/grid-index/-/grid-index-1.1.0.tgz#97f8221edec1026c8377b86446a7c71e79522ea7"
-  integrity sha512-HZRwumpOGUrHyxO5bqKZL0B0GlUpwtCAzZ42sgxUPniu33R1LSFH5yrIcBCHjkctCAh3mtWKcKd9J4vDDdeVHA==
 
 h264-profile-level-id@^2.0.0:
   version "2.2.2"
@@ -3558,9 +3553,9 @@ magic-string@^0.30.5:
     "@jridgewell/sourcemap-codec" "^1.5.0"
 
 mapbox-gl@*, mapbox-gl@^3.5.2:
-  version "3.23.1"
-  resolved "https://registry.yarnpkg.com/mapbox-gl/-/mapbox-gl-3.23.1.tgz#c09002a6dc4146aac68650438644c12f73aa96f9"
-  integrity sha512-J5M32GunL5KcxvV3ZyLJdr7xtcQ3afAO3VjitLW0v2UVfHjXhq9NO4tkTpn4Dknqwq/pXZG7j1WBfmddLCA26w==
+  version "3.24.0"
+  resolved "https://registry.yarnpkg.com/mapbox-gl/-/mapbox-gl-3.24.0.tgz#84ed64980e762728276c6032c68db32b221b1041"
+  integrity sha512-R+FdFUB3DnoE5FYASV7lGSiRyMkSblcZ2UEy7b2pt7s5ZbCxFIUPXd0E6iAFd8OdvdA2VtbvZZVylzAZNaurjA==
   dependencies:
     "@mapbox/mapbox-gl-supported" "^3.0.0"
     "@mapbox/point-geometry" "^1.1.0"
@@ -3576,7 +3571,6 @@ mapbox-gl@*, mapbox-gl@^3.5.2:
     earcut "^3.0.1"
     geojson-vt "^4.0.2"
     gl-matrix "^3.4.4"
-    grid-index "^1.1.0"
     kdbush "^4.0.2"
     martinez-polygon-clipping "^0.8.1"
     murmurhash-js "^1.0.0"
