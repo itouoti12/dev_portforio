@@ -3475,9 +3475,9 @@ magic-string@^0.30.5:
     "@jridgewell/sourcemap-codec" "^1.5.0"
 
 mapbox-gl@*, mapbox-gl@^3.5.2:
-  version "3.35.2"
-  resolved "https://registry.yarnpkg.com/mapbox-gl/-/mapbox-gl-3.35.2.tgz#25732ccb71a3a3a68a5a5b09a2837b1261e98a4a"
-  integrity sha512-xM+0319FNTS2iOxl0Jelousi31L+ckzOxaXKkIlelanSe2jMlRRNVv3ESezPj6eUGlTDrfaxefk5QM6wQ3ICgg==
+  version "3.36.0"
+  resolved "https://registry.yarnpkg.com/mapbox-gl/-/mapbox-gl-3.36.0.tgz#46dd6852d05fe2fa66ef81ff2622f9cc87f0bf8b"
+  integrity sha512-hW22K2W+rMsxf2Xbs0RjgpDSC5mmQ2QRQGOVIsEff37wL9g7W0X3aIIPeVAWV/QEbOm/haxTv0mJW+SMDMa+Pw==
 
 math-intrinsics@^1.1.0:
   version "1.1.0"
